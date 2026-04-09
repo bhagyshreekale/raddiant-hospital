@@ -63,9 +63,12 @@ function ApplyModal({ job, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
       <div className="max-h-[90vh] w-full max-w-xl animate-in fade-in zoom-in duration-200 overflow-y-auto rounded-3xl bg-white shadow-2xl">
-        
+
         {/* Header */}
         <div className="flex items-start justify-between border-b border-gray-100 bg-gray-50/50 p-6">
           <div className="flex gap-4">
@@ -77,7 +80,10 @@ function ApplyModal({ job, onClose }) {
               </p>
             </div>
           </div>
-          <button onClick={onClose} className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
+          <button
+            onClick={onClose}
+            className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
+          >
             <FaTimes />
           </button>
         </div>
@@ -91,9 +97,13 @@ function ApplyModal({ job, onClose }) {
               </div>
               <h4 className="text-xl font-bold text-gray-900">Application Submitted!</h4>
               <p className="mt-3 text-sm text-gray-500">
-                Thank you, <strong>{fields.name}</strong>! Our HR team will reach out to <strong>{fields.email}</strong> within 3–5 working days.
+                Thank you, <strong>{fields.name}</strong>! Our HR team will reach out to{' '}
+                <strong>{fields.email}</strong> within 3–5 working days.
               </p>
-              <button onClick={onClose} className="mt-8 rounded-full bg-[var(--primary)] px-8 py-3 text-sm font-bold text-white transition-transform hover:scale-105 active:scale-95">
+              <button
+                onClick={onClose}
+                className="mt-8 rounded-full bg-[var(--primary)] px-8 py-3 text-sm font-bold text-white transition-transform hover:scale-105 active:scale-95"
+              >
                 Close
               </button>
             </div>
@@ -101,18 +111,39 @@ function ApplyModal({ job, onClose }) {
             <div className="space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Full Name *" error={errors.name}>
-                  <input value={fields.name} onChange={set('name')} placeholder="Dr. Priya Sharma" className={inputClass(errors.name)} />
+                  <input
+                    value={fields.name}
+                    onChange={set('name')}
+                    placeholder="Dr. Priya Sharma"
+                    className={inputClass(errors.name)}
+                  />
                 </Field>
                 <Field label="Email Address *" error={errors.email}>
-                  <input type="email" value={fields.email} onChange={set('email')} placeholder="priya@example.com" className={inputClass(errors.email)} />
+                  <input
+                    type="email"
+                    value={fields.email}
+                    onChange={set('email')}
+                    placeholder="priya@example.com"
+                    className={inputClass(errors.email)}
+                  />
                 </Field>
                 <Field label="Mobile Number *" error={errors.phone}>
-                  <input type="tel" value={fields.phone} onChange={set('phone')} placeholder="98765 43210" className={inputClass(errors.phone)} />
+                  <input
+                    type="tel"
+                    value={fields.phone}
+                    onChange={set('phone')}
+                    placeholder="98765 43210"
+                    className={inputClass(errors.phone)}
+                  />
                 </Field>
                 <Field label="Experience *" error={errors.experience}>
-                  <select value={fields.experience} onChange={set('experience')} className={inputClass(errors.experience)}>
+                  <select
+                    value={fields.experience}
+                    onChange={set('experience')}
+                    className={inputClass(errors.experience)}
+                  >
                     <option value="">Select range</option>
-                    {['0–1 year', '1–3 years', '3–5 years', '5–8 years', '12+ years'].map(o => (
+                    {['0–1 year', '1–3 years', '3–5 years', '5–8 years', '12+ years'].map((o) => (
                       <option key={o} value={o}>{o}</option>
                     ))}
                   </select>
@@ -120,23 +151,43 @@ function ApplyModal({ job, onClose }) {
               </div>
 
               <Field label="Cover Note (optional)">
-                <textarea value={fields.message} onChange={set('message')} rows={3} placeholder="Tell us why you'd be a great fit…" className={inputClass() + " resize-none"} />
+                <textarea
+                  value={fields.message}
+                  onChange={set('message')}
+                  rows={3}
+                  placeholder="Tell us why you'd be a great fit…"
+                  className={inputClass() + ' resize-none'}
+                />
               </Field>
 
               <Field label="Resume / CV *" error={errors.file}>
-                <div 
-                  onClick={() => fileRef.current.click()} 
-                  className={`flex flex-col items-center rounded-2xl border-2 border-dashed p-6 text-center transition-all ${file ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'}`}
+                <div
+                  onClick={() => fileRef.current.click()}
+                  className={`flex flex-col items-center rounded-2xl border-2 border-dashed p-6 text-center transition-all cursor-pointer ${
+                    file ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'
+                  }`}
                 >
                   <FaUpload className={`mb-2 text-xl ${file ? 'text-green-500' : 'text-gray-400'}`} />
                   <p className="text-xs font-semibold text-gray-500">
                     {file ? `✅ ${file.name}` : 'Click to upload PDF or DOC (max 5MB)'}
                   </p>
-                  <input ref={fileRef} type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={(e) => { setFile(e.target.files[0]); setErrors(p => ({ ...p, file: undefined })); }} />
+                  <input
+                    ref={fileRef}
+                    type="file"
+                    accept=".pdf,.doc,.docx"
+                    className="hidden"
+                    onChange={(e) => {
+                      setFile(e.target.files[0]);
+                      setErrors((p) => ({ ...p, file: undefined }));
+                    }}
+                  />
                 </div>
               </Field>
 
-              <button onClick={handleSubmit} className="w-full rounded-xl bg-[var(--primary)] py-4 text-sm font-bold text-white shadow-lg shadow-[var(--primary)]/20 transition-all hover:-translate-y-0.5 active:scale-95">
+              <button
+                onClick={handleSubmit}
+                className="w-full rounded-xl bg-[var(--primary)] py-4 text-sm font-bold text-white shadow-lg shadow-[var(--primary)]/20 transition-all hover:-translate-y-0.5 active:scale-95"
+              >
                 Submit Application
               </button>
             </div>
@@ -153,7 +204,7 @@ function JobCard({ job, onApply, index }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div 
+    <div
       className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:border-gray-200 hover:shadow-xl hover:shadow-gray-200/50"
       style={{ animation: `fadeInUp 0.4s ease-out forwards ${index * 0.05}s`, opacity: 0 }}
     >
@@ -161,7 +212,7 @@ function JobCard({ job, onApply, index }) {
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-50 text-2xl">
           {job.icon}
         </div>
-        
+
         <div className="flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <h3 className="text-base font-bold text-gray-900">{job.title}</h3>
@@ -171,7 +222,7 @@ function JobCard({ job, onApply, index }) {
               </span>
             )}
           </div>
-          
+
           <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-[0.75rem] font-medium text-gray-500">
             <span className="flex items-center gap-1.5"><FaBriefcase className="opacity-60" /> {job.department}</span>
             <span className="flex items-center gap-1.5"><FaMapMarkerAlt className="opacity-60" /> {job.location}</span>
@@ -211,15 +262,15 @@ function JobCard({ job, onApply, index }) {
       )}
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-        <button 
-          onClick={() => setExpanded(!expanded)} 
+        <button
+          onClick={() => setExpanded(!expanded)}
           className="flex items-center gap-2 text-sm font-bold text-gray-500 transition-colors hover:text-gray-900"
         >
           {expanded ? <FaChevronUp /> : <FaChevronDown />}
           {expanded ? 'Hide Details' : 'View Details'}
         </button>
-        <button 
-          onClick={() => onApply(job)} 
+        <button
+          onClick={() => onApply(job)}
           className="rounded-full bg-[var(--primary)] px-8 py-2.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[var(--primary)]/20"
         >
           Apply Now
@@ -229,7 +280,7 @@ function JobCard({ job, onApply, index }) {
   );
 }
 
-// ── Main Content ──────────────────────────────────────────────────────────
+// ── Main Export ──────────────────────────────────────────────────────────
 
 export default function JobListingsClient() {
   const [activeTab, setActiveTab] = useState('All');
@@ -244,26 +295,26 @@ export default function JobListingsClient() {
       <style jsx global>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
+          to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
 
-      {/* Tabs */}
+      {/* Department Tabs */}
       <div className="mb-8 flex flex-wrap gap-2">
         {DEPARTMENTS.map((dept) => (
           <button
             key={dept}
             onClick={() => setActiveTab(dept)}
             className={`rounded-full px-5 py-2 text-xs font-bold transition-all ${
-              activeTab === dept 
-                ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20' 
-                : 'bg-white text-gray-500 border-2 border-gray-100 hover:border-gray-200 hover:text-gray-700'
+              activeTab === dept
+                ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20'
+                : 'border-2 border-gray-100 bg-white text-gray-500 hover:border-gray-200 hover:text-gray-700'
             }`}
           >
             {dept}
             {dept !== 'All' && (
               <span className="ml-2 opacity-60">
-                ({JOB_LISTINGS.filter(j => j.department === dept).length})
+                ({JOB_LISTINGS.filter((j) => j.department === dept).length})
               </span>
             )}
           </button>
@@ -274,11 +325,13 @@ export default function JobListingsClient() {
       <div className="mb-6 flex items-center justify-between border-b border-gray-100 pb-4">
         <p className="text-sm font-medium text-gray-500">
           Showing <span className="font-bold text-gray-900">{filtered.length}</span> positions
-          {activeTab !== 'All' && <span> in <span className="text-[var(--primary)]">{activeTab}</span></span>}
+          {activeTab !== 'All' && (
+            <span> in <span className="text-[var(--primary)]">{activeTab}</span></span>
+          )}
         </p>
       </div>
 
-      {/* Grid */}
+      {/* Job Cards */}
       <div className="space-y-4">
         {filtered.map((job, i) => (
           <JobCard key={job.id} job={job} index={i} onApply={setApplyJob} />
