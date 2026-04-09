@@ -9,7 +9,7 @@ import CTABanner from '../components/sections/CTABanner';
 import MapSection from '../components/sections/MapSection';
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
-
+import FloatingActions from '../components/design/FloatingActions'
 export default function Home() {
   return (
     <>
@@ -24,6 +24,7 @@ export default function Home() {
       <CTABanner />
       <MapSection />
       <Footer/>
+<FloatingActions/>
     </>
   );
 }

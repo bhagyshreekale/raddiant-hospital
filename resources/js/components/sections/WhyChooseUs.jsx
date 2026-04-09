@@ -1,41 +1,297 @@
 'use client';
-import SectionHeader from '../../components/design/SectionHeader';
+
+import { useEffect, useRef, useState } from 'react';
 import { USPS } from '../../lib copy/data';
 
+/* ── Icon map with per-feature color identity ─────────────── */
 const ICON_MAP = {
-  FaClock: '⏰', FaUserMd: '👨‍⚕️', FaMicroscope: '🔬',
-  FaShieldAlt: '🛡️', FaHeartbeat: '❤️', FaParking: '🏢'
+  FaClock:      { emoji: '⏰', from: '#0ea5e9', to: '#38bdf8', label: 'sky'    },
+  FaUserMd:     { emoji: '👨‍⚕️', from: '#8b5cf6', to: '#a78bfa', label: 'violet' },
+  FaMicroscope: { emoji: '🔬', from: '#10b981', to: '#34d399', label: 'emerald'},
+  FaShieldAlt:  { emoji: '🛡️', from: '#f59e0b', to: '#fbbf24', label: 'amber' },
+  FaHeartbeat:  { emoji: '❤️', from: '#ef4444', to: '#f87171', label: 'rose'   },
+  FaParking:    { emoji: '🏢', from: '#06b6d4', to: '#22d3ee', label: 'cyan'   },
 };
+const DEFAULT_META = { emoji: '✅', from: '#0ea5e9', to: '#38bdf8' };
 
-export default function WhyChooseUs() {
+/* ── USP Card ─────────────────────────────────────────────── */
+function UspCard({ usp, index, visible }) {
+  const meta = ICON_MAP[usp.icon] ?? DEFAULT_META;
+
   return (
-    <section className="section-py" style={{ background: 'linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%)' }}>
-      <div className="container">
-        <div className="text-center mb-5">
-          <span className="section-label" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'var(--accent-light)' }}>Why Raddiant Plus</span>
-          <h2 style={{ color: 'white', marginBottom: 12 }}>The Raddiant Difference</h2>
-          <div className="divider-accent mx-auto" style={{ background: 'linear-gradient(90deg, var(--accent-light), white)' }} />
-          <p style={{ color: 'rgba(255,255,255,0.72)', maxWidth: 520, margin: '0 auto' }}>We combine clinical excellence with compassionate care to deliver outcomes you can trust.</p>
+    <article
+      className="usp-card group relative flex flex-col h-full rounded-3xl overflow-hidden
+                 border border-white/10 bg-white/5 backdrop-blur-md
+                 hover:-translate-y-2 hover:bg-white/[0.09]
+                 transition-all duration-500 ease-out cursor-default"
+      style={{
+        opacity:    visible ? 1 : 0,
+        transform:  visible ? 'translateY(0)' : 'translateY(36px)',
+        transition: `opacity .6s ease ${index * 90}ms, transform .6s ease ${index * 90}ms,
+                     box-shadow .3s ease, background .3s ease`,
+      }}
+    >
+      {/* Glow blob behind card — appears on hover */}
+      <div
+        className="absolute -inset-px rounded-3xl opacity-0 group-hover:opacity-100
+                   transition-opacity duration-500 -z-10 blur-xl"
+        style={{ background: `radial-gradient(ellipse at 50% 0%, ${meta.from}33 0%, transparent 70%)` }}
+      />
+
+      {/* Animated top border */}
+      <span
+        className="absolute top-0 left-0 right-0 h-[2px] origin-left scale-x-0
+                   group-hover:scale-x-100 transition-transform duration-500 ease-out rounded-t-3xl"
+        style={{ background: `linear-gradient(90deg, ${meta.from}, ${meta.to})` }}
+      />
+
+      <div className="relative flex flex-col flex-1 p-7 md:p-8">
+
+        {/* Icon circle */}
+        <div
+          className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6
+                     transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+          style={{ background: `linear-gradient(135deg, ${meta.from}30, ${meta.to}20)`,
+                   border: `1px solid ${meta.from}40` }}
+        >
+          {meta.emoji}
         </div>
-        <div className="row g-4">
-          {USPS.map(usp => (
-            <div key={usp.title} className="col-lg-4 col-md-6">
-              <div style={{
-                background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)',
-                borderRadius: 'var(--radius-lg)', padding: '28px 28px', backdropFilter: 'blur(8px)',
-                transition: 'all 0.3s', cursor: 'default', height: '100%'
-              }}
-                onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.14)'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.07)'; e.currentTarget.style.transform = 'translateY(0)'; }}
-              >
-                <div style={{ fontSize: '2.2rem', marginBottom: 14 }}>{ICON_MAP[usp.icon] || '✅'}</div>
-                <h3 style={{ color: 'white', fontSize: '1.05rem', marginBottom: 8 }}>{usp.title}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '0.875rem', margin: 0, lineHeight: 1.65 }}>{usp.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
+
+        {/* Number badge */}
+        <span
+          className="absolute top-7 right-7 text-[0.65rem] font-black tabular-nums
+                     opacity-20 group-hover:opacity-50 transition-opacity duration-300"
+          style={{ color: meta.to, letterSpacing: '0.05em' }}
+        >
+          {String(index + 1).padStart(2, '0')}
+        </span>
+
+        {/* Title */}
+        <h3
+          className="text-base md:text-lg font-black text-white mb-3 leading-snug
+                     transition-colors duration-300 group-hover:text-white"
+          style={{ textShadow: `0 0 30px ${meta.from}00` }}
+        >
+          {usp.title}
+        </h3>
+
+        {/* Description */}
+        <p className="text-sm leading-relaxed text-white/55 flex-1 group-hover:text-white/75
+                      transition-colors duration-300">
+          {usp.desc}
+        </p>
+
+        {/* Bottom accent line */}
+        <div
+          className="mt-6 h-px origin-left scale-x-0 group-hover:scale-x-100
+                     transition-transform duration-500 ease-out rounded-full opacity-40"
+          style={{ background: `linear-gradient(90deg, ${meta.from}, transparent)` }}
+        />
       </div>
-    </section>
+    </article>
+  );
+}
+
+/* ── Stat pill ────────────────────────────────────────────── */
+function StatPill({ value, label, delay, inView }) {
+  return (
+    <div
+      className="flex flex-col items-center px-8 py-4 rounded-2xl bg-white/5
+                 border border-white/10 backdrop-blur-sm min-w-[120px]"
+      style={{
+        opacity:    inView ? 1 : 0,
+        transform:  inView ? 'translateY(0)' : 'translateY(20px)',
+        transition: `opacity .6s ease ${delay}ms, transform .6s ease ${delay}ms`,
+      }}
+    >
+      <span className="text-3xl font-black text-white tracking-tight leading-none">{value}</span>
+      <span className="text-xs font-semibold text-white/50 uppercase tracking-wider mt-1">{label}</span>
+    </div>
+  );
+}
+
+/* ── Main section ─────────────────────────────────────────── */
+export default function WhyChooseUs() {
+  const sectionRef = useRef(null);
+  const [inView, setInView]   = useState(false);
+  const [visible, setVisible] = useState([]);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
+      { threshold: 0.08 }
+    );
+    if (sectionRef.current) obs.observe(sectionRef.current);
+    return () => obs.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!inView) return;
+    USPS.forEach((_, i) => setTimeout(() => setVisible(p => [...p, i]), i * 90));
+  }, [inView]);
+
+  return (
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap');
+
+        .wcu-section { font-family: 'Sora', sans-serif; }
+
+        /* Deep navy mesh bg */
+        .wcu-bg {
+          background-color: #06101f;
+          background-image:
+            radial-gradient(ellipse 80% 55% at  0% -10%, #0c3060 0%, transparent 55%),
+            radial-gradient(ellipse 60% 50% at 100% 110%, #063028 0%, transparent 55%),
+            radial-gradient(ellipse 40% 40% at  50%  50%, #0f2040 0%, transparent 60%);
+        }
+
+        /* Floating grid lines */
+        .wcu-grid {
+          background-image:
+            linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+          background-size: 48px 48px;
+        }
+
+        /* Gradient headline */
+        .wcu-grad {
+          background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #34d399 100%);
+          -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+
+        @keyframes wcu-pulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(56,189,248,.5); }
+          50%       { box-shadow: 0 0 0 9px rgba(56,189,248,0); }
+        }
+        .wcu-pulse { animation: wcu-pulse 2.5s ease-in-out infinite; }
+
+        /* card base */
+        .usp-card { will-change: transform, opacity; }
+      `}</style>
+
+      <section ref={sectionRef} className="wcu-section wcu-bg wcu-grid relative overflow-hidden py-20 md:py-32">
+
+        {/* Decorative orbs */}
+        <div className="pointer-events-none absolute -top-32 -left-32 w-[480px] h-[480px]
+                        rounded-full bg-sky-600/10 blur-[100px]" />
+        <div className="pointer-events-none absolute -bottom-32 -right-32 w-[400px] h-[400px]
+                        rounded-full bg-emerald-600/10 blur-[100px]" />
+
+        <div className="relative container mx-auto px-4 lg:px-10 max-w-7xl">
+
+          {/* ── HEADER ── */}
+          <div className="flex flex-col items-center text-center mb-16">
+
+            {/* Eyebrow pill */}
+            <div
+              className="inline-flex items-center gap-2 border border-sky-500/30 bg-sky-500/10
+                         text-sky-300 text-xs font-bold uppercase tracking-widest
+                         px-4 py-2 rounded-full mb-7"
+            >
+              <span className="w-2 h-2 bg-sky-400 rounded-full wcu-pulse" />
+              Why Raddiant Plus
+            </div>
+
+            {/* Headline */}
+            <h2
+              className="text-4xl md:text-5xl xl:text-6xl font-black text-white
+                         leading-[1.06] tracking-tight mb-5 max-w-3xl"
+              style={{
+                opacity:   inView ? 1 : 0,
+                transform: inView ? 'translateY(0)' : 'translateY(24px)',
+                transition: 'opacity .7s ease .1s, transform .7s ease .1s',
+              }}
+            >
+              The{' '}
+              <span className="font-['Instrument_Serif',serif] italic font-normal wcu-grad">
+                Raddiant
+              </span>
+              {' '}Difference
+            </h2>
+
+            <p
+              className="text-white/55 text-lg leading-relaxed max-w-xl"
+              style={{
+                opacity:   inView ? 1 : 0,
+                transform: inView ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'opacity .7s ease .2s, transform .7s ease .2s',
+              }}
+            >
+              We combine clinical excellence with compassionate care to deliver
+              outcomes you can trust — every single time.
+            </p>
+          </div>
+
+          {/* ── STATS ROW ── */}
+          <div
+            className="flex flex-wrap justify-center gap-4 mb-14"
+          >
+            {[
+              { value: '60+',  label: 'Specialists',  delay: 200 },
+              { value: '20+',  label: 'Departments',  delay: 300 },
+              { value: '15+',  label: 'Years Active',  delay: 400 },
+              { value: '24/7', label: 'Emergency',    delay: 500 },
+            ].map(s => <StatPill key={s.label} {...s} inView={inView} />)}
+          </div>
+
+          {/* ── USP GRID ── */}
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {USPS.map((usp, i) => (
+              <UspCard
+                key={usp.title}
+                usp={usp}
+                index={i}
+                visible={visible.includes(i)}
+              />
+            ))}
+          </div>
+
+          {/* ── BOTTOM CTA BANNER ── */}
+          <div
+            className="mt-16 flex flex-col sm:flex-row items-center justify-between gap-6
+                       rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md p-7 md:p-9"
+            style={{
+              opacity:   inView ? 1 : 0,
+              transform: inView ? 'translateY(0)' : 'translateY(28px)',
+              transition: 'opacity .7s ease .5s, transform .7s ease .5s',
+            }}
+          >
+            <div>
+              <p className="text-white/40 text-xs font-bold uppercase tracking-widest mb-1">
+                Ready to experience the difference?
+              </p>
+              <p className="text-white text-xl md:text-2xl font-black leading-snug">
+                Book your consultation today.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
+              <a href="/appointment"
+                 className="group inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-400
+                            text-white font-bold px-8 py-3.5 rounded-2xl
+                            shadow-lg shadow-sky-500/30 hover:shadow-sky-400/40
+                            hover:-translate-y-0.5 active:scale-95
+                            transition-all duration-300 text-sm whitespace-nowrap">
+                Book Appointment
+                <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform"
+                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+              </a>
+              <a href="/about"
+                 className="inline-flex items-center gap-2 border border-white/20
+                            text-white/80 hover:text-white hover:border-white/40
+                            font-bold px-8 py-3.5 rounded-2xl hover:bg-white/5
+                            active:scale-95 transition-all duration-300 text-sm whitespace-nowrap">
+                Learn More
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </>
   );
 }

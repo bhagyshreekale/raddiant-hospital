@@ -1,8 +1,10 @@
 'use client';
 
-import CTABanner from '../../components/sections/CTABanner';
-import DoctorsSection from '../../components/sections/DoctorsSection';
-
+import CTABanner from '../components/sections/CTABanner';
+import DoctorsSection from '../components/sections/DoctorsSection';
+import Navbar from '../components/layout/Navbar'
+import Footer from '../components/layout/Footer'
+import FloatingActions from '../components/design/FloatingActions'
 export default function AboutPage() {
   const stats = [
     ['1,00,000+', 'Patients Served'],
@@ -20,6 +22,8 @@ export default function AboutPage() {
 
   return (
     <>
+
+    <Navbar/>
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-900 to-blue-700 py-20 lg:py-24">
         <div className="container mx-auto px-4 text-center">
@@ -103,6 +107,8 @@ export default function AboutPage() {
 
       <CTABanner />
       <DoctorsSection />
+      <FloatingActions/>
+      <Footer/>
     </>
   );
 }

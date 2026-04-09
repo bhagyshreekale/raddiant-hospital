@@ -1,18 +1,7 @@
 'use client';
 
-// components/sections/JobListingsClient.jsx
-// ─────────────────────────────────────────────────────────────────────────────
-// Self-contained 'use client' component — merges everything in one file.
-// No dynamic() import, no separate JobListings.jsx needed.
-//
-// Usage in app/careers/page.jsx  (plain static import is fine):
-//   import JobListingsClient from '../../components/sections/JobListingsClient';
-//   ...
-//   <JobListingsClient />
-// ─────────────────────────────────────────────────────────────────────────────
-
 import { useState, useRef } from 'react';
-import { JOB_LISTINGS, DEPARTMENTS } from '../../lib/careersData';
+import { JOB_LISTINGS, DEPARTMENTS } from '../../lib copy/careersData';
 import {
   FaBriefcase, FaMapMarkerAlt, FaClock, FaChevronDown,
   FaChevronUp, FaTimes, FaUpload, FaCheckCircle, FaFire,
@@ -27,33 +16,24 @@ function timeAgo(dateStr) {
   return `${diff} days ago`;
 }
 
-// ── Field helpers ──────────────────────────────────────────────────────────
+// ── UI Components ──────────────────────────────────────────────────────────
 
-function Field({ label, error, children, style }) {
+function Field({ label, error, children, className = "" }) {
   return (
-    <div style={style}>
-      <label style={{
-        display: 'block', fontSize: '0.75rem', fontWeight: 600,
-        color: 'var(--gray-600,#4b5563)', marginBottom: 5,
-        textTransform: 'uppercase', letterSpacing: '0.05em',
-      }}>
+    <div className={className}>
+      <label className="mb-1.5 block text-[0.7rem] font-bold uppercase tracking-wider text-gray-500">
         {label}
       </label>
       {children}
-      {error && <p style={{ margin: '4px 0 0', fontSize: '0.7rem', color: '#ef4444' }}>{error}</p>}
+      {error && <p className="mt-1 text-[0.7rem] font-medium text-red-500">{error}</p>}
     </div>
   );
 }
 
-function fieldStyle(error) {
-  return {
-    width: '100%', padding: '9px 12px', borderRadius: 8,
-    border: `1.5px solid ${error ? '#ef4444' : 'var(--gray-200,#e5e7eb)'}`,
-    fontSize: '0.85rem', color: 'var(--gray-800,#1f2937)',
-    background: 'white', outline: 'none', boxSizing: 'border-box',
-    transition: 'border-color 0.2s', fontFamily: 'inherit',
-  };
-}
+const inputClass = (error) => `
+  w-full rounded-xl border-2 px-4 py-2.5 text-sm outline-none transition-all
+  ${error ? 'border-red-500 bg-red-50' : 'border-gray-100 bg-white focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10'}
+`;
 
 // ── Apply Modal ────────────────────────────────────────────────────────────
 
@@ -79,110 +59,87 @@ function ApplyModal({ job, onClose }) {
   function handleSubmit() {
     const e = validate();
     if (Object.keys(e).length) { setErrors(e); return; }
-    // TODO: POST to /api/careers/apply
     setSubmitted(true);
   }
 
-  function handleBackdrop(e) {
-    if (e.target === e.currentTarget) onClose();
-  }
-
   return (
-    <div onClick={handleBackdrop} style={modal.backdrop}>
-      <div style={modal.box}>
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm" onClick={(e) => e.target === e.currentTarget && onClose()}>
+      <div className="max-h-[90vh] w-full max-w-xl animate-in fade-in zoom-in duration-200 overflow-y-auto rounded-3xl bg-white shadow-2xl">
+        
         {/* Header */}
-        <div style={modal.header}>
-          <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-            <div style={{ fontSize: '1.4rem' }}>{job.icon}</div>
+        <div className="flex items-start justify-between border-b border-gray-100 bg-gray-50/50 p-6">
+          <div className="flex gap-4">
+            <div className="text-2xl">{job.icon}</div>
             <div>
-              <h3 style={{ margin: 0, fontSize: '1.05rem', color: 'var(--gray-800,#1f2937)' }}>{job.title}</h3>
-              <p style={{ margin: '3px 0 0', fontSize: '0.76rem', color: 'var(--gray-500,#6b7280)' }}>
-                {job.department} · {job.type} · {job.location}
+              <h3 className="text-lg font-bold text-gray-900">{job.title}</h3>
+              <p className="text-xs font-medium text-gray-500">
+                {job.department} • {job.type} • {job.location}
               </p>
             </div>
           </div>
-          <button onClick={onClose} style={modal.closeBtn} aria-label="Close modal">
+          <button onClick={onClose} className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors">
             <FaTimes />
           </button>
         </div>
 
         {/* Body */}
-        <div style={modal.body}>
+        <div className="p-6 md:p-8">
           {submitted ? (
-            <div style={{ textAlign: 'center', padding: '20px 0' }}>
-              <div style={{ fontSize: '3rem', marginBottom: 8 }}>🎉</div>
-              <FaCheckCircle style={{ color: '#10b981', fontSize: '2rem', marginBottom: 12 }} />
-              <h4 style={{ margin: '0 0 8px', color: 'var(--gray-800,#1f2937)' }}>Application Submitted!</h4>
-              <p style={{ color: 'var(--gray-500,#6b7280)', fontSize: '0.87rem', margin: 0 }}>
-                Thank you, <strong>{fields.name}</strong>! Our HR team will reach out to{' '}
-                <strong>{fields.email}</strong> within 3–5 working days.
+            <div className="py-8 text-center">
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-50 text-green-500">
+                <FaCheckCircle size={40} />
+              </div>
+              <h4 className="text-xl font-bold text-gray-900">Application Submitted!</h4>
+              <p className="mt-3 text-sm text-gray-500">
+                Thank you, <strong>{fields.name}</strong>! Our HR team will reach out to <strong>{fields.email}</strong> within 3–5 working days.
               </p>
-              <button
-                onClick={onClose}
-                style={{ ...modal.submitBtn, marginTop: 24, width: 'auto', padding: '10px 32px' }}
-              >
+              <button onClick={onClose} className="mt-8 rounded-full bg-[var(--primary)] px-8 py-3 text-sm font-bold text-white transition-transform hover:scale-105 active:scale-95">
                 Close
               </button>
             </div>
           ) : (
-            <>
-              <div style={modal.grid2}>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Field label="Full Name *" error={errors.name}>
-                  <input value={fields.name} onChange={set('name')} placeholder="Dr. Priya Sharma" style={fieldStyle(errors.name)} />
+                  <input value={fields.name} onChange={set('name')} placeholder="Dr. Priya Sharma" className={inputClass(errors.name)} />
                 </Field>
                 <Field label="Email Address *" error={errors.email}>
-                  <input type="email" value={fields.email} onChange={set('email')} placeholder="priya@example.com" style={fieldStyle(errors.email)} />
+                  <input type="email" value={fields.email} onChange={set('email')} placeholder="priya@example.com" className={inputClass(errors.email)} />
                 </Field>
                 <Field label="Mobile Number *" error={errors.phone}>
-                  <input type="tel" value={fields.phone} onChange={set('phone')} placeholder="98765 43210" style={fieldStyle(errors.phone)} />
+                  <input type="tel" value={fields.phone} onChange={set('phone')} placeholder="98765 43210" className={inputClass(errors.phone)} />
                 </Field>
-                <Field label="Years of Experience *" error={errors.experience}>
-                  <select value={fields.experience} onChange={set('experience')} style={fieldStyle(errors.experience)}>
+                <Field label="Experience *" error={errors.experience}>
+                  <select value={fields.experience} onChange={set('experience')} className={inputClass(errors.experience)}>
                     <option value="">Select range</option>
-                    {['0–1 year', '1–3 years', '3–5 years', '5–8 years', '8–12 years', '12+ years'].map(o => (
+                    {['0–1 year', '1–3 years', '3–5 years', '5–8 years', '12+ years'].map(o => (
                       <option key={o} value={o}>{o}</option>
                     ))}
                   </select>
                 </Field>
               </div>
 
-              <Field label="Cover Note (optional)" style={{ marginTop: 14 }}>
-                <textarea
-                  value={fields.message} onChange={set('message')} rows={3}
-                  placeholder="Tell us why you'd be a great fit…"
-                  style={{ ...fieldStyle(), resize: 'vertical', minHeight: 80 }}
-                />
+              <Field label="Cover Note (optional)">
+                <textarea value={fields.message} onChange={set('message')} rows={3} placeholder="Tell us why you'd be a great fit…" className={inputClass() + " resize-none"} />
               </Field>
 
-              <Field label="Resume / CV *" error={errors.file} style={{ marginTop: 14 }}>
-                <div
-                  onClick={() => fileRef.current.click()}
-                  style={{
-                    border: `2px dashed ${errors.file ? '#ef4444' : 'var(--gray-200,#e5e7eb)'}`,
-                    borderRadius: 10, padding: 16, textAlign: 'center',
-                    cursor: 'pointer', background: file ? '#f0fdf4' : '#fafafa',
-                    transition: 'border-color 0.2s',
-                  }}
+              <Field label="Resume / CV *" error={errors.file}>
+                <div 
+                  onClick={() => fileRef.current.click()} 
+                  className={`flex flex-col items-center rounded-2xl border-2 border-dashed p-6 text-center transition-all ${file ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'}`}
                 >
-                  <FaUpload style={{ color: file ? '#10b981' : 'var(--gray-400,#9ca3af)', fontSize: '1.2rem', marginBottom: 6 }} />
-                  <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--gray-500,#6b7280)' }}>
-                    {file ? `✅ ${file.name}` : 'Click to upload PDF, DOC, or DOCX (max 5MB)'}
+                  <FaUpload className={`mb-2 text-xl ${file ? 'text-green-500' : 'text-gray-400'}`} />
+                  <p className="text-xs font-semibold text-gray-500">
+                    {file ? `✅ ${file.name}` : 'Click to upload PDF or DOC (max 5MB)'}
                   </p>
-                  <input
-                    ref={fileRef} type="file" accept=".pdf,.doc,.docx"
-                    style={{ display: 'none' }}
-                    onChange={(e) => {
-                      setFile(e.target.files[0]);
-                      setErrors(p => ({ ...p, file: undefined }));
-                    }}
-                  />
+                  <input ref={fileRef} type="file" accept=".pdf,.doc,.docx" className="hidden" onChange={(e) => { setFile(e.target.files[0]); setErrors(p => ({ ...p, file: undefined })); }} />
                 </div>
               </Field>
 
-              <button onClick={handleSubmit} style={modal.submitBtn}>
+              <button onClick={handleSubmit} className="w-full rounded-xl bg-[var(--primary)] py-4 text-sm font-bold text-white shadow-lg shadow-[var(--primary)]/20 transition-all hover:-translate-y-0.5 active:scale-95">
                 Submit Application
               </button>
-            </>
+            </div>
           )}
         </div>
       </div>
@@ -196,57 +153,75 @@ function JobCard({ job, onApply, index }) {
   const [expanded, setExpanded] = useState(false);
 
   return (
-    <div className="job-card-anim" style={{ ...card.wrapper, animationDelay: `${index * 60}ms` }}>
-      <div style={card.top}>
-        <div style={card.iconCircle}>{job.icon}</div>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <h3 style={card.title}>{job.title}</h3>
+    <div 
+      className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:border-gray-200 hover:shadow-xl hover:shadow-gray-200/50"
+      style={{ animation: `fadeInUp 0.4s ease-out forwards ${index * 0.05}s`, opacity: 0 }}
+    >
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-50 text-2xl">
+          {job.icon}
+        </div>
+        
+        <div className="flex-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="text-base font-bold text-gray-900">{job.title}</h3>
             {job.urgent && (
-              <span style={card.urgentBadge}>
-                <FaFire style={{ fontSize: '0.6rem' }} /> Urgent
+              <span className="flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider text-amber-700">
+                <FaFire /> Urgent
               </span>
             )}
           </div>
-          <div style={card.meta}>
-            <span><FaBriefcase style={card.metaIcon} />{job.department}</span>
-            <span><FaMapMarkerAlt style={card.metaIcon} />{job.location}</span>
-            <span><FaClock style={card.metaIcon} />{job.type}</span>
+          
+          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-[0.75rem] font-medium text-gray-500">
+            <span className="flex items-center gap-1.5"><FaBriefcase className="opacity-60" /> {job.department}</span>
+            <span className="flex items-center gap-1.5"><FaMapMarkerAlt className="opacity-60" /> {job.location}</span>
+            <span className="flex items-center gap-1.5"><FaClock className="opacity-60" /> {job.type}</span>
           </div>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, flexShrink: 0 }}>
-          <span style={card.expBadge}>{job.experience}</span>
-          <span style={card.date}>{timeAgo(job.posted)}</span>
+
+        <div className="flex flex-row items-center justify-between gap-4 border-t border-gray-50 pt-4 sm:flex-col sm:items-end sm:border-0 sm:pt-0">
+          <span className="rounded-lg bg-blue-50 px-3 py-1 text-[0.7rem] font-bold text-blue-700">{job.experience}</span>
+          <span className="text-[0.65rem] font-medium text-gray-400">{timeAgo(job.posted)}</span>
         </div>
       </div>
 
-      <p style={card.desc}>{job.description}</p>
+      <p className="mt-4 text-sm leading-relaxed text-gray-600">{job.description}</p>
 
       {expanded && (
-        <div style={card.expandedArea}>
-          <div style={card.expandGrid}>
+        <div className="mt-6 space-y-6 border-t border-gray-100 pt-6 animate-in slide-in-from-top-2 duration-300">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
-              <h4 style={card.subHead}>Responsibilities</h4>
-              <ul style={card.list}>{job.responsibilities.map((r, i) => <li key={i}>{r}</li>)}</ul>
+              <h4 className="text-[0.7rem] font-bold uppercase tracking-widest text-gray-900">Responsibilities</h4>
+              <ul className="mt-3 space-y-2 list-inside list-disc text-sm text-gray-600">
+                {job.responsibilities.map((r, i) => <li key={i}>{r}</li>)}
+              </ul>
             </div>
             <div>
-              <h4 style={card.subHead}>Requirements</h4>
-              <ul style={card.list}>{job.requirements.map((r, i) => <li key={i}>{r}</li>)}</ul>
+              <h4 className="text-[0.7rem] font-bold uppercase tracking-widest text-gray-900">Requirements</h4>
+              <ul className="mt-3 space-y-2 list-inside list-disc text-sm text-gray-600">
+                {job.requirements.map((r, i) => <li key={i}>{r}</li>)}
+              </ul>
             </div>
           </div>
-          <div style={card.salaryRow}>
-            <span style={card.salaryLabel}>Salary Range</span>
-            <span style={card.salaryValue}>{job.salary}</span>
+          <div className="flex items-center gap-3 rounded-xl bg-green-50 p-4">
+            <span className="text-[0.65rem] font-bold uppercase tracking-widest text-green-700">Salary Range</span>
+            <span className="text-base font-bold text-green-700">{job.salary}</span>
           </div>
         </div>
       )}
 
-      <div style={card.footer}>
-        <button onClick={() => setExpanded(!expanded)} style={card.detailsBtn}>
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+        <button 
+          onClick={() => setExpanded(!expanded)} 
+          className="flex items-center gap-2 text-sm font-bold text-gray-500 transition-colors hover:text-gray-900"
+        >
           {expanded ? <FaChevronUp /> : <FaChevronDown />}
           {expanded ? 'Hide Details' : 'View Details'}
         </button>
-        <button onClick={() => onApply(job)} style={card.applyBtn}>
+        <button 
+          onClick={() => onApply(job)} 
+          className="rounded-full bg-[var(--primary)] px-8 py-2.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[var(--primary)]/20"
+        >
           Apply Now
         </button>
       </div>
@@ -254,7 +229,7 @@ function JobCard({ job, onApply, index }) {
   );
 }
 
-// ── Main export ────────────────────────────────────────────────────────────
+// ── Main Content ──────────────────────────────────────────────────────────
 
 export default function JobListingsClient() {
   const [activeTab, setActiveTab] = useState('All');
@@ -265,42 +240,29 @@ export default function JobListingsClient() {
     : JOB_LISTINGS.filter((j) => j.department === activeTab);
 
   return (
-    <>
-      <style>{`
-        @keyframes cardIn {
-          from { opacity: 0; transform: translateY(18px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .job-card-anim { animation: cardIn 0.4s ease both; }
-        .job-card-anim:hover {
-          box-shadow: 0 8px 28px rgba(0,0,0,0.10) !important;
-          transform: translateY(-2px);
-          transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .filter-tab:hover {
-          background: var(--primary,#0d6efd) !important;
-          color: white !important;
+    <div className="mx-auto max-w-5xl">
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
 
-      {/* Department filter tabs */}
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 28 }}>
+      {/* Tabs */}
+      <div className="mb-8 flex flex-wrap gap-2">
         {DEPARTMENTS.map((dept) => (
           <button
             key={dept}
-            className="filter-tab"
             onClick={() => setActiveTab(dept)}
-            style={{
-              padding: '7px 18px', borderRadius: 20, border: '1.5px solid',
-              borderColor: activeTab === dept ? 'var(--primary,#0d6efd)' : 'var(--gray-200,#e5e7eb)',
-              background: activeTab === dept ? 'var(--primary,#0d6efd)' : 'white',
-              color: activeTab === dept ? 'white' : 'var(--gray-600,#4b5563)',
-              fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', transition: 'all 0.18s',
-            }}
+            className={`rounded-full px-5 py-2 text-xs font-bold transition-all ${
+              activeTab === dept 
+                ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20' 
+                : 'bg-white text-gray-500 border-2 border-gray-100 hover:border-gray-200 hover:text-gray-700'
+            }`}
           >
             {dept}
             {dept !== 'All' && (
-              <span style={{ marginLeft: 6, fontSize: '0.68rem', opacity: 0.75 }}>
+              <span className="ml-2 opacity-60">
                 ({JOB_LISTINGS.filter(j => j.department === dept).length})
               </span>
             )}
@@ -308,113 +270,22 @@ export default function JobListingsClient() {
         ))}
       </div>
 
-      {/* Results count */}
-      <p style={{ fontSize: '0.82rem', color: 'var(--gray-500,#6b7280)', marginBottom: 16 }}>
-        Showing{' '}
-        <strong style={{ color: 'var(--gray-700,#374151)' }}>{filtered.length}</strong>{' '}
-        open position{filtered.length !== 1 ? 's' : ''}
-        {activeTab !== 'All' ? ` in ${activeTab}` : ''}
-      </p>
+      {/* Results Header */}
+      <div className="mb-6 flex items-center justify-between border-b border-gray-100 pb-4">
+        <p className="text-sm font-medium text-gray-500">
+          Showing <span className="font-bold text-gray-900">{filtered.length}</span> positions
+          {activeTab !== 'All' && <span> in <span className="text-[var(--primary)]">{activeTab}</span></span>}
+        </p>
+      </div>
 
-      {/* Job cards */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {/* Grid */}
+      <div className="space-y-4">
         {filtered.map((job, i) => (
           <JobCard key={job.id} job={job} index={i} onApply={setApplyJob} />
         ))}
       </div>
 
       {applyJob && <ApplyModal job={applyJob} onClose={() => setApplyJob(null)} />}
-    </>
+    </div>
   );
 }
-
-// ── Styles ─────────────────────────────────────────────────────────────────
-
-const card = {
-  wrapper: {
-    background: 'white', border: '1.5px solid var(--gray-200,#e5e7eb)',
-    borderRadius: 16, padding: '22px 24px',
-    transition: 'transform 0.2s, box-shadow 0.2s',
-  },
-  top: { display: 'flex', gap: 14, alignItems: 'flex-start', marginBottom: 12 },
-  iconCircle: {
-    width: 46, height: 46, borderRadius: 12, background: 'var(--gray-100,#f3f4f6)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: '1.4rem', flexShrink: 0,
-  },
-  title: { margin: 0, fontSize: '1rem', fontWeight: 700, color: 'var(--gray-800,#1f2937)' },
-  urgentBadge: {
-    display: 'inline-flex', alignItems: 'center', gap: 4,
-    padding: '2px 8px', borderRadius: 6, background: '#fef3c7', color: '#b45309',
-    fontSize: '0.65rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em',
-  },
-  meta: {
-    display: 'flex', gap: 14, flexWrap: 'wrap', marginTop: 5,
-    fontSize: '0.78rem', color: 'var(--gray-500,#6b7280)',
-  },
-  metaIcon: { fontSize: '0.65rem', marginRight: 3, opacity: 0.6 },
-  expBadge: {
-    padding: '3px 10px', borderRadius: 6, background: '#eff6ff',
-    color: '#1d4ed8', fontSize: '0.72rem', fontWeight: 700,
-  },
-  date: { fontSize: '0.68rem', color: 'var(--gray-400,#9ca3af)' },
-  desc: { fontSize: '0.85rem', color: 'var(--gray-600,#4b5563)', lineHeight: 1.6, margin: '0 0 14px' },
-  expandedArea: { borderTop: '1px solid var(--gray-100,#f3f4f6)', paddingTop: 16, marginBottom: 16 },
-  expandGrid: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 },
-  subHead: {
-    fontSize: '0.78rem', fontWeight: 700, color: 'var(--gray-700,#374151)',
-    textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8,
-  },
-  list: { margin: 0, paddingLeft: 18, fontSize: '0.82rem', color: 'var(--gray-600,#4b5563)', lineHeight: 1.7 },
-  salaryRow: {
-    display: 'flex', alignItems: 'center', gap: 12, marginTop: 14,
-    padding: '10px 14px', background: '#f0fdf4', borderRadius: 8,
-  },
-  salaryLabel: { fontSize: '0.72rem', fontWeight: 700, color: '#065f46', textTransform: 'uppercase', letterSpacing: '0.05em' },
-  salaryValue: { fontSize: '0.9rem', fontWeight: 700, color: '#065f46' },
-  footer: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10, flexWrap: 'wrap' },
-  detailsBtn: {
-    display: 'inline-flex', alignItems: 'center', gap: 6,
-    padding: '8px 16px', borderRadius: 8,
-    border: '1.5px solid var(--gray-200,#e5e7eb)',
-    background: 'white', color: 'var(--gray-600,#4b5563)',
-    fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer', transition: 'background 0.15s',
-  },
-  applyBtn: {
-    padding: '9px 24px', borderRadius: 8, border: 'none',
-    background: 'var(--primary,#0d6efd)', color: 'white',
-    fontSize: '0.85rem', fontWeight: 700, cursor: 'pointer',
-    transition: 'box-shadow 0.2s, transform 0.15s',
-  },
-};
-
-const modal = {
-  backdrop: {
-    position: 'fixed', inset: 0, zIndex: 9999,
-    background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(4px)',
-    display: 'flex', alignItems: 'center', justifyContent: 'center',
-    padding: '20px 16px', overflowY: 'auto',
-  },
-  box: {
-    background: 'white', borderRadius: 18, width: '100%', maxWidth: 580,
-    boxShadow: '0 20px 60px rgba(0,0,0,0.2)', overflow: 'hidden',
-    maxHeight: '90vh', overflowY: 'auto',
-  },
-  header: {
-    display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 14,
-    padding: '20px 24px', borderBottom: '1px solid var(--gray-100,#f3f4f6)',
-    background: 'var(--gray-50,#f9fafb)',
-  },
-  body: { padding: '24px' },
-  closeBtn: {
-    background: 'none', border: 'none', cursor: 'pointer',
-    color: 'var(--gray-400,#9ca3af)', fontSize: '1rem', padding: 4, flexShrink: 0,
-  },
-  grid2: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px 16px' },
-  submitBtn: {
-    marginTop: 20, width: '100%', padding: '12px', borderRadius: 10,
-    border: 'none', background: 'var(--primary,#0d6efd)', color: 'white',
-    fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
-    transition: 'opacity 0.2s', display: 'block',
-  },
-};

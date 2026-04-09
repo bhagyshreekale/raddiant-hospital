@@ -33,12 +33,15 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-400 to-cyan-500 rounded-lg flex items-center justify-center text-white font-extrabold text-base shadow-md">
-                R+
-              </div>
-              <span className="text-white text-lg font-bold tracking-tight">
-                Raddiant Plus Hospital
-              </span>
+                      <a href="/" className="no-underline flex items-center gap-2">
+            <img
+              src="images/logo.png"
+              alt="Raddiant Plus Hospital"
+              width={140}
+              height={70}
+              className="rounded-lg object-contain"
+            />
+          </a>
             </div>
             <p className="text-[0.88rem] leading-[1.7] max-w-xs">
               Delivering comprehensive multispecialty hospital and diagnostic care. 

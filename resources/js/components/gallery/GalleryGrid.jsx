@@ -1,27 +1,25 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import styles from './Gallery.module.css';
 
 /* ─── CATEGORY COLOUR MAP ────────────────────────────────────────────────── */
 const CAT_COLORS = {
-  Facilities:          { bg: '#1B6CA818', text: '#1B6CA8' },
-  Diagnostics:         { bg: '#2A9D8F18', text: '#2A9D8F' },
-  'Operation Theatre': { bg: '#7B2D8B18', text: '#7B2D8B' },
-  'Our Team':          { bg: '#E6394618', text: '#C0392B' },
-  Events:              { bg: '#E8A83818', text: '#B7770D' },
+  Facilities:          { bg: 'bg-sky-50', text: 'text-sky-700' },
+  Diagnostics:         { bg: 'bg-emerald-50', text: 'text-emerald-700' },
+  'Operation Theatre': { bg: 'bg-purple-50', text: 'text-purple-700' },
+  'Our Team':          { bg: 'bg-rose-50', text: 'text-rose-700' },
+  Events:              { bg: 'bg-amber-50', text: 'text-amber-700' },
 };
 
 /* ─── LIGHTBOX ───────────────────────────────────────────────────────────── */
 function Lightbox({ items, activeIndex, onClose, onPrev, onNext }) {
   const item = items[activeIndex];
 
-  // Keyboard navigation
   useEffect(() => {
     const handler = (e) => {
-      if (e.key === 'Escape')     onClose();
+      if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowRight') onNext();
-      if (e.key === 'ArrowLeft')  onPrev();
+      if (e.key === 'ArrowLeft') onPrev();
     };
     document.addEventListener('keydown', handler);
     document.body.style.overflow = 'hidden';
@@ -31,66 +29,47 @@ function Lightbox({ items, activeIndex, onClose, onPrev, onNext }) {
     };
   }, [onClose, onPrev, onNext]);
 
-  const catStyle = CAT_COLORS[item.category] || { bg: '#0a4d8c18', text: '#0a4d8c' };
+  const catStyle = CAT_COLORS[item.category] || { bg: 'bg-gray-50', text: 'text-gray-700' };
 
   return (
-    <div className={styles.lbOverlay} onClick={onClose} role="dialog" aria-modal="true" aria-label={item.title}>
-      <div className={styles.lbPanel} onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-[9999] flex flex-col bg-gray-950/95 backdrop-blur-sm animate-in fade-in duration-300" onClick={onClose}>
+      {/* Close Button */}
+      <button className="absolute top-6 right-6 z-10 p-3 text-white/50 hover:text-white transition-colors" onClick={onClose}>
+        <svg width="24" height="24" viewBox="0 0 18 18" fill="none"><path d="M1 1l16 16M17 1L1 17" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/></svg>
+      </button>
 
-        {/* Close */}
-        <button className={styles.lbClose} onClick={onClose} aria-label="Close">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M1 1l16 16M17 1L1 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-          </svg>
-        </button>
-
-        {/* Image area */}
-        <div className={styles.lbImgWrap}>
+      {/* Main Panel */}
+      <div className="flex flex-1 flex-col items-center justify-center p-4 md:p-10" onClick={(e) => e.stopPropagation()}>
+        <div className="relative max-h-full max-w-5xl">
           <img
             key={item.id}
             src={item.src}
             alt={item.title}
-            className={styles.lbImg}
+            className="mx-auto max-h-[75vh] w-auto rounded-lg shadow-2xl animate-in zoom-in-95 duration-300"
           />
         </div>
+      </div>
 
-        {/* Footer */}
-        <div className={styles.lbFooter}>
-          <div className={styles.lbMeta}>
-            <span
-              className={styles.lbBadge}
-              style={{ background: catStyle.bg, color: catStyle.text }}
-            >
+      {/* Footer / Meta Area */}
+      <div className="bg-gray-900/80 p-6 backdrop-blur-xl border-t border-white/5">
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-4">
+            <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest ${catStyle.bg} ${catStyle.text}`}>
               {item.category}
             </span>
-            <h2 className={styles.lbTitle}>{item.title}</h2>
+            <h2 className="text-xl font-bold text-white">{item.title}</h2>
           </div>
 
-          {/* Nav */}
-          <div className={styles.lbNav}>
-            <span className={styles.lbCounter}>
-              {activeIndex + 1} / {items.length}
-            </span>
-            <button
-              className={styles.lbArrow}
-              onClick={onPrev}
-              disabled={activeIndex === 0}
-              aria-label="Previous image"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button
-              className={styles.lbArrow}
-              onClick={onNext}
-              disabled={activeIndex === items.length - 1}
-              aria-label="Next image"
-            >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+          <div className="flex items-center gap-6">
+            <span className="text-sm font-mono text-gray-400">{activeIndex + 1} / {items.length}</span>
+            <div className="flex gap-2">
+              <button disabled={activeIndex === 0} onClick={onPrev} className="p-3 rounded-full bg-white/5 text-white hover:bg-white/10 disabled:opacity-20 transition-all">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+              <button disabled={activeIndex === items.length - 1} onClick={onNext} className="p-3 rounded-full bg-white/5 text-white hover:bg-white/10 disabled:opacity-20 transition-all">
+                <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -100,45 +79,33 @@ function Lightbox({ items, activeIndex, onClose, onPrev, onNext }) {
 
 /* ─── GALLERY ITEM ───────────────────────────────────────────────────────── */
 function GalleryItem({ item, index, onClick }) {
-  const catStyle = CAT_COLORS[item.category] || { bg: '#0a4d8c18', text: '#0a4d8c' };
-
-  const spanClass =
-    item.span === 'tall'  ? styles.spanTall  :
-    item.span === 'wide'  ? styles.spanWide  :
-    styles.spanNormal;
+  const spanClass = 
+    item.span === 'tall' ? 'row-span-2' : 
+    item.span === 'wide' ? 'col-span-1 md:col-span-2' : 
+    '';
 
   return (
     <figure
-      className={`${styles.item} ${spanClass}`}
-      style={{ animationDelay: `${Math.min(index * 55, 440)}ms` }}
+      className={`group relative cursor-zoom-in overflow-hidden rounded-2xl bg-gray-100 ${spanClass}`}
+      style={{ animation: `fadeInUp 0.5s ease-out forwards ${Math.min(index * 50, 400)}ms`, opacity: 0 }}
       onClick={() => onClick(index)}
-      role="button"
-      tabIndex={0}
-      aria-label={`View ${item.title}`}
-      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && onClick(index)}
     >
       <img
         src={item.thumb}
         alt={item.title}
-        className={styles.itemImg}
+        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
         loading="lazy"
       />
 
-      {/* Hover overlay */}
-      <div className={styles.overlay}>
-        <div className={styles.overlayInner}>
-          <span
-            className={styles.catBadge}
-            style={{ background: 'rgba(255,255,255,0.18)', color: '#fff' }}
-          >
-            {item.category}
-          </span>
-          <p className={styles.itemTitle}>{item.title}</p>
-          <span className={styles.zoomIcon} aria-hidden="true">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <path d="M3 3h5M3 3v5M17 3h-5M17 3v5M3 17h5M3 17v-5M17 17h-5M17 17v-5" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-            </svg>
-          </span>
+      {/* Overlay */}
+      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/20 to-transparent p-6 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+        <span className="mb-2 inline-block w-fit rounded-full bg-white/20 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-widest text-white backdrop-blur-md">
+          {item.category}
+        </span>
+        <p className="text-base font-bold text-white leading-tight">{item.title}</p>
+        
+        <div className="absolute top-4 right-4 rounded-full bg-white/10 p-2 text-white backdrop-blur-md transition-transform duration-300 group-hover:rotate-90">
+           <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 3h5M3 3v5M17 3h-5M17 3v5M3 17h5M3 17v-5M17 17h-5M17 17v-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
         </div>
       </div>
     </figure>
@@ -147,49 +114,52 @@ function GalleryItem({ item, index, onClick }) {
 
 /* ─── MAIN GRID ──────────────────────────────────────────────────────────── */
 export default function GalleryGrid({ items, categories }) {
-  const [active, setActive]     = useState('All');
-  const [lightbox, setLightbox] = useState(null); // index into filtered
-  const indicatorRef            = useRef(null);
-  const tabsRef                 = useRef(null);
+  const [active, setActive] = useState('All');
+  const [lightbox, setLightbox] = useState(null);
+  const indicatorRef = useRef(null);
+  const tabsRef = useRef(null);
 
-  const filtered = active === 'All'
-    ? items
-    : items.filter((i) => i.category === active);
+  const filtered = active === 'All' ? items : items.filter((i) => i.category === active);
 
-  // Slide the active-tab indicator
   useEffect(() => {
     const tabsEl = tabsRef.current;
-    if (!tabsEl) return;
-    const activeBtn = tabsEl.querySelector('[data-active="true"]');
-    if (!activeBtn || !indicatorRef.current) return;
-    indicatorRef.current.style.width  = `${activeBtn.offsetWidth}px`;
-    indicatorRef.current.style.left   = `${activeBtn.offsetLeft}px`;
+    const activeBtn = tabsEl?.querySelector(`[data-active="true"]`);
+    if (activeBtn && indicatorRef.current) {
+      indicatorRef.current.style.width = `${activeBtn.offsetWidth}px`;
+      indicatorRef.current.style.left = `${activeBtn.offsetLeft}px`;
+    }
   }, [active]);
 
-  const openLightbox  = useCallback((i) => setLightbox(i), []);
+  const openLightbox = useCallback((i) => setLightbox(i), []);
   const closeLightbox = useCallback(() => setLightbox(null), []);
-  const prevImg       = useCallback(() => setLightbox((p) => Math.max(0, p - 1)), []);
-  const nextImg       = useCallback(() => setLightbox((p) => Math.min(filtered.length - 1, p + 1)), [filtered.length]);
 
   return (
-    <section className={styles.section}>
-      <div className="container">
+    <section className="py-12 md:py-20">
+      <style jsx global>{`
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
 
-        {/* ── Filter tabs ────────────────────────────────────────────────── */}
-        <div className={styles.tabsWrap} ref={tabsRef}>
-          <div className={styles.tabsInner}>
-            <div className={styles.tabIndicator} ref={indicatorRef} />
+      <div className="container mx-auto px-4">
+        {/* Filter Tabs */}
+        <div className="relative mb-12 flex justify-center">
+          <div ref={tabsRef} className="relative flex flex-wrap items-center gap-1 rounded-2xl bg-gray-100 p-1.5">
+            <div 
+              ref={indicatorRef} 
+              className="absolute h-[calc(100%-12px)] rounded-xl bg-white shadow-sm transition-all duration-300 ease-out" 
+            />
             {categories.map((cat) => (
               <button
                 key={cat}
-                className={styles.tabBtn}
-                data-active={active === cat ? 'true' : 'false'}
+                data-active={active === cat}
                 onClick={() => { setActive(cat); setLightbox(null); }}
-                aria-pressed={active === cat}
+                className={`relative z-10 px-6 py-2.5 text-xs font-bold transition-colors duration-300 ${active === cat ? 'text-[var(--primary)]' : 'text-gray-500 hover:text-gray-800'}`}
               >
                 {cat}
                 {cat !== 'All' && (
-                  <span className={styles.tabCount}>
+                  <span className="ml-2 text-[0.65rem] opacity-50">
                     {items.filter((i) => i.category === cat).length}
                   </span>
                 )}
@@ -198,40 +168,32 @@ export default function GalleryGrid({ items, categories }) {
           </div>
         </div>
 
-        {/* ── Count label ────────────────────────────────────────────────── */}
-        <p className={styles.countLabel}>
-          Showing <strong>{filtered.length}</strong> photo{filtered.length !== 1 ? 's' : ''}
-          {active !== 'All' && <> in <em>{active}</em></>}
+        <p className="mb-8 text-center text-sm font-medium text-gray-500">
+          Showing <span className="font-bold text-gray-900">{filtered.length}</span> photos
+          {active !== 'All' && <span> in <span className="text-[var(--primary)] italic">{active}</span></span>}
         </p>
 
-        {/* ── Masonry grid ───────────────────────────────────────────────── */}
-        <div className={styles.masonry}>
+        {/* Masonry Grid */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[250px]">
           {filtered.map((item, i) => (
-            <GalleryItem
-              key={item.id}
-              item={item}
-              index={i}
-              onClick={openLightbox}
-            />
+            <GalleryItem key={item.id} item={item} index={i} onClick={openLightbox} />
           ))}
         </div>
 
-        {/* Empty state */}
         {filtered.length === 0 && (
-          <div className={styles.empty}>
-            <span>No photos in this category yet.</span>
+          <div className="py-20 text-center text-gray-400 font-medium italic">
+            No photos found in this category.
           </div>
         )}
       </div>
 
-      {/* ── Lightbox ───────────────────────────────────────────────────────── */}
       {lightbox !== null && (
         <Lightbox
           items={filtered}
           activeIndex={lightbox}
           onClose={closeLightbox}
-          onPrev={prevImg}
-          onNext={nextImg}
+          onPrev={() => setLightbox(p => Math.max(0, p - 1))}
+          onNext={() => setLightbox(p => Math.min(filtered.length - 1, p + 1))}
         />
       )}
     </section>

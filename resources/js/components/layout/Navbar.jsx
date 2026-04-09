@@ -59,7 +59,7 @@ export default function Navbar() {
           {/* Logo */}
           <a href="/" className="no-underline flex items-center gap-2">
             <img
-              src="/img/logo.png"
+              src="images/logo.png"
               alt="Raddiant Plus Hospital"
               width={140}
               height={70}

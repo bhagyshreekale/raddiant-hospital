@@ -62,11 +62,7 @@ export const FAQS = [
   { q: "How can I get my reports?", a: "Lab reports are available digitally via our patient portal, WhatsApp, or can be collected from the lab reception. Most reports are ready within 4–6 hours." },
 ];
 
-export const BLOG_POSTS = [
-  { id: 1, title: "Heart Health: 10 Tips to Keep Your Heart Strong", excerpt: "Cardiologists at Raddiant Plus share simple, evidence-based habits to protect your cardiovascular health this year.", category: "Cardiology", date: "May 10, 2025", readTime: "5 min" },
-  { id: 2, title: "Everything You Need to Know About the NABH Standard", excerpt: "What does NABH accreditation mean for patients? Our quality team explains how this certification safeguards your care.", category: "Quality & Safety", date: "Apr 22, 2025", readTime: "4 min" },
-  { id: 3, title: "Early Warning Signs of Diabetes You Should Not Ignore", excerpt: "Our endocrinology team outlines the subtle symptoms that often go unnoticed — and when to get tested.", category: "Wellness", date: "Apr 5, 2025", readTime: "6 min" },
-];
+
 
 export const FACILITIES = [
   { title: "Modular Operation Theatres", desc: "4 fully equipped modular OTs with laminar airflow for infection-free surgeries." },
@@ -76,5 +72,132 @@ export const FACILITIES = [
   { title: "Neonatal ICU (NICU)", desc: "Specialized care for premature and critically ill newborns with expert neonatologists." },
   { title: "Pharmacy & Blood Bank", desc: "24×7 in-house pharmacy and licensed blood bank for emergency requirements." },
 ];
+
+
+export const BLOG_POSTS = [
+  {
+    id: 'featured',
+    featured: true,
+    category: 'Cardiology',
+    catClass: 'bg-rose-50 text-rose-700',
+    date: 'June 12, 2025',
+    readTime: '8 min read',
+    image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=1200&q=80',
+    title: 'Understanding Heart Health: Prevention Strategies That Actually Work',
+    excerpt: 'Cardiovascular disease remains one of the leading causes of mortality worldwide, yet up to 80% of premature heart disease and strokes can be prevented through healthy lifestyle choices.',
+    tags: ['Heart Health', 'Prevention', 'Hypertension', 'Diet', 'Exercise'],
+    content: [
+      'Cardiovascular disease remains one of the leading causes of mortality worldwide, yet up to 80% of premature heart disease and strokes can be prevented through healthy lifestyle choices and regular medical care.',
+      'Our cardiology team at Raddint Hospital recommends focusing on five core pillars: regular physical activity (at least 150 minutes of moderate intensity exercise per week), a heart-healthy diet rich in fiber and low in saturated fats, maintaining a healthy weight, avoiding tobacco, and managing stress effectively.',
+      'Blood pressure monitoring is critical — hypertension is often called the "silent killer" because it presents no obvious symptoms. We recommend adults over 40 have their blood pressure checked at least annually, and more frequently if there is a family history of heart disease.',
+      'Cholesterol management through diet and, when necessary, medication can significantly reduce the risk of coronary artery disease. Foods like oats, nuts, and fatty fish have shown measurable benefits in multiple clinical studies.',
+      'Finally, do not underestimate the role of sleep. Poor sleep quality is now firmly linked to increased cardiovascular risk. Adults should aim for 7–9 hours of quality sleep per night.',
+    ],
+  },
+  {
+    id: 'post1',
+    category: 'Wellness',
+    catClass: 'bg-emerald-50 text-emerald-700',
+    date: 'May 28, 2025',
+    readTime: '5 min read',
+    image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80',
+    title: '10 Daily Habits for Optimal Mental & Physical Balance',
+    excerpt: 'Small lifestyle changes can lead to dramatic improvements in your overall health. Discover the science behind habits that actually stick long-term.',
+    tags: ['Wellness', 'Mental Health', 'Lifestyle', 'Habits'],
+    content: [
+      'Building a healthier life does not require dramatic overhauls — it starts with small, consistent habits practiced daily. Our wellness specialists have identified ten habits that are supported by research and easy to implement.',
+      'Morning hydration: drink a glass of water within 15 minutes of waking. After 7–8 hours without water, your body needs rehydration before caffeine. Mindful movement: even a 10-minute walk after meals significantly improves blood glucose regulation.',
+      'Consistent sleep schedule: going to bed and waking at the same time every day — including weekends — regulates your circadian rhythm and improves sleep quality dramatically.',
+      'Gratitude practice: just three minutes of noting what you are grateful for each morning has been shown in studies to reduce cortisol and improve emotional resilience significantly.',
+    ],
+  },
+  {
+    id: 'post2',
+    category: 'Quality & Safety',
+    catClass: 'bg-blue-50 text-blue-700',
+    date: 'May 20, 2025',
+    readTime: '4 min read',
+    image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
+    title: 'How Modern Hospitals Ensure Patient Safety Standards',
+    excerpt: 'From digital checklists to AI-driven diagnostics, learn how Raddint Hospital sets new benchmarks in patient care quality and safety.',
+    tags: ['Patient Safety', 'Quality Care', 'Hospital Standards'],
+    content: [
+      'Patient safety is the foundation of quality healthcare. At Raddint Multispecialty Hospital, we have implemented a multi-layered approach to safety that goes far beyond standard protocols.',
+      'Our electronic health record system flags potential drug interactions automatically, reducing medication errors by over 60% compared to manual processes. Every prescription order is cross-checked against the patient\'s complete history and known allergies in real time.',
+      'Infection control is another critical pillar. We follow WHO-recommended hand hygiene protocols and conduct monthly audits. Our HAI rates are consistently below the national average.',
+      'We also embrace a culture of open incident reporting, where staff are encouraged — not penalized — for reporting near-misses. These reports feed into continuous improvement cycles.',
+    ],
+  },
+  {
+    id: 'post3',
+    category: 'Eye Care',
+    catClass: 'bg-sky-50 text-sky-700',
+    date: 'May 14, 2025',
+    readTime: '6 min read',
+    image: 'https://images.unsplash.com/photo-1583454155184-870a1f63aebc?w=800&q=80',
+    title: 'Protecting Your Vision in the Age of Screens',
+    excerpt: 'Extended screen time is causing a global surge in digital eye strain. Our ophthalmologists explain what works and what does not.',
+    tags: ['Eye Care', 'Digital Eye Strain', 'Vision Health'],
+    content: [
+      'Digital eye strain — also known as computer vision syndrome — now affects an estimated 65% of adults who use screens for more than two hours daily. Symptoms range from dry, irritated eyes to blurred vision and headaches.',
+      'The 20-20-20 rule is the most evidence-backed intervention: every 20 minutes, look at something 20 feet away for at least 20 seconds. This gives your ciliary muscles a chance to relax.',
+      'Proper screen positioning matters enormously: your monitor should be 20–28 inches from your face, with the top of the screen at or slightly below eye level.',
+      'If you wear glasses or contact lenses, ensure your prescription is current. An outdated prescription is one of the most common — and most overlooked — causes of persistent eye strain.',
+    ],
+  },
+  {
+    id: 'post4',
+    category: 'Neurology',
+    catClass: 'bg-amber-50 text-amber-700',
+    date: 'May 5, 2025',
+    readTime: '7 min read',
+    image: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?w=800&q=80',
+    title: 'Migraine vs. Headache: Key Differences & When to See a Doctor',
+    excerpt: 'Not all head pain is the same. Understanding the distinction can help you seek the right treatment at the right time.',
+    tags: ['Neurology', 'Migraine', 'Headache', 'Brain Health'],
+    content: [
+      'Many people use the terms "migraine" and "headache" interchangeably, but they represent very different neurological conditions requiring different treatments.',
+      'A tension headache typically presents as a dull, pressing pain on both sides of the head, often described as a tight band. It is usually mild to moderate in intensity and does not worsen with routine activity.',
+      'Migraines are a neurological disorder characterized by moderate-to-severe throbbing pain, typically on one side. They are often accompanied by nausea, vomiting, and extreme sensitivity to light and sound.',
+      'You should seek medical attention if headaches are new and severe, occur after a head injury, are accompanied by fever, stiff neck, confusion, or vision changes, or if your pattern changes significantly.',
+    ],
+  },
+  {
+    id: 'post5',
+    category: 'Orthopedics',
+    catClass: 'bg-slate-100 text-slate-700',
+    date: 'April 30, 2025',
+    readTime: '5 min read',
+    image: 'https://images.unsplash.com/photo-1623854767648-e7bb8009f0db?w=800&q=80',
+    title: 'Back Pain Relief: Evidence-Based Exercises You Can Do at Home',
+    excerpt: 'Chronic back pain affects millions. Our orthopedic specialists share targeted exercises that provide lasting relief without medication.',
+    tags: ['Orthopedics', 'Back Pain', 'Exercise', 'Physiotherapy'],
+    content: [
+      'Chronic lower back pain is one of the most common reasons people visit a doctor worldwide, yet many cases can be effectively managed through targeted exercise.',
+      'Contrary to old advice, bed rest is now known to worsen back pain. Movement, done correctly, promotes healing by increasing blood flow, improving spinal flexibility, and strengthening supportive muscles.',
+      'The cat-cow stretch is an excellent starting point: on hands and knees, alternate between arching your back upward and letting it sag downward, holding each for 3–5 seconds. Repeat 10 times daily.',
+      'The McGill Big Three (curl-up, side bridge, and bird-dog) have the strongest evidence base for chronic lower back pain. Our physiotherapy team can guide you through a tailored program.',
+    ],
+  },
+  {
+    id: 'post6',
+    category: 'Wellness',
+    catClass: 'bg-emerald-50 text-emerald-700',
+    date: 'April 22, 2025',
+    readTime: '4 min read',
+    image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80',
+    title: 'Nutrition Science: Foods That Genuinely Boost Immunity',
+    excerpt: 'The relationship between diet and immune function is complex. We break down what the science actually says about immune-boosting foods.',
+    tags: ['Nutrition', 'Immunity', 'Wellness', 'Diet Science'],
+    content: [
+      'The immune system is extraordinarily complex, and no single food can "supercharge" it overnight. However, consistent nutrition patterns do meaningfully influence immune function over time.',
+      'Vitamin C is well-established as supportive for immune health. Beyond citrus fruits, excellent sources include bell peppers (which contain nearly 3x the vitamin C of an orange), broccoli, kiwi, and strawberries.',
+      'Fermented foods like yogurt, kefir, kimchi, and sauerkraut support gut health, and given that approximately 70% of the immune system is located in the gut-associated lymphoid tissue, this connection is significant.',
+      'Perhaps most important: no supplement can compensate for poor sleep, chronic stress, or a consistently poor diet. Immunity is built through foundational healthy habits.',
+    ],
+  },
+];
+
+export const CATEGORIES = ['All', 'Cardiology', 'Wellness', 'Quality & Safety', 'Eye Care', 'Neurology', 'Orthopedics'];
 
 
