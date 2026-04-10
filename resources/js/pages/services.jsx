@@ -45,7 +45,7 @@ export default function ServicesPage() {
 
       {/* Page Header */}
       <section
-        className="relative overflow-hidden py-28 text-center lg:py-36"
+        className="relative overflow-hidden py-28 text-center lg:py-28"
         style={{
           background: "linear-gradient(270deg, #001E3C, #00509D, #003366)",
           backgroundSize: "400% 400%",
