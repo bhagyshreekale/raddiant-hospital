@@ -47,9 +47,9 @@ Route::inertia('/blog', 'blog', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('blog');
 
-Route::inertia('/appointment', 'appointment', [
+Route::inertia('/appoinment', 'appoinment', [
     'canRegister' => Features::enabled(Features::registration()),
-])->name('appointment');
+])->name('appoinment');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {

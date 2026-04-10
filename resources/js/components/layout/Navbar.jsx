@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { href: "/gallery", label: "Gallery" },
   { href: "/contact", label: "Contact" },
   { href: "/careers", label: "Careers" },
+
 ];
 
 export default function Navbar() {
@@ -79,7 +80,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="/appointment"
+              href="/appoinment"
               className="ml-2 bg-blue-600 text-white px-5 py-2.5 rounded-lg text-[0.88rem] font-semibold hover:bg-blue-700 transition-all shadow-sm active:scale-95"
             >
               Book Appointment

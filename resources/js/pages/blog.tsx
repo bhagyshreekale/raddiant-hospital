@@ -18,9 +18,9 @@ const STATS = [
 
 export default function BlogPage() {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [activePost, setActivePost] = useState(null);
+  const [activePost, setActivePost] = useState<any>(null);
 
-  const handleReadMore = useCallback((post) => setActivePost(post), []);
+  const handleReadMore = useCallback((post: any) => setActivePost(post), []);
   const handleClose    = useCallback(() => setActivePost(null), []);
 
   const featured   = BLOG_POSTS.find((p) => p.featured);

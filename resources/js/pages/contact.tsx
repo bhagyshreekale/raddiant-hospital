@@ -1,6 +1,6 @@
 // src/app/contact/page.jsx
 import MapSection from '../components/sections/MapSection';
-import Faqsection from '../pages/faq';
+import Faqsection from './faq';
 import PatientInquiryForm from '../components/sections/PatientInquiryForm';
 import Navbar from '../components/layout/Navbar'
 import Footer from '../components/layout/Footer'
