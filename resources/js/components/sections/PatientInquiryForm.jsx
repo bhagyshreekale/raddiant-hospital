@@ -3,35 +3,101 @@ import { useState } from 'react';
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaClock } from 'react-icons/fa';
 import { SITE } from '../../lib copy/data';
 
+// ── Design tokens (no CSS vars — all hardcoded) ──
+const C = {
+  primary:     '#00364f',   // dark navy
+  primaryHov:  '#00273a',
+  accent:      '#0ea5e9',   // sky blue
+  accentLight: 'rgba(14,165,233,0.10)',
+  green:       '#22c55e',
+  white:       '#ffffff',
+  bg:          '#f1f5f9',
+  card:        '#ffffff',
+  border:      '#e2e8f0',
+  dark:        '#0f172a',
+  text:        '#1e293b',
+  muted:       '#64748b',
+  subtle:      '#94a3b8',
+  inputBg:     '#f8fafc',
+};
+
 const DEPARTMENTS = [
-  'General Medicine', 'Cardiology', 'Orthopaedics', 'Gynaecology & Obstetrics',
-  'Paediatrics', 'Neurology', 'Urology', 'ENT', 'Dermatology',
-  'Ophthalmology', 'Oncology', 'Radiology & Diagnostics', 'Emergency / Casualty', 'Other',
+  'General Medicine','Cardiology','Orthopaedics','Gynaecology & Obstetrics',
+  'Paediatrics','Neurology','Urology','ENT','Dermatology',
+  'Ophthalmology','Oncology','Radiology & Diagnostics','Emergency / Casualty','Other',
 ];
 
 const TIME_SLOTS = [
-  '9:00 AM – 10:00 AM', '10:00 AM – 11:00 AM', '11:00 AM – 12:00 PM',
-  '12:00 PM – 1:00 PM',  '2:00 PM – 3:00 PM',   '3:00 PM – 4:00 PM',
-  '4:00 PM – 5:00 PM',   '5:00 PM – 6:00 PM',   '6:00 PM – 7:00 PM',
+  '9:00 AM – 10:00 AM','10:00 AM – 11:00 AM','11:00 AM – 12:00 PM',
+  '12:00 PM – 1:00 PM','2:00 PM – 3:00 PM','3:00 PM – 4:00 PM',
+  '4:00 PM – 5:00 PM','5:00 PM – 6:00 PM','6:00 PM – 7:00 PM',
+];
+
+const VISIT_TYPES = ['OPD','Emergency','Second Opinion','Diagnostic'];
+
+const TRUST_ITEMS = [
+  { icon: '✓', text: 'Confirmation within 2 hours' },
+  { icon: '🕐', text: 'Zero waiting time guarantee' },
+  { icon: '🔒', text: 'Your data is 100% private' },
+  { icon: '🚑', text: 'Emergency walk-ins welcome' },
 ];
 
 function generateRef() {
   return 'RPH-' + Date.now().toString(36).toUpperCase().slice(-6);
 }
 
+// ── Base input style ──
+const baseInp = {
+  width: '100%', padding: '11px 14px', fontSize: 14,
+  color: C.text, background: C.inputBg,
+  border: `1.5px solid ${C.border}`, borderRadius: 10,
+  outline: 'none', boxSizing: 'border-box',
+  fontFamily: 'inherit', transition: 'border-color 0.2s, box-shadow 0.2s',
+};
+
+function inpStyle(key, focused) {
+  return {
+    ...baseInp,
+    borderColor: focused === key ? C.accent : C.border,
+    boxShadow:   focused === key ? `0 0 0 3px rgba(14,165,233,0.12)` : 'none',
+  };
+}
+
+function Field({ label, required, children }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <label style={{ fontSize: 11.5, fontWeight: 700, color: C.muted, letterSpacing: '0.07em', textTransform: 'uppercase' }}>
+        {label}{required && <span style={{ color: '#ef4444' }}> *</span>}
+      </label>
+      {children}
+    </div>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, margin: '8px 0 14px' }}>
+      <span style={{ fontSize: 11, fontWeight: 700, color: C.subtle, letterSpacing: '0.1em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>{children}</span>
+      <div style={{ flex: 1, height: 1, background: C.border }} />
+    </div>
+  );
+}
+
 export default function PatientInquiryForm() {
   const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [refId, setRefId] = useState('');
+  const [loading,   setLoading]   = useState(false);
+  const [refId,     setRefId]     = useState('');
+  const [focused,   setFocused]   = useState('');
   const [form, setForm] = useState({
     firstName: '', lastName: '', phone: '', email: '',
     age: '', gender: '', department: '', visitType: 'OPD',
-    preferredDate: '', preferredSlot: '', insurance: '', message: '',
+    preferredDate: '', preferredSlot: '', message: '',
   });
 
-  const set = (k) => (e) => setForm(f => ({ ...f, [k]: e.target.value }));
+  const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }));
+  const fi  = k => inpStyle(k, focused);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
     await new Promise(r => setTimeout(r, 1400));
@@ -41,180 +107,240 @@ export default function PatientInquiryForm() {
   };
 
   const CONTACT_ITEMS = [
-    { icon: <FaMapMarkerAlt />, label: 'Address', value: SITE.address },
-    { icon: <FaPhoneAlt />, label: 'Phone', value: SITE.phone },
-    { icon: <FaEnvelope />, label: 'Email', value: SITE.email },
-    { icon: <FaClock />, label: 'OPD Hours', value: 'Mon–Sat: 9 AM – 8 PM' },
+    { icon: <FaMapMarkerAlt />, label: 'Address',   value: SITE.address },
+    { icon: <FaPhoneAlt />,     label: 'Phone',     value: SITE.phone },
+    { icon: <FaEnvelope />,     label: 'Email',     value: SITE.email },
+    { icon: <FaClock />,        label: 'OPD Hours', value: 'Mon–Sat: 9 AM – 8 PM' },
   ];
 
   return (
-    <section className="bg-[var(--off-white)] py-16 md:py-24">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_1.55fr] items-start">
-          
-          {/* LEFT PANEL: Trust & Contact */}
-          <div className="lg:sticky lg:top-24">
-            <span className="inline-block rounded-full bg-[var(--primary)]/10 px-4 py-1 text-xs font-bold uppercase tracking-widest text-[var(--primary)]">
+    <>
+      <style>{`
+        @media(max-width:900px){.inq-layout{grid-template-columns:1fr!important}}
+        @media(max-width:540px){.inq-grid-2{grid-template-columns:1fr!important}}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes pop{0%{transform:scale(0.5)}75%{transform:scale(1.15)}100%{transform:scale(1)}}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        .inq-submit:hover:not(:disabled){background:#00273a!important;transform:translateY(-1px)}
+        .inq-submit:disabled{opacity:.65;cursor:not-allowed}
+        .inq-radio:hover{border-color:#0ea5e9!important}
+        .inq-another:hover{background:#00364f!important;color:#fff!important}
+      `}</style>
+
+      <section style={{ background: C.bg, padding: 'clamp(48px,8vw,96px) 20px' }}>
+        <div style={{ maxWidth: 1080, margin: '0 auto' }}>
+
+          {/* ── Heading ── */}
+          <div style={{ textAlign: 'center', marginBottom: 48 }}>
+            <span style={{ display: 'inline-block', background: C.accentLight, color: C.accent, fontSize: 11, fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', padding: '5px 16px', borderRadius: 100, marginBottom: 12 }}>
               Patient Inquiry
             </span>
-            <h2 className="mt-4 text-3xl font-bold text-gray-900 md:text-4xl">Book an Appointment</h2>
-            <div className="my-6 h-1 w-16 rounded-full bg-[var(--accent)]" />
-            <p className="mb-8 text-gray-600">
-              Fill in your details and we'll confirm your slot within 2 hours during OPD hours.
+            <h2 style={{ fontSize: 'clamp(24px,4vw,36px)', fontWeight: 700, color: C.dark, margin: 0, lineHeight: 1.2 }}>
+              Book an Appointment
+            </h2>
+            <p style={{ marginTop: 10, color: C.muted, fontSize: 15 }}>
+              We'll confirm your slot within 2 hours during OPD hours.
             </p>
-
-            <ul className="mb-10 flex flex-col gap-4">
-              {[
-                ['✓', 'Confirmation within 2 hours'],
-                ['🕐', 'Zero waiting time guarantee'],
-                ['🔒', 'Your data is 100% private'],
-                ['🚑', 'Emergency walk-ins welcome'],
-              ].map(([icon, text]) => (
-                <li key={text} className="flex items-center gap-4 text-sm font-semibold text-gray-700">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-[var(--primary-light)] to-[var(--primary)] text-white">
-                    {icon}
-                  </div>
-                  {text}
-                </li>
-              ))}
-            </ul>
-
-            <div className="space-y-4 rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-              {CONTACT_ITEMS.map(item => (
-                <div key={item.label} className="flex items-center gap-4">
-                  <div className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[var(--primary)] text-white text-xs">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <div className="text-[0.65rem] font-bold uppercase tracking-widest text-gray-400">{item.label}</div>
-                    <div className="text-sm font-bold text-gray-900">{item.value}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
 
-          {/* RIGHT PANEL: Form Card */}
-          <div className="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-xl">
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-gradient-to-br from-[var(--primary-dark)] to-[var(--primary)] p-8 text-white">
-              <div>
-                <h3 className="text-xl font-bold">Patient Inquiry Form</h3>
-                <p className="mt-1 text-xs text-white/70">All fields marked * are required</p>
+          <div className="inq-layout" style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 24, alignItems: 'start' }}>
+
+            {/* ── LEFT ── */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+
+              {/* Trust */}
+              <div style={{ background: C.card, borderRadius: 16, padding: '24px 20px', border: `1px solid ${C.border}` }}>
+                <p style={{ fontSize: 11, fontWeight: 700, color: C.subtle, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>Why choose us</p>
+                {TRUST_ITEMS.map(item => (
+                  <div key={item.text} style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+              <div
+  style={{
+    flexShrink: 0,
+    width: 36,
+    height: 36,
+    borderRadius: 10,
+    background: C.accentLight,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    fontSize: 15,
+    color: '#001d3b' // 👈 icon color added
+  }}
+>
+  {item.icon}
+</div>
+                    <span style={{ fontSize: 13.5, fontWeight: 500, color: '#334155' }}>{item.text}</span>
+                  </div>
+                ))}
               </div>
-              <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-[0.65rem] font-bold uppercase tracking-widest text-[var(--accent-light)]">
-                <div className="h-2 w-2 animate-pulse rounded-full bg-[var(--accent-light)]" />
-                Accepting Bookings
+
+              {/* Contact */}
+              <div style={{ background: C.dark, borderRadius: 16, padding: '24px 20px' }}>
+                <p style={{ fontSize: 11, fontWeight: 700, color: '#38bdf8', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 16px' }}>Contact Info</p>
+                {CONTACT_ITEMS.map(item => (
+                  <div key={item.label} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: 16 }}>
+                    <div style={{ flexShrink: 0, width: 34, height: 34, borderRadius: 9, background: 'rgba(255,255,255,0.08)', color: '#38bdf8', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13 }}>
+                      {item.icon}
+                    </div>
+                    <div>
+                      <p style={{ margin: '0 0 2px', fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#64748b' }}>{item.label}</p>
+                      <p style={{ margin: 0, fontSize: 13.5, fontWeight: 500, color: '#e2e8f0', lineHeight: 1.5 }}>{item.value}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {submitted ? (
-              <div className="p-12 text-center">
-                <div className="mx-auto mb-6 flex h-20 w-20 animate-[pop_0.4s_ease-out] items-center justify-center rounded-full bg-green-500 text-3xl text-white shadow-lg shadow-green-200">
-                  ✓
+            {/* ── FORM CARD ── */}
+            <div style={{ background: C.card, borderRadius: 20, border: `1px solid ${C.border}`, overflow: 'hidden', animation: 'fadeUp 0.4s ease' }}>
+
+              {/* Card header — solid dark navy, white text */}
+              <div style={{ background: C.primary, padding: '22px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: C.white }}>Patient Inquiry Form</h3>
+                  <p style={{ margin: '4px 0 0', fontSize: 12, color: 'rgba(255,255,255,0.65)' }}>All fields marked * are required</p>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900">Inquiry Submitted!</h3>
-                <p className="mx-auto mt-4 max-w-xs text-gray-500">
-                  Thank you, <strong className="text-gray-900">{form.firstName}</strong>. Our team will call you within 2 hours to confirm your appointment.
-                </p>
-                <div className="mt-8 inline-block rounded-lg border border-gray-200 bg-gray-50 px-6 py-3 text-sm font-bold text-gray-700">
-                  Reference ID: {refId}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.22)', borderRadius: 100, padding: '6px 14px' }}>
+                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: C.green, display: 'inline-block' }} />
+                  <span style={{ fontSize: 11, fontWeight: 700, color: C.white, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Accepting Bookings</span>
                 </div>
-                <button 
-                  onClick={() => setSubmitted(false)}
-                  className="mt-8 block w-full rounded-full border-2 border-[var(--primary)] py-3 text-sm font-bold text-[var(--primary)] transition-all hover:bg-[var(--primary)] hover:text-white"
-                >
-                  Submit Another Inquiry
-                </button>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="p-8">
-                {/* Section: Personal */}
-                <div className="mb-4 flex items-center gap-3 text-[0.7rem] font-bold uppercase tracking-widest text-[var(--accent)]">
-                  Personal Details <div className="h-px flex-1 bg-[var(--accent)]/20" />
-                </div>
-                
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <div className="space-y-1">
-                    <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">First Name <span className="text-red-500">*</span></label>
-                    <input required className="w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none transition-all focus:border-[var(--primary-light)] focus:ring-4 focus:ring-[var(--primary-light)]/10" value={form.firstName} onChange={set('firstName')} placeholder="Rahul" />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Last Name <span className="text-red-500">*</span></label>
-                    <input required className="w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none focus:border-[var(--primary-light)] focus:ring-4 focus:ring-[var(--primary-light)]/10" value={form.lastName} onChange={set('lastName')} placeholder="Sharma" />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Phone <span className="text-red-500">*</span></label>
-                    <input required type="tel" className="w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none focus:border-[var(--primary-light)] focus:ring-4 focus:ring-[var(--primary-light)]/10" value={form.phone} onChange={set('phone')} placeholder="+91 98765 43210" />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Age <span className="text-red-500">*</span></label>
-                    <input required type="number" className="w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none focus:border-[var(--primary-light)] focus:ring-4 focus:ring-[var(--primary-light)]/10" value={form.age} onChange={set('age')} placeholder="32" />
-                  </div>
-                </div>
 
-                {/* Section: Appointment */}
-                <div className="my-8 flex items-center gap-3 text-[0.7rem] font-bold uppercase tracking-widest text-[var(--accent)]">
-                  Appointment Details <div className="h-px flex-1 bg-[var(--accent)]/20" />
+              {submitted ? (
+                /* ── SUCCESS ── */
+                <div style={{ padding: '56px 28px', textAlign: 'center', animation: 'fadeUp 0.4s ease' }}>
+                  <div style={{ width: 72, height: 72, borderRadius: '50%', background: C.green, color: C.white, fontSize: 30, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', animation: 'pop 0.45s ease' }}>✓</div>
+                  <h3 style={{ fontSize: 22, fontWeight: 700, color: C.dark, margin: '0 0 10px' }}>Inquiry Submitted!</h3>
+                  <p style={{ color: C.muted, fontSize: 14.5, maxWidth: 340, margin: '0 auto 24px', lineHeight: 1.7 }}>
+                    Thank you, <strong style={{ color: C.dark }}>{form.firstName}</strong>. Our team will call you within 2 hours to confirm your appointment.
+                  </p>
+                  <div style={{ display: 'inline-block', background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 10, padding: '10px 24px', fontSize: 13, fontWeight: 700, color: '#166534', marginBottom: 28 }}>
+                    Reference ID: {refId}
+                  </div>
+                  <br />
+                  <button
+                    className="inq-another"
+                    onClick={() => setSubmitted(false)}
+                    style={{ marginTop: 8, padding: '11px 32px', borderRadius: 100, border: `2px solid ${C.primary}`, background: 'none', color: C.primary, fontWeight: 700, fontSize: 14, cursor: 'pointer', transition: 'all 0.2s' }}
+                  >
+                    Submit Another Inquiry
+                  </button>
                 </div>
+              ) : (
+                /* ── FORM ── */
+                <form onSubmit={handleSubmit} style={{ padding: 'clamp(20px,4vw,32px)' }}>
 
-                <div className="space-y-6">
-                  <div className="space-y-3">
-                    <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Visit Type <span className="text-red-500">*</span></label>
-                    <div className="flex flex-wrap gap-2">
-                      {['OPD', 'Emergency', 'Second Opinion', 'Diagnostic'].map(v => (
-                        <label key={v} className={`flex cursor-pointer items-center gap-2 rounded-full border-2 px-4 py-2 text-xs font-bold transition-all ${form.visitType === v ? 'border-[var(--primary)] bg-[var(--primary)]/5 text-[var(--primary)]' : 'border-gray-100 text-gray-600 hover:border-gray-200'}`}>
-                          <input type="radio" name="visitType" value={v} checked={form.visitType === v} onChange={set('visitType')} className="hidden" />
-                          <div className={`h-3 w-3 rounded-full border-2 ${form.visitType === v ? 'border-[var(--primary)] bg-[var(--primary)]' : 'border-gray-300'}`} />
-                          {v}
-                        </label>
-                      ))}
+                  <SectionLabel>Personal Details</SectionLabel>
+                  <div className="inq-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
+                    <Field label="First Name" required>
+                      <input required style={fi('firstName')} value={form.firstName} onChange={set('firstName')} onFocus={()=>setFocused('firstName')} onBlur={()=>setFocused('')} placeholder="Rahul" />
+                    </Field>
+                    <Field label="Last Name" required>
+                      <input required style={fi('lastName')} value={form.lastName} onChange={set('lastName')} onFocus={()=>setFocused('lastName')} onBlur={()=>setFocused('')} placeholder="Sharma" />
+                    </Field>
+                    <Field label="Phone" required>
+                      <input required type="tel" style={fi('phone')} value={form.phone} onChange={set('phone')} onFocus={()=>setFocused('phone')} onBlur={()=>setFocused('')} placeholder="+91 98765 43210" />
+                    </Field>
+                    <Field label="Age" required>
+                      <input required type="number" min="1" max="120" style={fi('age')} value={form.age} onChange={set('age')} onFocus={()=>setFocused('age')} onBlur={()=>setFocused('')} placeholder="32" />
+                    </Field>
+                    <Field label="Email">
+                      <input type="email" style={fi('email')} value={form.email} onChange={set('email')} onFocus={()=>setFocused('email')} onBlur={()=>setFocused('')} placeholder="rahul@example.com" />
+                    </Field>
+                    <Field label="Gender">
+                      <select style={fi('gender')} value={form.gender} onChange={set('gender')} onFocus={()=>setFocused('gender')} onBlur={()=>setFocused('')}>
+                        <option value="">Select</option>
+                        <option>Male</option><option>Female</option><option>Other</option>
+                      </select>
+                    </Field>
+                  </div>
+
+                  <SectionLabel>Appointment Details</SectionLabel>
+
+                  <Field label="Visit Type" required>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
+                      {VISIT_TYPES.map(v => {
+                        const active = form.visitType === v;
+                        return (
+                          <label key={v} className="inq-radio" style={{
+                            display: 'flex', alignItems: 'center', gap: 7,
+                            padding: '8px 16px', borderRadius: 100,
+                            border: `1.5px solid ${active ? C.accent : C.border}`,
+                            background: active ? C.accentLight : C.white,
+                            cursor: 'pointer', fontSize: 13, fontWeight: 600,
+                            color: active ? C.accent : C.muted,
+                            transition: 'all 0.15s', userSelect: 'none',
+                          }}>
+                            <input type="radio" name="visitType" value={v} checked={active} onChange={set('visitType')} style={{ display: 'none' }} />
+                            <span style={{ width: 10, height: 10, borderRadius: '50%', border: `2px solid ${active ? C.accent : '#cbd5e1'}`, background: active ? C.accent : 'transparent', flexShrink: 0 }} />
+                            {v}
+                          </label>
+                        );
+                      })}
                     </div>
-                  </div>
+                  </Field>
 
-                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                    <div className="col-span-full space-y-1">
-                      <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Department <span className="text-red-500">*</span></label>
-                      <select required className="w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none focus:border-[var(--primary-light)]" value={form.department} onChange={set('department')}>
+                  <div className="inq-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
+                    <Field label="Department" required>
+                      <select required style={fi('department')} value={form.department} onChange={set('department')} onFocus={()=>setFocused('department')} onBlur={()=>setFocused('')}>
                         <option value="">Select department</option>
                         {DEPARTMENTS.map(d => <option key={d}>{d}</option>)}
                       </select>
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Preferred Date <span className="text-red-500">*</span></label>
-                      <input required type="date" className="w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none focus:border-[var(--primary-light)]" value={form.preferredDate} onChange={set('preferredDate')} min={new Date().toISOString().split('T')[0]} />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Preferred Time Slot</label>
-                      <select className="w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none focus:border-[var(--primary-light)]" value={form.preferredSlot} onChange={set('preferredSlot')}>
+                    </Field>
+                    <div />
+                    <Field label="Preferred Date" required>
+                      <input required type="date" style={fi('preferredDate')} value={form.preferredDate} onChange={set('preferredDate')} min={new Date().toISOString().split('T')[0]} onFocus={()=>setFocused('preferredDate')} onBlur={()=>setFocused('')} />
+                    </Field>
+                    <Field label="Preferred Time Slot">
+                      <select style={fi('preferredSlot')} value={form.preferredSlot} onChange={set('preferredSlot')} onFocus={()=>setFocused('preferredSlot')} onBlur={()=>setFocused('')}>
                         <option value="">Any available</option>
                         {TIME_SLOTS.map(s => <option key={s}>{s}</option>)}
                       </select>
-                    </div>
+                    </Field>
                   </div>
-                </div>
 
-                <div className="mt-8 space-y-4">
-                  <div className="space-y-1">
-                    <label className="text-[0.75rem] font-bold uppercase tracking-wider text-gray-700">Symptoms / Description</label>
-                    <textarea className="min-h-[100px] w-full rounded-xl border-2 border-gray-100 p-3 text-sm outline-none focus:border-[var(--primary-light)]" value={form.message} onChange={set('message')} placeholder="Briefly describe your reason for visit..." />
-                  </div>
-                  
-                  <button disabled={loading} className="group relative w-full overflow-hidden rounded-full bg-gradient-to-r from-[var(--primary-light)] to-[var(--primary)] py-4 font-bold text-white shadow-lg shadow-[var(--primary)]/30 transition-all hover:-translate-y-1 hover:shadow-xl disabled:opacity-70">
-                    <span className="relative z-10 flex items-center justify-center gap-3">
-                      {loading ? (
-                        <div className="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                      ) : '📋 Submit Inquiry'}
-                    </span>
+                  <Field label="Symptoms / Description">
+                    <textarea
+                      style={{ ...fi('message'), minHeight: 90, resize: 'vertical' }}
+                      value={form.message}
+                      onChange={set('message')}
+                      onFocus={()=>setFocused('message')}
+                      onBlur={()=>setFocused('')}
+                      placeholder="Briefly describe your reason for visit…"
+                    />
+                  </Field>
+
+                  {/* Submit button — solid dark navy, always visible */}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    className="inq-submit"
+                    style={{
+                      marginTop: 22, width: '100%', padding: '14px',
+                      borderRadius: 12, background: C.primary,
+                      border: 'none', color: C.white,
+                      fontSize: 15, fontWeight: 700,
+                      cursor: 'pointer', display: 'flex',
+                      alignItems: 'center', justifyContent: 'center', gap: 10,
+                      transition: 'background 0.2s, transform 0.15s',
+                      letterSpacing: '0.02em',
+                    }}
+                  >
+                    {loading
+                      ? <span style={{ width: 20, height: 20, borderRadius: '50%', border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: C.white, display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />
+                      : <>📋 Submit Inquiry</>
+                    }
                   </button>
-                  <p className="text-center text-[0.7rem] text-gray-400">
+
+                  <p style={{ textAlign: 'center', marginTop: 12, fontSize: 12, color: C.subtle }}>
                     🔒 Your information is confidential and used only for medical scheduling.
                   </p>
-                </div>
-              </form>
-            )}
+                </form>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

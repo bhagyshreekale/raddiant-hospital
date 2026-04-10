@@ -64,14 +64,14 @@ export default function CareersPage() {
         {/* ════════════════════════════════════
             1. HERO
         ════════════════════════════════════ */}
-        <section className="relative min-h-[90vh] flex items-center bg-[#0A1F44] overflow-hidden">
+        <section className="relative min-h-[70vh] flex items-center bg-[#0A1F44] overflow-hidden">
 
           {/* Dot-grid texture */}
           <div
             className="absolute inset-0 opacity-[0.07] pointer-events-none"
             style={{
               backgroundImage: 'radial-gradient(circle, #000000 1px, transparent 1px)',
-              backgroundSize: '32px 32px',
+              backgroundSize: '30px 30px',
             }}
           />
 
@@ -166,7 +166,7 @@ export default function CareersPage() {
         {/* ════════════════════════════════════
             2. STATS BAR
         ════════════════════════════════════ */}
-        <section className="bg-gradient-to-r from-blue-700 to-blue-600 py-10 md:py-12">
+        {/* <section className="bg-gradient-to-r from-blue-700 to-blue-600 py-10 md:py-12">
           <div className="container mx-auto px-6 md:px-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10 text-center">
               {stats.map((s) => (
@@ -181,7 +181,7 @@ export default function CareersPage() {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* ════════════════════════════════════
             3. WHY JOIN US — PERKS CARDS

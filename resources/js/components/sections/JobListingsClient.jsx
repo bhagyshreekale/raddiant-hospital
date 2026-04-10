@@ -1,196 +1,311 @@
 'use client';
 
-import { useState, useRef } from 'react';
-import { JOB_LISTINGS, DEPARTMENTS } from '../../lib copy/careersData';
-import {
-  FaBriefcase, FaMapMarkerAlt, FaClock, FaChevronDown,
-  FaChevronUp, FaTimes, FaUpload, FaCheckCircle, FaFire,
-} from 'react-icons/fa';
+import { useState } from 'react';
+import { FaBriefcase, FaMapMarkerAlt, FaClock, FaTimes, FaCheckCircle, FaUpload } from 'react-icons/fa';
 
-// ── Helpers ────────────────────────────────────────────────────────────────
+// ── Sample job data (replace with your API / data source) ──
+const JOBS = [
+  {
+    id: 1,
+    title: 'Senior Radiologist',
+    department: 'Radiology',
+    location: 'Nashik, MH',
+    type: 'Full-time',
+    experience: '5+ years',
+    salary: '₹12L – ₹18L / yr',
+    posted: '2 days ago',
+    description:
+      'We are looking for an experienced Senior Radiologist to lead our diagnostic imaging department. You will interpret complex imaging studies, mentor junior staff, and collaborate with clinical teams to provide timely and accurate reports.',
+    responsibilities: [
+      'Interpret CT, MRI, X-Ray, and ultrasound studies with high accuracy',
+      'Collaborate with referring physicians and clinical teams',
+      'Mentor and guide junior radiologists and radiology residents',
+      'Ensure compliance with radiation safety and quality standards',
+      'Participate in departmental CME programs',
+    ],
+    requirements: [
+      'MD/DNB in Radiodiagnosis from a recognised institution',
+      '5+ years of post-qualification experience',
+      'Proficiency in CT/MRI interpretation including advanced protocols',
+      'Strong communication and team collaboration skills',
+    ],
+  },
+  {
+    id: 2,
+    title: 'Staff Nurse – ICU',
+    department: 'Nursing',
+    location: 'Nashik, MH',
+    type: 'Full-time',
+    experience: '2+ years',
+    salary: '₹4L – ₹6L / yr',
+    posted: '4 days ago',
+    description:
+      'We are seeking a dedicated Staff Nurse for our Intensive Care Unit. The ideal candidate is calm under pressure, skilled in critical care, and committed to compassionate patient care.',
+    responsibilities: [
+      'Provide direct nursing care to critically ill patients',
+      'Monitor and record patient vitals and clinical observations',
+      'Administer medications and IV therapies as prescribed',
+      'Coordinate with physicians and multidisciplinary teams',
+      'Maintain accurate nursing records and documentation',
+    ],
+    requirements: [
+      'B.Sc Nursing or GNM from a recognised institute',
+      'Valid nursing registration with MNC',
+      '2+ years of ICU/Critical Care experience preferred',
+      'ACLS/BLS certification is an advantage',
+    ],
+  },
+  {
+    id: 3,
+    title: 'Cardiologist – Consultant',
+    department: 'Cardiology',
+    location: 'Nashik, MH',
+    type: 'Consultant',
+    experience: '8+ years',
+    salary: '₹20L – ₹30L / yr',
+    posted: '1 week ago',
+    description:
+      'Raddiant Plus is expanding its Cardiac Sciences department and invites applications from experienced Cardiologists. The role involves outpatient clinics, inpatient management, and performing interventional procedures.',
+    responsibilities: [
+      'Conduct OPD consultations and manage inpatient cardiac cases',
+      'Perform and interpret ECG, Echo, TMT, Holter monitoring',
+      'Conduct interventional procedures (cath lab, angioplasty)',
+      'Work closely with cardiac surgery and critical care teams',
+      'Participate in academic and CME activities',
+    ],
+    requirements: [
+      'DM/DNB in Cardiology from a recognised institution',
+      '8+ years post-DM experience',
+      'Interventional cardiology skills preferred',
+      'Good clinical acumen and patient communication',
+    ],
+  },
+  {
+    id: 4,
+    title: 'HR Executive',
+    department: 'Administration',
+    location: 'Nashik, MH',
+    type: 'Full-time',
+    experience: '1–3 years',
+    salary: '₹3L – ₹4.5L / yr',
+    posted: '3 days ago',
+    description:
+      'We are looking for a proactive HR Executive to support recruitment, onboarding, and employee engagement activities at Raddiant Plus Hospital.',
+    responsibilities: [
+      'Manage end-to-end recruitment for clinical and non-clinical roles',
+      'Coordinate onboarding and induction programs',
+      'Maintain employee records and HR databases',
+      'Handle employee queries and grievance redressal',
+      'Assist in payroll processing and leave management',
+    ],
+    requirements: [
+      'MBA/PGDM in HR or equivalent',
+      '1–3 years of HR experience, preferably in healthcare',
+      'Proficiency in MS Office and HRMS tools',
+      'Strong interpersonal and communication skills',
+    ],
+  },
+  {
+    id: 5,
+    title: 'Physiotherapist',
+    department: 'Rehabilitation',
+    location: 'Nashik, MH',
+    type: 'Full-time',
+    experience: '2+ years',
+    salary: '₹3.5L – ₹5L / yr',
+    posted: '5 days ago',
+    description:
+      'Join our Rehabilitation department as a Physiotherapist. You will provide evidence-based therapy to post-operative, neurological, and orthopaedic patients to restore function and improve quality of life.',
+    responsibilities: [
+      'Assess and treat patients with musculoskeletal and neurological conditions',
+      'Design and implement personalised rehabilitation programs',
+      'Use electrotherapy, manual therapy, and exercise modalities',
+      'Document treatment progress and update medical records',
+      'Educate patients and families on home exercise programs',
+    ],
+    requirements: [
+      'BPT / MPT from a recognised institution',
+      'Valid physiotherapy council registration',
+      '2+ years of clinical experience',
+      'Compassionate approach with strong patient rapport',
+    ],
+  },
+  {
+    id: 6,
+    title: 'Medical Lab Technician',
+    department: 'Pathology',
+    location: 'Nashik, MH',
+    type: 'Full-time',
+    experience: '1+ years',
+    salary: '₹2.5L – ₹4L / yr',
+    posted: '1 week ago',
+    description:
+      'We require a skilled Medical Lab Technician for our busy Pathology and Clinical Laboratory. The role involves performing a wide range of diagnostic tests and ensuring accurate, timely reporting.',
+    responsibilities: [
+      'Perform haematology, biochemistry, microbiology, and serology tests',
+      'Operate and maintain laboratory instruments and equipment',
+      'Ensure quality control and NABL compliance',
+      'Collect and process patient samples with proper identification',
+      'Maintain accurate lab records and report results promptly',
+    ],
+    requirements: [
+      'DMLT / BMLT from a recognised institute',
+      '1+ year of lab experience',
+      'Familiarity with LIS software preferred',
+      'Attention to detail and adherence to safety protocols',
+    ],
+  },
+];
 
-function timeAgo(dateStr) {
-  const diff = Math.floor((Date.now() - new Date(dateStr)) / 86400000);
-  if (diff === 0) return 'Today';
-  if (diff === 1) return 'Yesterday';
-  return `${diff} days ago`;
-}
+const DEPARTMENTS = ['All', ...Array.from(new Set(JOBS.map((j) => j.department)))];
 
-// ── UI Components ──────────────────────────────────────────────────────────
+const DEPT_COLORS = {
+  Radiology:      { bg: 'bg-violet-50',  text: 'text-violet-700',  border: 'border-violet-100' },
+  Nursing:        { bg: 'bg-pink-50',    text: 'text-pink-700',    border: 'border-pink-100'   },
+  Cardiology:     { bg: 'bg-red-50',     text: 'text-red-600',     border: 'border-red-100'    },
+  Administration: { bg: 'bg-sky-50',     text: 'text-sky-700',     border: 'border-sky-100'    },
+  Rehabilitation: { bg: 'bg-emerald-50', text: 'text-emerald-700', border: 'border-emerald-100'},
+  Pathology:      { bg: 'bg-amber-50',   text: 'text-amber-700',   border: 'border-amber-100'  },
+};
 
-function Field({ label, error, children, className = "" }) {
-  return (
-    <div className={className}>
-      <label className="mb-1.5 block text-[0.7rem] font-bold uppercase tracking-wider text-gray-500">
-        {label}
-      </label>
-      {children}
-      {error && <p className="mt-1 text-[0.7rem] font-medium text-red-500">{error}</p>}
-    </div>
-  );
-}
-
-const inputClass = (error) => `
-  w-full rounded-xl border-2 px-4 py-2.5 text-sm outline-none transition-all
-  ${error ? 'border-red-500 bg-red-50' : 'border-gray-100 bg-white focus:border-[var(--primary)] focus:ring-4 focus:ring-[var(--primary)]/10'}
-`;
-
-// ── Apply Modal ────────────────────────────────────────────────────────────
-
+// ── Apply Now Modal ───────────────────────────────────────────
 function ApplyModal({ job, onClose }) {
-  const [fields, setFields] = useState({ name: '', email: '', phone: '', experience: '', message: '' });
-  const [file, setFile] = useState(null);
+  const [form, setForm] = useState({ name: '', email: '', phone: '', experience: '', message: '', file: null });
   const [submitted, setSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
-  const fileRef = useRef();
+  const [loading, setLoading] = useState(false);
 
-  const set = (k) => (e) => setFields((p) => ({ ...p, [k]: e.target.value }));
+  const handle = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  const handleFile = (e) => setForm((f) => ({ ...f, file: e.target.files[0] }));
 
-  function validate() {
-    const e = {};
-    if (!fields.name.trim()) e.name = 'Required';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) e.email = 'Valid email required';
-    if (!/^\d{10}$/.test(fields.phone.replace(/\s/g, ''))) e.phone = '10-digit number required';
-    if (!fields.experience) e.experience = 'Required';
-    if (!file) e.file = 'Please attach your resume';
-    return e;
-  }
-
-  function handleSubmit() {
-    const e = validate();
-    if (Object.keys(e).length) { setErrors(e); return; }
-    setSubmitted(true);
-  }
+  const submit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); setSubmitted(true); }, 1400);
+  };
 
   return (
-    <div
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/60 p-4 backdrop-blur-sm"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <div className="max-h-[90vh] w-full max-w-xl animate-in fade-in zoom-in duration-200 overflow-y-auto rounded-3xl bg-white shadow-2xl">
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
-        <div className="flex items-start justify-between border-b border-gray-100 bg-gray-50/50 p-6">
-          <div className="flex gap-4">
-            <div className="text-2xl">{job.icon}</div>
-            <div>
-              <h3 className="text-lg font-bold text-gray-900">{job.title}</h3>
-              <p className="text-xs font-medium text-gray-500">
-                {job.department} • {job.type} • {job.location}
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="rounded-full p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors"
-          >
-            <FaTimes />
+        <div className="bg-[#0A1F44] px-7 pt-7 pb-6">
+          <button onClick={onClose} className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+            <FaTimes className="text-xs" />
           </button>
+          <p className="text-white/50 text-[11px] font-bold uppercase tracking-widest mb-1">Applying for</p>
+          <h3 className="text-white text-xl font-extrabold leading-tight">{job.title}</h3>
+          <p className="text-white/60 text-sm mt-1">{job.department} · {job.location}</p>
         </div>
 
         {/* Body */}
-        <div className="p-6 md:p-8">
+        <div className="px-7 py-6 max-h-[70vh] overflow-y-auto">
           {submitted ? (
-            <div className="py-8 text-center">
-              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-50 text-green-500">
-                <FaCheckCircle size={40} />
+            <div className="flex flex-col items-center text-center py-8 gap-4">
+              <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center">
+                <FaCheckCircle className="text-emerald-500 text-3xl" />
               </div>
-              <h4 className="text-xl font-bold text-gray-900">Application Submitted!</h4>
-              <p className="mt-3 text-sm text-gray-500">
-                Thank you, <strong>{fields.name}</strong>! Our HR team will reach out to{' '}
-                <strong>{fields.email}</strong> within 3–5 working days.
+              <h4 className="text-slate-800 text-lg font-extrabold">Application Submitted!</h4>
+              <p className="text-slate-500 text-sm max-w-xs leading-relaxed">
+                Thanks <strong className="text-slate-700">{form.name}</strong>! Our HR team will review your application and get back to you within 3–5 business days.
               </p>
-              <button
-                onClick={onClose}
-                className="mt-8 rounded-full bg-[var(--primary)] px-8 py-3 text-sm font-bold text-white transition-transform hover:scale-105 active:scale-95"
-              >
+              <button onClick={onClose} className="mt-2 px-8 py-3 bg-[#0A1F44] text-white text-sm font-bold rounded-xl hover:bg-slate-800 transition-colors">
                 Close
               </button>
             </div>
           ) : (
-            <div className="space-y-4">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <Field label="Full Name *" error={errors.name}>
+            <form onSubmit={submit} className="flex flex-col gap-4">
+              {/* Name + Email */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Full Name *</label>
                   <input
-                    value={fields.name}
-                    onChange={set('name')}
+                    name="name" required value={form.name} onChange={handle}
                     placeholder="Dr. Priya Sharma"
-                    className={inputClass(errors.name)}
-                  />
-                </Field>
-                <Field label="Email Address *" error={errors.email}>
-                  <input
-                    type="email"
-                    value={fields.email}
-                    onChange={set('email')}
-                    placeholder="priya@example.com"
-                    className={inputClass(errors.email)}
-                  />
-                </Field>
-                <Field label="Mobile Number *" error={errors.phone}>
-                  <input
-                    type="tel"
-                    value={fields.phone}
-                    onChange={set('phone')}
-                    placeholder="98765 43210"
-                    className={inputClass(errors.phone)}
-                  />
-                </Field>
-                <Field label="Experience *" error={errors.experience}>
-                  <select
-                    value={fields.experience}
-                    onChange={set('experience')}
-                    className={inputClass(errors.experience)}
-                  >
-                    <option value="">Select range</option>
-                    {['0–1 year', '1–3 years', '3–5 years', '5–8 years', '12+ years'].map((o) => (
-                      <option key={o} value={o}>{o}</option>
-                    ))}
-                  </select>
-                </Field>
-              </div>
-
-              <Field label="Cover Note (optional)">
-                <textarea
-                  value={fields.message}
-                  onChange={set('message')}
-                  rows={3}
-                  placeholder="Tell us why you'd be a great fit…"
-                  className={inputClass() + ' resize-none'}
-                />
-              </Field>
-
-              <Field label="Resume / CV *" error={errors.file}>
-                <div
-                  onClick={() => fileRef.current.click()}
-                  className={`flex flex-col items-center rounded-2xl border-2 border-dashed p-6 text-center transition-all cursor-pointer ${
-                    file ? 'border-green-200 bg-green-50' : 'border-gray-200 bg-gray-50 hover:border-gray-300'
-                  }`}
-                >
-                  <FaUpload className={`mb-2 text-xl ${file ? 'text-green-500' : 'text-gray-400'}`} />
-                  <p className="text-xs font-semibold text-gray-500">
-                    {file ? `✅ ${file.name}` : 'Click to upload PDF or DOC (max 5MB)'}
-                  </p>
-                  <input
-                    ref={fileRef}
-                    type="file"
-                    accept=".pdf,.doc,.docx"
-                    className="hidden"
-                    onChange={(e) => {
-                      setFile(e.target.files[0]);
-                      setErrors((p) => ({ ...p, file: undefined }));
-                    }}
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
                   />
                 </div>
-              </Field>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Email *</label>
+                  <input
+                    type="email" name="email" required value={form.email} onChange={handle}
+                    placeholder="you@example.com"
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
+                  />
+                </div>
+              </div>
 
+              {/* Phone + Experience */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Phone *</label>
+                  <input
+                    name="phone" required value={form.phone} onChange={handle}
+                    placeholder="+91 98765 43210"
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition"
+                  />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Years of Experience *</label>
+                  <select
+                    name="experience" required value={form.experience} onChange={handle}
+                    className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition bg-white"
+                  >
+                    <option value="">Select</option>
+                    <option>Fresher (0–1 yr)</option>
+                    <option>1–3 years</option>
+                    <option>3–5 years</option>
+                    <option>5–8 years</option>
+                    <option>8+ years</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* CV Upload */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Upload CV / Resume *</label>
+                <label className="flex items-center gap-3 border-2 border-dashed border-slate-200 hover:border-blue-400 rounded-xl px-4 py-4 cursor-pointer transition-colors group">
+                  <div className="w-9 h-9 rounded-lg bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center transition-colors">
+                    <FaUpload className="text-blue-500 text-xs" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-slate-700">
+                      {form.file ? form.file.name : 'Click to upload PDF / DOC'}
+                    </p>
+                    <p className="text-[11px] text-slate-400">Max 5 MB</p>
+                  </div>
+                  <input type="file" accept=".pdf,.doc,.docx" onChange={handleFile} className="hidden" required />
+                </label>
+              </div>
+
+              {/* Cover note */}
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Cover Note <span className="normal-case font-normal">(optional)</span></label>
+                <textarea
+                  name="message" value={form.message} onChange={handle} rows={3}
+                  placeholder="Briefly tell us why you're a great fit…"
+                  className="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-800 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-400 transition resize-none"
+                />
+              </div>
+
+              {/* Submit */}
               <button
-                onClick={handleSubmit}
-                className="w-full rounded-xl bg-[var(--primary)] py-4 text-sm font-bold text-white shadow-lg shadow-[var(--primary)]/20 transition-all hover:-translate-y-0.5 active:scale-95"
+                type="submit"
+                disabled={loading}
+                className="mt-1 w-full py-3.5 bg-black hover:bg-slate-800 text-white text-sm font-bold rounded-xl transition-all duration-200 active:scale-[0.98] disabled:opacity-60 flex items-center justify-center gap-2"
               >
-                Submit Application
+                {loading ? (
+                  <>
+                    <svg className="animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                    </svg>
+                    Submitting…
+                  </>
+                ) : 'Submit Application'}
               </button>
-            </div>
+            </form>
           )}
         </div>
       </div>
@@ -198,80 +313,154 @@ function ApplyModal({ job, onClose }) {
   );
 }
 
-// ── Job Card ──────────────────────────────────────────────────────────────
-
-function JobCard({ job, onApply, index }) {
-  const [expanded, setExpanded] = useState(false);
-
+// ── View Details Drawer ───────────────────────────────────────
+function DetailsDrawer({ job, onClose, onApply }) {
   return (
-    <div
-      className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 hover:border-gray-200 hover:shadow-xl hover:shadow-gray-200/50"
-      style={{ animation: `fadeInUp 0.4s ease-out forwards ${index * 0.05}s`, opacity: 0 }}
-    >
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gray-50 text-2xl">
-          {job.icon}
-        </div>
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:justify-end bg-black/50 backdrop-blur-sm" onClick={onClose}>
+      <div
+        className="relative w-full sm:w-[480px] sm:h-full bg-white sm:rounded-l-3xl rounded-t-3xl shadow-2xl overflow-hidden flex flex-col"
+        style={{ maxHeight: '92vh' }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Header */}
+        <div className="bg-[#0A1F44] px-7 pt-7 pb-6 shrink-0">
+          <button onClick={onClose} className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+            <FaTimes className="text-xs" />
+          </button>
 
-        <div className="flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <h3 className="text-base font-bold text-gray-900">{job.title}</h3>
-            {job.urgent && (
-              <span className="flex items-center gap-1 rounded-md bg-amber-100 px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider text-amber-700">
-                <FaFire /> Urgent
+          {/* Dept badge */}
+          {(() => {
+            const c = DEPT_COLORS[job.department] || { bg: 'bg-slate-100', text: 'text-slate-600', border: 'border-slate-200' };
+            return (
+              <span className={`inline-block text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-3 ${c.bg} ${c.text} border ${c.border}`}>
+                {job.department}
               </span>
-            )}
+            );
+          })()}
+          <h3 className="text-white text-xl font-extrabold leading-snug">{job.title}</h3>
+
+          {/* Meta chips */}
+          <div className="flex flex-wrap gap-2 mt-3">
+            {[
+              { icon: <FaMapMarkerAlt className="text-[9px]" />, label: job.location },
+              { icon: <FaClock className="text-[9px]" />, label: job.type },
+              { icon: <FaBriefcase className="text-[9px]" />, label: job.experience },
+            ].map((m) => (
+              <span key={m.label} className="inline-flex items-center gap-1.5 bg-white/10 text-white/75 text-[11px] font-semibold px-3 py-1 rounded-full">
+                {m.icon}{m.label}
+              </span>
+            ))}
           </div>
 
-          <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2 text-[0.75rem] font-medium text-gray-500">
-            <span className="flex items-center gap-1.5"><FaBriefcase className="opacity-60" /> {job.department}</span>
-            <span className="flex items-center gap-1.5"><FaMapMarkerAlt className="opacity-60" /> {job.location}</span>
-            <span className="flex items-center gap-1.5"><FaClock className="opacity-60" /> {job.type}</span>
-          </div>
+          <p className="mt-3 text-amber-300 font-bold text-sm">{job.salary}</p>
         </div>
 
-        <div className="flex flex-row items-center justify-between gap-4 border-t border-gray-50 pt-4 sm:flex-col sm:items-end sm:border-0 sm:pt-0">
-          <span className="rounded-lg bg-blue-50 px-3 py-1 text-[0.7rem] font-bold text-blue-700">{job.experience}</span>
-          <span className="text-[0.65rem] font-medium text-gray-400">{timeAgo(job.posted)}</span>
+        {/* Scrollable body */}
+        <div className="flex-1 overflow-y-auto px-7 py-6 flex flex-col gap-6">
+
+          {/* Description */}
+          <div>
+            <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">About the Role</h4>
+            <p className="text-slate-600 text-sm leading-relaxed">{job.description}</p>
+          </div>
+
+          {/* Responsibilities */}
+          <div>
+            <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Key Responsibilities</h4>
+            <ul className="flex flex-col gap-2.5">
+              {job.responsibilities.map((r) => (
+                <li key={r} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
+                  <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Requirements */}
+          <div>
+            <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Requirements</h4>
+            <ul className="flex flex-col gap-2.5">
+              {job.requirements.map((r) => (
+                <li key={r} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
+                  <FaCheckCircle className="mt-0.5 text-emerald-500 shrink-0 text-xs" />
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Posted */}
+          <p className="text-[11px] text-slate-300 font-medium">Posted {job.posted}</p>
+        </div>
+
+        {/* Footer CTA */}
+        <div className="shrink-0 px-7 py-5 border-t border-slate-100 bg-white flex gap-3">
+          <button onClick={onClose} className="flex-1 py-3 border border-slate-200 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-colors">
+            Close
+          </button>
+          <button
+            onClick={() => { onClose(); onApply(job); }}
+            className="flex-1 py-3 bg-black hover:bg-slate-800 text-white text-sm font-bold rounded-xl transition-all duration-200 active:scale-[0.98]"
+          >
+            Apply Now
+          </button>
         </div>
       </div>
+    </div>
+  );
+}
 
-      <p className="mt-4 text-sm leading-relaxed text-gray-600">{job.description}</p>
+// ── Job Card ──────────────────────────────────────────────────
+function JobCard({ job, onApply, onDetails }) {
+  const c = DEPT_COLORS[job.department] || { bg: 'bg-slate-50', text: 'text-slate-600', border: 'border-slate-100' };
 
-      {expanded && (
-        <div className="mt-6 space-y-6 border-t border-gray-100 pt-6 animate-in slide-in-from-top-2 duration-300">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div>
-              <h4 className="text-[0.7rem] font-bold uppercase tracking-widest text-gray-900">Responsibilities</h4>
-              <ul className="mt-3 space-y-2 list-inside list-disc text-sm text-gray-600">
-                {job.responsibilities.map((r, i) => <li key={i}>{r}</li>)}
-              </ul>
-            </div>
-            <div>
-              <h4 className="text-[0.7rem] font-bold uppercase tracking-widest text-gray-900">Requirements</h4>
-              <ul className="mt-3 space-y-2 list-inside list-disc text-sm text-gray-600">
-                {job.requirements.map((r, i) => <li key={i}>{r}</li>)}
-              </ul>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 rounded-xl bg-green-50 p-4">
-            <span className="text-[0.65rem] font-bold uppercase tracking-widest text-green-700">Salary Range</span>
-            <span className="text-base font-bold text-green-700">{job.salary}</span>
-          </div>
-        </div>
-      )}
+  return (
+    <div className="group relative bg-white border border-slate-100 rounded-3xl p-6 md:p-7 shadow-sm hover:shadow-lg hover:shadow-blue-100/50 hover:-translate-y-1 transition-all duration-300 overflow-hidden flex flex-col gap-4">
 
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+      {/* Hover accent bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-blue-600 to-sky-400 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left rounded-b-3xl" />
+
+      {/* Top row */}
+      <div className="flex items-start justify-between gap-3">
+        <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border ${c.bg} ${c.text} ${c.border}`}>
+          {job.department}
+        </span>
+        <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap">{job.posted}</span>
+      </div>
+
+      {/* Title */}
+      <div>
+        <h3 className="text-slate-800 font-extrabold text-base md:text-[17px] leading-snug group-hover:text-blue-700 transition-colors">
+          {job.title}
+        </h3>
+        <p className="text-amber-600 text-sm font-bold mt-1">{job.salary}</p>
+      </div>
+
+      {/* Meta chips */}
+      <div className="flex flex-wrap gap-2">
+        {[
+          { icon: <FaMapMarkerAlt className="text-[9px]" />, label: job.location },
+          { icon: <FaClock className="text-[9px]" />, label: job.type },
+          { icon: <FaBriefcase className="text-[9px]" />, label: job.experience },
+        ].map((m) => (
+          <span key={m.label} className="inline-flex items-center gap-1.5 bg-slate-50 text-slate-500 text-[11px] font-semibold px-3 py-1.5 rounded-full border border-slate-100">
+            {m.icon}{m.label}
+          </span>
+        ))}
+      </div>
+
+      {/* Actions */}
+      <div className="flex gap-2.5 mt-auto pt-1">
         <button
-          onClick={() => setExpanded(!expanded)}
-          className="flex items-center gap-2 text-sm font-bold text-gray-500 transition-colors hover:text-gray-900"
+          onClick={() => onDetails(job)}
+          className="flex-1 py-2.5 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all duration-150 active:scale-95"
         >
-          {expanded ? <FaChevronUp /> : <FaChevronDown />}
-          {expanded ? 'Hide Details' : 'View Details'}
+          View Details
         </button>
         <button
           onClick={() => onApply(job)}
-          className="rounded-full bg-[var(--primary)] px-8 py-2.5 text-sm font-bold text-white transition-all hover:scale-105 active:scale-95 shadow-lg shadow-[var(--primary)]/20"
+          className="flex-1 py-2.5 bg-black hover:bg-slate-800 text-white text-xs font-bold rounded-xl transition-all duration-150 active:scale-95 shadow-md shadow-black/20"
         >
           Apply Now
         </button>
@@ -280,65 +469,59 @@ function JobCard({ job, onApply, index }) {
   );
 }
 
-// ── Main Export ──────────────────────────────────────────────────────────
-
+// ── Main Component ────────────────────────────────────────────
 export default function JobListingsClient() {
-  const [activeTab, setActiveTab] = useState('All');
-  const [applyJob, setApplyJob] = useState(null);
+  const [activeDept, setActiveDept] = useState('All');
+  const [applyJob, setApplyJob]     = useState(null);
+  const [detailJob, setDetailJob]   = useState(null);
 
-  const filtered = activeTab === 'All'
-    ? JOB_LISTINGS
-    : JOB_LISTINGS.filter((j) => j.department === activeTab);
+  const filtered = activeDept === 'All' ? JOBS : JOBS.filter((j) => j.department === activeDept);
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <style jsx global>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
-
-      {/* Department Tabs */}
-      <div className="mb-8 flex flex-wrap gap-2">
+    <>
+      {/* Department filter tabs */}
+      <div className="flex flex-wrap gap-2 mb-8">
         {DEPARTMENTS.map((dept) => (
           <button
             key={dept}
-            onClick={() => setActiveTab(dept)}
-            className={`rounded-full px-5 py-2 text-xs font-bold transition-all ${
-              activeTab === dept
-                ? 'bg-[var(--primary)] text-white shadow-lg shadow-[var(--primary)]/20'
-                : 'border-2 border-gray-100 bg-white text-gray-500 hover:border-gray-200 hover:text-gray-700'
+            onClick={() => setActiveDept(dept)}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150 border ${
+              activeDept === dept
+                ? 'bg-[#0A1F44] text-white border-[#0A1F44] shadow-md shadow-blue-900/20'
+                : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300 hover:text-blue-700'
             }`}
           >
             {dept}
             {dept !== 'All' && (
-              <span className="ml-2 opacity-60">
-                ({JOB_LISTINGS.filter((j) => j.department === dept).length})
+              <span className={`ml-1.5 text-[10px] font-bold ${activeDept === dept ? 'text-white/60' : 'text-slate-300'}`}>
+                {JOBS.filter((j) => j.department === dept).length}
               </span>
             )}
           </button>
         ))}
       </div>
 
-      {/* Results Header */}
-      <div className="mb-6 flex items-center justify-between border-b border-gray-100 pb-4">
-        <p className="text-sm font-medium text-gray-500">
-          Showing <span className="font-bold text-gray-900">{filtered.length}</span> positions
-          {activeTab !== 'All' && (
-            <span> in <span className="text-[var(--primary)]">{activeTab}</span></span>
-          )}
-        </p>
-      </div>
-
-      {/* Job Cards */}
-      <div className="space-y-4">
-        {filtered.map((job, i) => (
-          <JobCard key={job.id} job={job} index={i} onApply={setApplyJob} />
+      {/* Job cards grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+        {filtered.map((job) => (
+          <JobCard
+            key={job.id}
+            job={job}
+            onApply={setApplyJob}
+            onDetails={setDetailJob}
+          />
         ))}
       </div>
 
-      {applyJob && <ApplyModal job={applyJob} onClose={() => setApplyJob(null)} />}
-    </div>
+      {filtered.length === 0 && (
+        <div className="text-center py-16 text-slate-400 text-sm">
+          No openings in this department right now. Check back soon!
+        </div>
+      )}
+
+      {/* Modals */}
+      {applyJob  && <ApplyModal    job={applyJob}  onClose={() => setApplyJob(null)} />}
+      {detailJob && <DetailsDrawer job={detailJob} onClose={() => setDetailJob(null)} onApply={setApplyJob} />}
+    </>
   );
 }

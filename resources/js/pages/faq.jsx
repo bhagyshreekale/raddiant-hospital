@@ -2,102 +2,106 @@
 import { useState } from 'react';
 import { FAQS } from '../lib copy/data';
 import CTABanner from '../components/sections/CTABanner';
-import Navbar from '../components/layout/Navbar'
-import Footer from '../components/layout/Footer'
+
 export default function FAQPage() {
   const [open, setOpen] = useState(null);
 
-  // Schema.org Structured Data for SEO
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": FAQS.map(faq => ({
-      "@type": "Question",
-      "name": faq.q,
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": faq.a
-      }
-    }))
-  };
-
   return (
     <>
-    {/* <Navbar/> */}
-      {/* Injecting SEO Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      <section className="faq-hero" style={{ background: 'linear-gradient(135deg, var(--primary-dark), var(--primary))', padding: '96px 0 80px' }}>
-        <div className="container text-center">
-          <span className="section-label-light">FAQ</span>
-          <h1 style={{ color: 'white', marginTop: 12 }}>Frequently Asked Questions</h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', maxWidth: 520, margin: '16px auto 0' }}>
-            Everything you need to know about our services and patient care.
-          </p>
-        </div>
+      {/* Hero */}
+      <section style={{ background: '#0f172a', padding: '80px 24px 64px', textAlign: 'center' }}>
+        <p style={{ color: '#38bdf8', fontSize: 13, fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 12px' }}>FAQ</p>
+        <h1 style={{ color: '#fff', fontSize: 'clamp(28px, 5vw, 44px)', fontWeight: 700, margin: '0 0 14px', lineHeight: 1.2 }}>
+          Frequently Asked Questions
+        </h1>
+        <p style={{ color: '#94a3b8', fontSize: 16, maxWidth: 480, margin: '0 auto', lineHeight: 1.7 }}>
+          Everything you need to know about our services and patient care.
+        </p>
       </section>
 
-      <section className="section-py">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              {FAQS.map((faq, i) => {
-                const isOpen = open === i;
-                return (
-                  <div 
-                    key={faq.q} 
-                    className={`card-custom mb-3 ${isOpen ? 'active-faq' : ''}`} 
-                    style={{ border: isOpen ? '1px solid var(--primary-light)' : '1px solid var(--gray-200)' }}
-                  >
-                    <button
-                      onClick={() => setOpen(isOpen ? null : i)}
-                      style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', padding: '24px', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
-                      aria-expanded={isOpen}
-                    >
-                      <span style={{ fontWeight: 600, color: isOpen ? 'var(--primary)' : 'var(--gray-900)' }}>{faq.q}</span>
-                      <span style={{ 
-                        fontSize: '1.2rem', 
-                        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)', 
-                        transform: isOpen ? 'rotate(45deg)' : 'rotate(0)' 
-                      }}>+</span>
-                    </button>
-                    
-                    {/* Smooth Transition Container */}
-                    <div style={{ 
-                      display: 'grid',
-                      gridTemplateRows: isOpen ? '1fr' : '0fr',
-                      transition: 'grid-template-rows 0.3s ease-out',
-                      overflow: 'hidden'
-                    }}>
-                      <div style={{ minHeight: 0 }}>
-                         <div style={{ padding: '0 24px 24px', color: 'var(--gray-600)', fontSize: '0.92rem', lineHeight: 1.8 }}>
-                           {faq.a}
-                         </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
+      {/* FAQ List */}
+      <section style={{ background: '#f8fafc', padding: 'clamp(40px, 6vw, 72px) 24px' }}>
+        <div style={{ maxWidth: 680, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {FAQS.map((faq, i) => {
+            const isOpen = open === i;
+            return (
+              <div
+                key={i}
+                style={{
+                  background: '#fff',
+                  border: `1px solid ${isOpen ? '#0ea5e9' : '#e2e8f0'}`,
+                  borderRadius: 12,
+                  overflow: 'hidden',
+                  transition: 'border-color 0.2s',
+                }}
+              >
+                <button
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  style={{
+                    width: '100%',
+                    textAlign: 'left',
+                    background: 'none',
+                    border: 'none',
+                    padding: '20px 24px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: 16,
+                  }}
+                >
+                  <span style={{ fontSize: 15, fontWeight: 600, color: isOpen ? '#0284c7' : '#1e293b', lineHeight: 1.4 }}>
+                    {faq.q}
+                  </span>
+                  <span style={{
+                    flexShrink: 0,
+                    width: 26, height: 26,
+                    borderRadius: '50%',
+                    background: isOpen ? '#0ea5e9' : '#f1f5f9',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: 18, lineHeight: 1,
+                    color: isOpen ? '#fff' : '#64748b',
+                    transform: isOpen ? 'rotate(45deg)' : 'none',
+                    transition: 'transform 0.3s, background 0.2s',
+                  }}>+</span>
+                </button>
 
-              {/* Contact Footer */}
-              <div className="text-center mt-5" style={{ padding: '40px', background: 'var(--off-white)', borderRadius: '24px' }}>
-                <h3 className="mb-2">Still Have Questions?</h3>
-                <p className="text-muted mb-4">Our patient care team is happy to help you.</p>
-                <div className="d-flex justify-content-center gap-3">
-                  <a href="tel:+91..." className="btn-primary-custom">Call Support</a>
-                  <a href="https://wa.me/..." className="btn-whatsapp-custom">WhatsApp Us</a>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateRows: isOpen ? '1fr' : '0fr',
+                  transition: 'grid-template-rows 0.3s ease',
+                  overflow: 'hidden',
+                }}>
+                  <div style={{ minHeight: 0 }}>
+                    <p style={{ margin: 0, padding: '0 24px 20px', fontSize: 14.5, color: '#475569', lineHeight: 1.8 }}>
+                      {faq.a}
+                    </p>
+                  </div>
                 </div>
               </div>
+            );
+          })}
+
+          {/* Contact */}
+          <div style={{ marginTop: 24, background: '#0f172a', borderRadius: 16, padding: '32px 28px', textAlign: 'center' }}>
+            <h3 style={{ color: '#fff', fontSize: 20, fontWeight: 600, margin: '0 0 8px' }}>Still have questions?</h3>
+            <p style={{ color: '#94a3b8', fontSize: 14, margin: '0 0 24px' }}>Our patient care team is happy to help.</p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 12, flexWrap: 'wrap' }}>
+              <a href="tel:+91..." style={{
+                display: 'inline-block', padding: '10px 22px', borderRadius: 8,
+                background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)',
+                color: '#fff', fontSize: 14, fontWeight: 500, textDecoration: 'none',
+              }}>Call Support</a>
+              <a href="https://wa.me/..." style={{
+                display: 'inline-block', padding: '10px 22px', borderRadius: 8,
+                background: '#22c55e', color: '#fff', fontSize: 14, fontWeight: 500, textDecoration: 'none',
+              }}>WhatsApp Us</a>
             </div>
           </div>
         </div>
       </section>
-      <CTABanner />
 
-      {/* <Footer/> */}
+      <CTABanner />
     </>
   );
 }

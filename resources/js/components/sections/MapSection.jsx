@@ -31,9 +31,9 @@ export default function MapSection() {
                 <div key={item.label} className="group flex items-start gap-4 transition-transform duration-300 hover:translate-x-1">
                   
                   {/* Icon Square */}
-                  <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--primary)] text-lg text-white shadow-md shadow-[var(--primary)]/20 transition-transform group-hover:scale-110">
-                    {item.icon}
-                  </div>
+               <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-[var(--primary)] text-blue-900 shadow-md shadow-[var(--primary)]/20 transition-transform group-hover:scale-110">
+  {item.icon}
+</div>
 
                   {/* Label + Value */}
                   <div>

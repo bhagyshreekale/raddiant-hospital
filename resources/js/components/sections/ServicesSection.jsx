@@ -122,7 +122,7 @@ export default function ServicesSection() {
             <h2 className="text-4xl md:text-5xl xl:text-6xl font-black text-slate-900
                            leading-[1.08] tracking-tight mb-5 max-w-3xl">
               Comprehensive{' '}
-              <span className="font-['Instrument_Serif',serif] italic font-normal srv-grad">
+              <span className="font-[serif] italic font-normal srv-grad">
                 Multispecialty
               </span>
               {' '}Care
