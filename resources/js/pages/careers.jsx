@@ -1,6 +1,6 @@
 // app/careers/page.jsx
 import JobListingsClient from '../components/sections/JobListingsClient';
-import { STATS } from '../lib copy/data';
+// import { STATS } from '../lib copy/data';
 import { FaEnvelope, FaPhoneAlt, FaUserMd, FaArrowRight, FaMapMarkerAlt } from 'react-icons/fa';
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
@@ -46,12 +46,12 @@ const PERKS = [
   },
 ];
 
-const DEFAULT_STATS = [
-  { value: '350+', label: 'Team Members' },
-  { value: '20+',  label: 'Departments' },
-  { value: '15K+', label: 'Patients Served' },
-  { value: '4.9★', label: 'Average Rating' },
-];
+// const DEFAULT_STATS = [
+//   { value: '350+', label: 'Team Members' },
+//   { value: '20+',  label: 'Departments' },
+//   { value: '15K+', label: 'Patients Served' },
+//   { value: '4.9★', label: 'Average Rating' },
+// ];
 
 export default function CareersPage() {
   const stats = STATS || DEFAULT_STATS;
