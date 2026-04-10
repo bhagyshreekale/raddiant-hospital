@@ -1,4 +1,4 @@
-'use client';
+import { motion } from "framer-motion";
 
 const ICON_MAP = {
   FaHeartbeat:   { accent: '#ef4444' },
@@ -11,16 +11,36 @@ const ICON_MAP = {
   FaScalpel:     { accent: '#3b82f6' },
 };
 
-export default function ServiceCard({ service }) {
+export default function ServiceCard({ service, index = 0 }) {
   const meta = ICON_MAP[service.icon] ?? { accent: '#0ea5e9' };
 
+  // Premium Entrance Animation (Scroll Reveal)
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1], // Super smooth custom easing
+        delay: index * 0.1, // Stagger effect based on index in grid
+      },
+    },
+  };
+
   return (
-    <article
+    <motion.article
+      // Framer Motion Triggers
+      variants={cardVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-50px" }} // Triggers when 50px into view
+      whileHover={{ y: -8 }} // Replaces Tailwind hover lift for smoother animation
+      
       className="
         group relative flex flex-col h-full bg-white rounded-3xl overflow-hidden
-        border border-slate-100
-        shadow-sm hover:shadow-2xl hover:shadow-slate-200/60
-        hover:-translate-y-2 transition-all duration-500 ease-out
+        border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-slate-200/60
       "
     >
       {/* 🔝 Top Image */}
@@ -31,20 +51,19 @@ export default function ServiceCard({ service }) {
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
 
-        {/* Optional dark overlay */}
-        <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition duration-500"></div>
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/5 group-hover:bg-black/20 transition duration-500" />
       </div>
 
       {/* Accent line */}
       <span
         className="absolute top-0 left-0 right-0 h-[3px] rounded-t-3xl origin-left
-                   scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out"
+                   scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-out z-10"
         style={{ background: `linear-gradient(90deg, ${meta.accent}, ${meta.accent}88)` }}
       />
 
       {/* Content */}
       <div className="flex flex-col flex-1 p-6 md:p-7">
-
         {/* Title */}
         <h3 className="text-base md:text-[1.05rem] font-bold text-slate-900 mb-2 leading-snug">
           <span className="group-hover:text-sky-600 transition-colors duration-300">
@@ -74,12 +93,16 @@ export default function ServiceCard({ service }) {
             </svg>
           </a>
 
+          {/* Glowing dot */}
           <span
-            className="w-2 h-2 rounded-full opacity-60"
-            style={{ backgroundColor: meta.accent }}
+            className="w-2.5 h-2.5 rounded-full opacity-70 group-hover:opacity-100 group-hover:shadow-[0_0_8px_rgba(0,0,0,0.4)] transition-all duration-300"
+            style={{ 
+              backgroundColor: meta.accent,
+              boxShadow: `0 0 0 0 ${meta.accent}`
+            }}
           />
         </div>
       </div>
-    </article>
+    </motion.article>
   );
 }
