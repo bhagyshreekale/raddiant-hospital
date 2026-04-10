@@ -206,15 +206,22 @@ export default function HeroSection() {
         }} />
 
         {/* Pulse rings */}
-        <div style={{ position:'absolute', left:'15%', top:'50%', transform:'translate(-50%,-50%)', pointerEvents:'none' }}>
-          {['hs-pr1','hs-pr2','hs-pr3'].map(cls => (
-            <div key={cls} className={cls} style={{
-              position:'absolute', borderRadius:'50%',
-              width:300, height:300, margin:-150,
-              border:'1px solid rgba(0,194,203,0.15)',
-            }} />
-          ))}
-        </div>
+    {/* <div style={{ position:'absolute', left:'15%', top:'50%', transform:'translate(-50%,-50%)', pointerEvents:'none' }}>
+  {['hs-pr1','hs-pr2','hs-pr3'].map((cls, i) => (
+    <div
+      key={cls}
+      className={cls}
+      style={{
+        position: 'absolute',
+        borderRadius: '50%',
+        width: 300,
+        height: 300,
+        margin: -150,
+     border: `1px solid rgba(0,194,203,${0.3 - i * 0.1})`
+      }}
+    />
+  ))}
+</div> */}
 
         {/* Particles container */}
         <div ref={particlesRef} style={{ position:'absolute', inset:0, pointerEvents:'none' }} />
