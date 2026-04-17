@@ -160,7 +160,7 @@ export default function ServicesSection() {
             ))}
           </div>
 
-          {/* ── BOTTOM CTA ROW ── */}
+          {/* ── BOTTOM CTA ROW ──
           <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
               href="/services"
@@ -186,10 +186,10 @@ export default function ServicesSection() {
             >
               Book an Appointment
             </a>
-          </div>
+          </div> */}
 
           {/* ── TRUST STRIP ── */}
-          <div className="mt-16 flex flex-wrap justify-center items-center gap-6 md:gap-10
+          {/* <div className="mt-16 flex flex-wrap justify-center items-center gap-6 md:gap-10
                           pt-10 border-t border-slate-100">
             {[
               { icon: '✅', label: 'NABH Accredited' },
@@ -204,7 +204,7 @@ export default function ServicesSection() {
                 {label}
               </div>
             ))}
-          </div>
+          </div> */}
 
         </div>
       </section>

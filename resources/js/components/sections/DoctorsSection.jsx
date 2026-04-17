@@ -36,7 +36,7 @@ export default function DoctorsSection() {
         </div>
 
         {/* ── Stats Bar ── */}
-        <div className="mb-14 grid grid-cols-2 gap-4 md:grid-cols-4">
+        {/* <div className="mb-14 grid grid-cols-2 gap-4 md:grid-cols-4">
           {[
             { value: "50+", label: "Specialist Doctors" },
             { value: "20+", label: "Departments" },
@@ -51,7 +51,7 @@ export default function DoctorsSection() {
               <span className="text-xs text-gray-500 text-center leading-snug">{stat.label}</span>
             </div>
           ))}
-        </div>
+        </div> */}
 
         {/* ── Doctor Grid ── */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:gap-7">

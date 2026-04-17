@@ -18,14 +18,62 @@ export const SITE = {
 };
 
 export const SERVICES = [
-  { id: "cardiology", icon: "FaHeartbeat", title: "Cardiology", desc: "Advanced cardiac care with state-of-the-art catheterization labs and expert cardiologists.", color: "#e63946" },
-  { id: "orthopedics", icon: "FaBone", title: "Orthopedics", desc: "Comprehensive bone, joint, and muscle treatments including joint replacement surgeries.", color: "#0a4d8c" },
-  { id: "neurology", icon: "FaBrain", title: "Neurology", desc: "Expert diagnosis and treatment of neurological disorders with advanced imaging.", color: "#7b2d8b" },
-  { id: "gynecology", icon: "FaFemale", title: "Gynecology & Obstetrics", desc: "Complete women's health care from prenatal to postnatal with experienced specialists.", color: "#e8a838" },
-  { id: "pediatrics", icon: "FaChild", title: "Pediatrics", desc: "Specialized care for children from newborns to adolescents in a child-friendly environment.", color: "#00b4d8" },
-  { id: "diagnostics", icon: "FaMicroscope", title: "Diagnostics", desc: "NABL-accredited lab with advanced imaging: MRI, CT Scan, X-Ray, USG, and pathology.", color: "#2a9d8f" },
-  { id: "emergency", icon: "FaAmbulance", title: "24x7 Emergency", desc: "Round-the-clock emergency services with a dedicated trauma centre and ICU.", color: "#e63946" },
-  { id: "surgery", icon: "FaScalpel", title: "General Surgery", desc: "Minimally invasive laparoscopic and open surgery by experienced surgeons.", color: "#0a4d8c" },
+  {
+    id: "cardiology",
+    image: "/images/services/cardiology.jpg",
+    title: "Cardiology",
+    desc: "Advanced cardiac care with state-of-the-art catheterization labs and expert cardiologists.",
+    color: "#e63946",
+  },
+  {
+    id: "orthopedics",
+    image: "/images/services/orthopedics.jpg",
+    title: "Orthopedics",
+    desc: "Comprehensive bone, joint, and muscle treatments including joint replacement surgeries.",
+    color: "#0a4d8c",
+  },
+  {
+    id: "neurology",
+    image: "/images/services/neurology.jpg",
+    title: "Neurology",
+    desc: "Expert diagnosis and treatment of neurological disorders with advanced imaging.",
+    color: "#7b2d8b",
+  },
+  {
+    id: "gynecology",
+    image: "/images/services/gynecology.jpg",
+    title: "Gynecology & Obstetrics",
+    desc: "Complete women's health care from prenatal to postnatal with experienced specialists.",
+    color: "#e8a838",
+  },
+  {
+    id: "pediatrics",
+    image: "/images/services/pediatrics.jpg",
+    title: "Pediatrics",
+    desc: "Specialized care for children from newborns to adolescents in a child-friendly environment.",
+    color: "#00b4d8",
+  },
+  {
+    id: "diagnostics",
+    image: "/images/services/diagnostics.jpg",
+    title: "Diagnostics",
+    desc: "NABL-accredited lab with advanced imaging: MRI, CT Scan, X-Ray, USG, and pathology.",
+    color: "#2a9d8f",
+  },
+  {
+    id: "emergency",
+    image: "/images/services/emergency.jpg",
+    title: "24x7 Emergency",
+    desc: "Round-the-clock emergency services with a dedicated trauma centre and ICU.",
+    color: "#e63946",
+  },
+  {
+    id: "surgery",
+    image: "/images/services/surgery.jpg",
+    title: "General Surgery",
+    desc: "Minimally invasive laparoscopic and open surgery by experienced surgeons.",
+    color: "#0a4d8c",
+  },
 ];
 
 export const DOCTORS = [
