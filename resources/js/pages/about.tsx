@@ -26,7 +26,7 @@ export default function AboutPage() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f2460] via-green-700 to-green-700 py-20 lg:py-28 text-center">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f2460] via-green-700 to-green-700 py-20 lg:py-20 text-center">
         {/* Floating orbs */}
         <div className="pointer-events-none absolute -right-16 -top-20 h-80 w-80 animate-[orbFloat_8s_ease-in-out_infinite] rounded-full bg-white/[0.04]" />
         <div className="pointer-events-none absolute -bottom-16 -left-10 h-52 w-52 animate-[orbFloat_6s_3s_ease-in-out_infinite] rounded-full bg-white/[0.03]" />
@@ -46,7 +46,7 @@ export default function AboutPage() {
           </p>
 
           {/* Hero stat strip */}
-          <div className="flex flex-wrap justify-center gap-3">
+          {/* <div className="flex flex-wrap justify-center gap-3">
             {stats.map(([val, lbl]) => (
               <div
                 key={lbl}
@@ -56,7 +56,7 @@ export default function AboutPage() {
                 <div className="mt-1 text-[11px] font-semibold tracking-wide text-blue-200/75">{lbl}</div>
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
       </section>
 
