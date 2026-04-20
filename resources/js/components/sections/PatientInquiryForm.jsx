@@ -328,7 +328,7 @@ export default function PatientInquiryForm() {
                   >
                     {loading
                       ? <span style={{ width: 20, height: 20, borderRadius: '50%', border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: C.white, display: 'inline-block', animation: 'spin 0.7s linear infinite' }} />
-                      : <>📋 Submit Inquiry</>
+                      : <>Submit Inquiry</>
                     }
                   </button>
 

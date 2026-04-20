@@ -14,58 +14,148 @@ export default function ContactPage() {
   return (
     <>
       <Navbar/>
-      {/* HERO SECTION */}
-     <section className="relative isolate overflow-hidden bg-slate-950 pb-32 pt-6">
-  {/* Modern Mesh Gradient Background */}
-  <div className="absolute inset-0 -z-10">
+{/* HERO SECTION */}
+<section className="relative isolate overflow-hidden bg-gradient-to-br from-[#020617] via-[#071a3d] to-[#020617] py-16 md:py-20 lg:py-24 text-center">
+
+  {/* Background Effects */}
+  <div className="absolute inset-0 -z-10 overflow-hidden">
+
+    {/* Glow Gradients */}
     <div 
-      className="absolute inset-0 opacity-30"
+      className="absolute inset-0 opacity-40"
       style={{
         backgroundImage: `
-          radial-gradient(circle at 20% 35%, rgba(6, 71, 0, 0.4) 0%, transparent 40%),
-          radial-gradient(circle at 80% 10%, rgba(0, 61, 7, 0.3) 0%, transparent 50%)
+          radial-gradient(circle at 20% 30%, rgba(0, 102, 255, 0.35) 0%, transparent 45%),
+          radial-gradient(circle at 80% 20%, rgba(0, 180, 255, 0.25) 0%, transparent 50%),
+          radial-gradient(circle at 50% 80%, rgba(0, 80, 200, 0.25) 0%, transparent 50%)
         `
       }}
     />
-    {/* Subtle Grid Pattern */}
-    <div className="absolute inset-0 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
+
+    {/* Floating Bubbles */}
+    <div className="absolute inset-0">
+      <div className="bubble bubble1" />
+      <div className="bubble bubble2" />
+      <div className="bubble bubble3" />
+      <div className="bubble bubble4" />
+    </div>
+
+    {/* Grid */}
+    <div className="absolute inset-0 opacity-[0.05] 
+      bg-[linear-gradient(to_right,#ffffff10_1px,transparent_1px),
+      linear-gradient(to_bottom,#ffffff10_1px,transparent_1px)] 
+      bg-[size:28px_28px]" />
   </div>
 
-  <div className="container relative z-10 mx-auto px-6 text-center">
-    {/* Refined Badge */}
-    <div className="flex justify-center">
-      <span className="rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-cyan-400 shadow-[0_0_20px_rgba(34,211,238,0.2)]">
-        Get in Touch
-      </span>
+  <div className="container relative z-10 mx-auto px-4">
+
+    {/* Badge */}
+    <div className="inline-flex items-center gap-2 mb-5 px-4 py-1.5 rounded-full 
+                    bg-white/10 border border-white/20 text-white/80 text-xs font-semibold tracking-wider backdrop-blur-sm">
+      <span className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
+      Contact Us
     </div>
-    
-    {/* Heading with tight kerning and gradient text */}
-    <h1 className="mt-8 text-5xl font-black tracking-tighter text-white sm:text-7xl lg:text-8xl">
-      Contact <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Us</span>
+
+    {/* Heading */}
+    <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight">
+      Let’s Start a
+      <span className="block bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+        Conversation
+      </span>
     </h1>
-    
-    <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-400 md:text-xl">
-      We're here to help — appointments, queries, second opinions, or emergencies. 
-      <span className="hidden sm:inline"> Reach out and start a conversation today.</span>
+
+    {/* Subtitle */}
+    <p className="mx-auto mt-4 max-w-xl text-sm sm:text-base md:text-lg text-white/70 leading-relaxed">
+      We're here to help — appointments, queries, second opinions, or emergencies.
     </p>
 
-    {/* CTA Group (Optional but modern) */}
-    {/* <div className="mt-10 flex flex-wrap justify-center gap-4">
-      <button className="rounded-xl bg-cyan-500 px-8 py-4 font-bold text-slate-950 transition-all hover:bg-cyan-400 hover:shadow-[0_0_25px_rgba(34,211,238,0.4)]">
+    {/* CTA */}
+    {/* <div className="mt-8 flex flex-wrap justify-center gap-3">
+      <a
+        href="/appointment"
+        className="px-6 py-3 rounded-xl bg-white text-blue-900 font-semibold text-sm shadow-lg 
+                   hover:bg-cyan-300 transition-all duration-300"
+      >
         Book Appointment
-      </button>
-      <button className="rounded-xl border border-slate-800 bg-slate-900/50 px-8 py-4 font-bold text-white backdrop-blur-sm transition-all hover:bg-slate-800">
-        View Services
-      </button>
+      </a>
+
+      <a
+        href="mailto:careers@raddiantplus.com"
+        className="px-6 py-3 rounded-xl border border-white/25 text-white/80 font-semibold text-sm 
+                   hover:bg-white/10 transition-all duration-300"
+      >
+        Contact via Email
+      </a>
     </div> */}
+
   </div>
 
-  {/* Modern Slanted Divider */}
-  <div 
-    className="absolute bottom-0 left-0 right-0 h-24 bg-white" 
-    style={{ clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 0)' }} 
-  />
+  {/* Bottom Fade */}
+  <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/40 to-transparent" />
 </section>
+
+{/* BUBBLE STYLES */}
+<style>{`
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,180,255,0.12), transparent); /* ↓ reduced from 0.25 */
+  animation: float 12s infinite ease-in-out;
+  opacity: 0.3; /* added overall lower opacity */
+}
+  .bubble1 {
+    width: 120px;
+    height: 120px;
+    left: 10%;
+    top: 70%;
+    animation-delay: 0s;
+  }
+
+  .bubble2 {
+    width: 80px;
+    height: 80px;
+    left: 80%;
+    top: 60%;
+    animation-delay: 2s;
+  }
+
+  .bubble3 {
+    width: 60px;
+    height: 60px;
+    left: 30%;
+    top: 80%;
+    animation-delay: 4s;
+  }
+
+  .bubble4 {
+    width: 140px;
+    height: 140px;
+    left: 60%;
+    top: 75%;
+    animation-delay: 1s;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-120px) scale(1.1);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.6;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bubble {
+      display: none; /* cleaner mobile UI */
+    }
+  }
+`}</style>
 
       {/* Main Content Sections */}
       <main className="relative z-20 -mt-8">
