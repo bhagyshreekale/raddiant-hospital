@@ -124,7 +124,7 @@ export default function Footer() {
               </div>
               <div className="mt-2">
                 <a
-                  href="/appointment"
+                  href="/appoinment"
                   className="inline-block bg-blue-600 text-white px-5 py-2.5 rounded-full text-[0.875rem] font-semibold transition-all hover:bg-blue-700 active:scale-95"
                 >
                   Book Appointment

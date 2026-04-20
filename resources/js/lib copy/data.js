@@ -18,12 +18,27 @@ export const SITE = {
 };
 
 export const SERVICES = [
+  
+    {
+id:"Eye Care",
+image: "/images/services/eye-care.jpg",
+title: "Eye Care",
+desc: "Comprehensive ophthalmology services including cataract surgery and vision correction.",
+color: "#f4a261",
+  },
   {
     id: "cardiology",
     image: "/images/services/cardiology.jpg",
     title: "Cardiology",
     desc: "Advanced cardiac care with state-of-the-art catheterization labs and expert cardiologists.",
     color: "#e63946",
+  },
+    {
+    id: "pediatrics",
+    image: "/images/services/pediatrics.jpg",
+    title: "Pediatrics",
+    desc: "Specialized care for children from newborns to adolescents in a child-friendly environment.",
+    color: "#00b4d8",
   },
   {
     id: "orthopedics",
@@ -32,14 +47,7 @@ export const SERVICES = [
     desc: "Comprehensive bone, joint, and muscle treatments including joint replacement surgeries.",
     color: "#0a4d8c",
   },
-  {
-    id: "neurology",
-    image: "/images/services/neurology.jpg",
-    title: "Neurology",
-    desc: "Expert diagnosis and treatment of neurological disorders with advanced imaging.",
-    color: "#7b2d8b",
-  },
-  {
+    {
     id: "gynecology",
     image: "/images/services/gynecology.jpg",
     title: "Gynecology & Obstetrics",
@@ -47,12 +55,14 @@ export const SERVICES = [
     color: "#e8a838",
   },
   {
-    id: "pediatrics",
-    image: "/images/services/pediatrics.jpg",
-    title: "Pediatrics",
-    desc: "Specialized care for children from newborns to adolescents in a child-friendly environment.",
-    color: "#00b4d8",
+    id: "neurology",
+    image: "/images/services/neurology.jpg",
+    title: "Neurology",
+    desc: "Expert diagnosis and treatment of neurological disorders with advanced imaging.",
+    color: "#7b2d8b",
   },
+
+
   {
     id: "diagnostics",
     image: "/images/services/diagnostics.jpg",
@@ -74,6 +84,7 @@ export const SERVICES = [
     desc: "Minimally invasive laparoscopic and open surgery by experienced surgeons.",
     color: "#0a4d8c",
   },
+
 ];
 
 export const DOCTORS = [

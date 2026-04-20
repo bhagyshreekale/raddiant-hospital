@@ -5,7 +5,7 @@ import { FaEnvelope, FaPhoneAlt, FaUserMd, FaArrowRight, FaMapMarkerAlt } from '
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import FloatingActions from '../components/design/FloatingActions';
-
+import { FaHospital, FaGraduationCap, FaHeart } from "react-icons/fa";
 export const metadata = {
   title: 'Careers | Raddiant Plus Hospital',
   description:
@@ -64,104 +64,109 @@ export default function CareersPage() {
         {/* ════════════════════════════════════
             1. HERO
         ════════════════════════════════════ */}
-        <section className="relative min-h-[70vh] flex items-center bg-[#0A1F44] overflow-hidden">
+  <section className="relative min-h-[50vh] flex items-center bg-[#0A1F44] overflow-hidden">
 
-          {/* Dot-grid texture */}
-          <div
-            className="absolute inset-0 opacity-[0.07] pointer-events-none"
-            style={{
-              backgroundImage: 'radial-gradient(circle, #000000 1px, transparent 1px)',
-              backgroundSize: '30px 30px',
-            }}
-          />
+  {/* Dot-grid texture */}
+  <div
+    className="absolute inset-0 opacity-[0.06] pointer-events-none"
+    style={{
+      backgroundImage: 'radial-gradient(circle, #000000 1px, transparent 1px)',
+      backgroundSize: '26px 26px',
+    }}
+  />
 
-          {/* Glow blobs */}
-          <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-blue-600/20 blur-[120px] pointer-events-none" />
-          <div className="absolute -bottom-32 left-0 w-[400px] h-[400px] rounded-full bg-sky-500/10 blur-[100px] pointer-events-none" />
+  {/* Glow blobs */}
+  <div className="absolute top-0 right-0 w-[400px] h-[400px] md:w-[550px] md:h-[550px] rounded-full bg-blue-600/20 blur-[100px]" />
+  <div className="absolute -bottom-20 left-0 w-[250px] h-[250px] md:w-[350px] md:h-[350px] rounded-full bg-sky-500/10 blur-[80px]" />
 
-          {/* Decorative rings */}
-          {[360, 520, 680].map((size, i) => (
-            <div
-              key={i}
-              className="absolute top-1/2 -right-16 -translate-y-1/2 rounded-full border border-white/10 animate-pulse pointer-events-none"
-              style={{
-                width: size,
-                height: size,
-                animationDelay: `${i * 0.6}s`,
-                animationDuration: `${5 + i}s`,
-              }}
-            />
-          ))}
+  {/* Rings (reduced) */}
+  {[320, 480].map((size, i) => (
+    <div
+      key={i}
+      className="hidden md:block absolute top-1/2 -right-20 -translate-y-1/2 rounded-full border border-white/10 animate-pulse"
+      style={{
+        width: size,
+        height: size,
+        animationDelay: `${i * 0.6}s`,
+        animationDuration: `${5 + i}s`,
+      }}
+    />
+  ))}
 
-          <div className="relative z-10 container mx-auto px-6 md:px-10 py-28 md:py-36">
-            <div className="max-w-2xl">
+  <div className="relative z-10 container mx-auto px-4 md:px-8 py-16 md:py-20">
+    <div className="max-w-xl">
 
-              {/* Eyebrow */}
-              <div className="inline-flex items-center gap-2.5 bg-white/10 border border-white/20 text-white/85 text-[11px] font-bold uppercase tracking-[0.14em] px-4 py-2 rounded-full mb-8">
-                <FaUserMd className="text-amber-400 text-xs" />
-                We're Hiring · Nashik
-              </div>
+      {/* Eyebrow */}
+      <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white/80 text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full mb-5">
+        <FaUserMd className="text-amber-400 text-[10px]" />
+        We're Hiring · Nashik
+      </div>
 
-              {/* Heading */}
-              <h1 className="text-4xl sm:text-5xl md:text-[60px] font-extrabold text-white leading-[1.08] tracking-tight mb-6">
-                Build a Career<br />
-                That{' '}
-                <span className="relative inline-block">
-                  <span className="bg-gradient-to-r from-amber-300 via-orange-300 to-amber-400 bg-clip-text text-transparent">
-                    Saves Lives
-                  </span>
-                  <span className="absolute -bottom-1 left-0 w-full h-2 bg-amber-400/20 rounded-sm pointer-events-none" />
-                </span>
-              </h1>
+      {/* Heading */}
+      <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-4">
+        Build a Career <br />
+        <span className="bg-gradient-to-r from-green-300 to-red-400 bg-clip-text text-transparent">
+          That Saves Lives
+        </span>
+      </h1>
 
-              {/* Sub */}
-              <p className="text-white/60 text-base md:text-lg leading-relaxed mb-10 max-w-lg">
-                Join Raddiant Plus Hospital's growing team of{' '}
-                <strong className="text-white/90 font-semibold">350+ healthcare professionals</strong>{' '}
-                dedicated to compassionate care in Nashik.
-              </p>
+      {/* Sub */}
+      <p className="text-white/70 text-sm md:text-base leading-relaxed mb-6">
+        Join Raddiant Plus Hospital's growing team of{' '}
+        <strong className="text-white">350+ professionals</strong> dedicated to compassionate care.
+      </p>
 
-              {/* CTAs */}
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="#open-positions"
-                  className="inline-flex items-center gap-2.5 bg-white text-blue-800 px-7 py-4 rounded-2xl font-bold text-sm shadow-2xl shadow-black/30 transition-all duration-200 hover:bg-amber-300 hover:text-blue-900 active:scale-95"
-                >
-                  View Open Positions <FaArrowRight className="text-xs" />
-                </a>
-                <a
-                  href="mailto:careers@raddiantplus.com"
-                  className="inline-flex items-center gap-2.5 px-7 py-4 rounded-2xl border border-white/25 text-white/85 font-bold text-sm hover:bg-white/10 transition-colors duration-200"
-                >
-                  <FaEnvelope className="text-xs" /> Send Your CV
-                </a>
-              </div>
+      {/* CTAs */}
+      <div className="flex flex-wrap gap-3">
+        <a
+          href="#open-positions"
+          className="inline-flex items-center gap-2 bg-white text-blue-800 px-5 py-2.5 rounded-xl font-semibold text-xs shadow-lg transition hover:bg-amber-300"
+        >
+          View Jobs <FaArrowRight className="text-[10px]" />
+        </a>
 
-              {/* Scroll hint */}
-              <div className="mt-14 flex items-center gap-3 text-white/25 text-[10px] font-bold tracking-widest uppercase select-none">
-                <div className="w-6 h-px bg-white/25" />
-                Scroll to explore
-              </div>
-            </div>
-          </div>
+        <a
+          href="mailto:careers@raddiantplus.com"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-white/25 text-white/80 font-semibold text-xs hover:bg-white/10"
+        >
+          <FaEnvelope className="text-[10px]" /> Send CV
+        </a>
+      </div>
 
-          {/* Floating feature cards — xl screens only */}
-          <div className="hidden xl:flex absolute right-24 top-1/2 -translate-y-1/2 flex-col gap-3 z-10">
-            {[
-              { emoji: '🏥', text: 'State-of-the-art facility' },
-              { emoji: '🎓', text: 'Continuous learning' },
-              { emoji: '❤️', text: 'Patient-first culture' },
-            ].map((item) => (
-              <div
-                key={item.text}
-                className="flex items-center gap-3 bg-white/8 border border-white/12 backdrop-blur-md rounded-2xl px-5 py-3.5 text-white/75 text-sm font-medium"
-              >
-                <span className="text-lg">{item.emoji}</span>
-                {item.text}
-              </div>
-            ))}
-          </div>
-        </section>
+      {/* Scroll hint */}
+      <div className="mt-8 flex items-center gap-2 text-white/30 text-[9px] font-bold tracking-widest uppercase">
+        <div className="w-5 h-px bg-white/30" />
+        Scroll
+      </div>
+
+    </div>
+  </div>
+
+{/* Floating cards (only large screens) */}
+<div className="hidden lg:flex absolute right-16 top-1/2 -translate-y-1/2 flex-col gap-4">
+  {[
+    { icon: <FaHospital />, text: 'Modern Facility' },
+    { icon: <FaGraduationCap />, text: 'Continuous Learning' },
+    { icon: <FaHeart />, text: 'Care Culture' },
+  ].map((item) => (
+    <div
+      key={item.text}
+      className="flex items-center gap-4 bg-white/10 border border-white/20 backdrop-blur-md 
+                 rounded-2xl px-6 py-4 text-white/90 text-sm font-medium
+                 shadow-lg hover:scale-105 transition-all duration-300"
+    >
+      {/* Icon */}
+      <span className="text-xl text-white-600">
+        {item.icon}
+      </span>
+
+      {/* Text */}
+      <span>{item.text}</span>
+    </div>
+  ))}
+</div>
+
+</section>
 
         {/* ════════════════════════════════════
             2. STATS BAR

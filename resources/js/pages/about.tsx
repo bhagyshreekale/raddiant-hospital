@@ -26,39 +26,47 @@ export default function AboutPage() {
       <Navbar />
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0f2460] via-green-700 to-green-700 py-20 lg:py-20 text-center">
-        {/* Floating orbs */}
-        <div className="pointer-events-none absolute -right-16 -top-20 h-80 w-80 animate-[orbFloat_8s_ease-in-out_infinite] rounded-full bg-white/[0.04]" />
-        <div className="pointer-events-none absolute -bottom-16 -left-10 h-52 w-52 animate-[orbFloat_6s_3s_ease-in-out_infinite] rounded-full bg-white/[0.03]" />
+<section className="relative overflow-hidden py-20 lg:py-20 text-center">
 
-        <div className="relative z-10 container mx-auto px-4">
-          {/* Pill */}
-          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-sm">
-            <span className="h-2 w-2 animate-pulse rounded-full bg-cyan-300" />
-            <span className="text-[11px] font-bold uppercase tracking-widest text-cyan-200">About Us</span>
-          </div>
+  {/* Background Image */}
+  <div className="absolute inset-0">
+    <img
+      src="/images/about.jpg" 
+      alt="Background"
+      className="w-full h-full object-cover"
+    />
 
-          <h1 className="mx-auto mb-5 font-serif text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-6xl">
-            Our Story &amp; Mission
-          </h1>
-          <p className="mx-auto mb-10 max-w-lg text-base leading-relaxed text-blue-100/80 md:text-lg">
-            Building healthier communities in Nashik through excellence, compassion, and innovation.
-          </p>
+    {/* Blur + Dark Overlay */}
+    <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+  </div>
 
-          {/* Hero stat strip */}
-          {/* <div className="flex flex-wrap justify-center gap-3">
-            {stats.map(([val, lbl]) => (
-              <div
-                key={lbl}
-                className="min-w-[130px] rounded-2xl border border-white/15 bg-white/8 px-6 py-4 text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:bg-white/14"
-              >
-                <div className="font-serif text-2xl font-extrabold text-white">{val}</div>
-                <div className="mt-1 text-[11px] font-semibold tracking-wide text-blue-200/75">{lbl}</div>
-              </div>
-            ))}
-          </div> */}
-        </div>
-      </section>
+  {/* Floating Orbs (optional keep) */}
+  <div className="pointer-events-none absolute -right-16 -top-20 h-80 w-80 animate-[orbFloat_8s_ease-in-out_infinite] rounded-full bg-white/[0.05]" />
+  <div className="pointer-events-none absolute -bottom-16 -left-10 h-52 w-52 animate-[orbFloat_6s_3s_ease-in-out_infinite] rounded-full bg-white/[0.04]" />
+
+  {/* Content */}
+  <div className="relative z-10 container mx-auto px-4">
+
+    {/* Pill */}
+    <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-sm">
+      <span className="h-2 w-2 animate-pulse rounded-full bg-blue-900" />
+      <span className="text-[11px] font-bold uppercase tracking-widest text-blue-950">
+        About Us
+      </span>
+    </div>
+
+    {/* Heading */}
+    <h1 className="mx-auto mb-5 font-serif text-4xl font-extrabold leading-tight text-white md:text-5xl lg:text-6xl">
+      Our Story &amp; Mission
+    </h1>
+
+    {/* Description */}
+    <p className="mx-auto mb-10 max-w-lg text-base leading-relaxed text-blue-100/80 md:text-lg">
+      Building healthier communities in Nashik through excellence, compassion, and innovation.
+    </p>
+
+  </div>
+</section>
 
       {/* ── Who We Are ── */}
       <section className="bg-white py-16 md:py-24">

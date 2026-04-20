@@ -78,20 +78,26 @@ export default function ServiceCard({ service, index = 0 }) {
 
         {/* CTA */}
         <div className="flex items-center justify-between pt-5 border-t border-slate-100">
-          <a
-            href="/appointment"
-            className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider
-                       text-sky-600 hover:text-sky-700 transition-colors duration-200"
-          >
-            Book Now
-            <svg
-              className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+      <button
+  onClick={() => window.location.href = "/appoinment"}
+  className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider
+             text-sky-600 hover:text-sky-700 transition-colors duration-200 group"
+>
+  Book Now
+  <svg
+    className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2.5}
+      d="M17 8l4 4m0 0l-4 4m4-4H3"
+    />
+  </svg>
+</button>
 
           {/* Glowing dot */}
           <span

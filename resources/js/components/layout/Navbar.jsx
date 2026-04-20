@@ -138,7 +138,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="/appointment"
+              href="/appoinment"
               className="mt-2 bg-blue-600 text-white text-center py-3 rounded-lg font-semibold active:bg-blue-700 transition-colors"
               onClick={() => setMenuOpen(false)}
             >
