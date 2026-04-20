@@ -233,7 +233,7 @@ const Preloader: React.FC = () => {
                                 marginTop: 7,
                             }}
                         >
-                            Advanced Healthcare
+                          Touching Lives, Healing Souls
                         </div>
                     </div>
 

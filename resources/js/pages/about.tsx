@@ -81,6 +81,9 @@ export default function AboutPage() {
               <h2 className="mb-2 font-serif text-3xl font-extrabold text-slate-900 md:text-4xl">
                 Part of the Trusted Raddiant Group
               </h2>
+              <h3 className="mb-6 font-serif text-2xl font-bold text-slate-700">
+                Touching Lives, Healing Souls
+              </h3>
               <div className="mb-6 h-[3px] w-12 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
               <div className="space-y-4 text-[15px] leading-relaxed text-slate-600">
                 <p>Raddiant Plus Hospital delivers comprehensive hospital and diagnostic care in a state-of-the-art hub. As part of the <strong className="font-bold text-slate-900">NABH-compliant Raddiant Group</strong>, we are committed to high-quality, patient-centric healthcare.</p>

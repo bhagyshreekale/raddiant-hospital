@@ -35,6 +35,7 @@ export default function AboutPreview() {
 
             <h2 className="mb-4 font-serif text-3xl font-extrabold leading-tight text-slate-900 md:text-4xl lg:text-5xl">
               Healthcare Excellence in the Heart of Nashik
+           
             </h2>
 
             {/* Animated underline */}

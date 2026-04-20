@@ -35,7 +35,7 @@ export default function Footer() {
             <div className="flex items-center gap-3">
                       <a href="/" className="no-underline flex items-center gap-2">
             <img
-              src="images/logo.png"
+              src="images/preloader.png"
               alt="Raddiant Plus Hospital"
               width={140}
               height={70}
@@ -43,6 +43,8 @@ export default function Footer() {
             />
           </a>
             </div>
+
+            <p>  Touching Lives, Healing Souls</p>
             <p className="text-[0.88rem] leading-[1.7] max-w-xs">
               Delivering comprehensive multispecialty hospital and diagnostic care. 
               NABH-compliant, patient-centric healthcare with advanced medical technology.
