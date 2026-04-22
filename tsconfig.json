@@ -119,5 +119,5 @@
         "resources/js/**/*.ts",
         "resources/js/**/*.d.ts",
         "resources/js/**/*.tsx"
-, "resources/js/components/sections/HeroSection.jsx"    ]
+, "resources/js/components/sections/HeroSection.jsx", "resources/js/components/sections/MapSection.jsx"    ]
 }
