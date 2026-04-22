@@ -4,23 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Doctor extends Model
+class Testimonial extends Model
 {
     protected $fillable = [
-        'name',
         'specialization_id',
-        'education',
-        'image',
-        'availability',
+        'patient_name',
+        'patient_type',
+        'description',
+        'profile_image',
     ];
 
     public function specialization()
     {
         return $this->belongsTo(Specialization::class);
-    }
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class);
     }
 }
