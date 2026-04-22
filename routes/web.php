@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\ContactController;
 
 Route::inertia('/', 'welcome', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -55,6 +56,7 @@ Route::inertia('/appoinment', 'appoinment', [
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
     Route::inertia('admin/dashboard', 'admin/dashboard')->name('dashboard');
+      Route::resource('admin/contact', ContactController::class);
 });
 
 require __DIR__.'/settings.php';
