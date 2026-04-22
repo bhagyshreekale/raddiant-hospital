@@ -1,5 +1,20 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import {
+    BookOpen,
+    FolderGit2,
+    LayoutGrid,
+    Stethoscope,
+    UserCog,
+    MessageSquare,
+    Calendar,
+    Bed,
+    Package,
+    Shield,
+    Image,
+    Briefcase,
+    FileText,
+    Users,
+} from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -13,14 +28,68 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard } from '@/routes';
 import type { NavItem } from '@/types';
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: '/admin/dashboard',
         icon: LayoutGrid,
+    },
+    {
+        title: 'Specializations',
+        href: '/admin/specializations',
+        icon: Stethoscope,
+    },
+    {
+        title: 'Doctors',
+        href: '/admin/doctors',
+        icon: UserCog,
+    },
+    {
+        title: 'Testimonials',
+        href: '/admin/testimonials',
+        icon: MessageSquare,
+    },
+    {
+        title: 'Appointments',
+        href: '/admin/appointments',
+        icon: Calendar,
+    },
+    {
+        title: 'Bed Availability',
+        href: '/admin/bed-availability',
+        icon: Bed,
+    },
+    {
+        title: 'Health Packages',
+        href: '/admin/health-packages',
+        icon: Package,
+    },
+    {
+        title: 'Insurance Partners',
+        href: '/admin/insurance-partners',
+        icon: Shield,
+    },
+    {
+        title: 'Gallery',
+        href: '/admin/gallery',
+        icon: Image,
+    },
+    {
+        title: 'Careers',
+        href: '/admin/careers',
+        icon: Briefcase,
+    },
+    {
+        title: 'Job Applications',
+        href: '/admin/job-applications',
+        icon: FileText,
+    },
+    {
+        title: 'Admins',
+        href: '/admin/admins',
+        icon: Users,
     },
 ];
 
@@ -44,7 +113,7 @@ export function AppSidebar() {
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton size="lg" asChild>
-                            <Link href={dashboard()} prefetch>
+                            <Link href="/admin/dashboard" prefetch>
                                 <AppLogo />
                             </Link>
                         </SidebarMenuButton>
