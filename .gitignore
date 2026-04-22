@@ -26,3 +26,4 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+database/migrations/2026_04_22_052033_create_hospital_management_tables.php
