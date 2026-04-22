@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\BlogController;
 
 Route::inertia('/', 'welcome', [
     'canRegister' => Features::enabled(Features::registration()),
@@ -54,6 +55,7 @@ Route::inertia('/appoinment', 'appoinment', [
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
+     Route::resource('admin/blogs', BlogController::class);
     Route::inertia('admin/dashboard', 'admin/dashboard')->name('dashboard');
 });
 
