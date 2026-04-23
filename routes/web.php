@@ -9,6 +9,7 @@ use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HealthPackageController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\TaskController;
@@ -27,9 +28,7 @@ Route::inertia('/home', 'home', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('home-one');
 
-Route::inertia('/services', 'services', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('services');
+Route::get('/services', [ServiceController::class, 'publicShow'])->name('services');
 
 Route::get('/gallery', [GalleryController::class, 'publicShow'])->name('gallery');
 
@@ -65,6 +64,7 @@ Route::delete('/upload/image', [ImageController::class, 'delete'])->name('image.
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
     Route::resource('admin/specializations', SpecializationController::class);
+    Route::resource('admin/services', ServiceController::class);
     Route::resource('admin/doctors', DoctorController::class);
     Route::resource('admin/testimonials', TestimonialController::class);
     Route::resource('admin/appointments', AppointmentController::class);

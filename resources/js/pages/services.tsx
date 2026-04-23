@@ -8,13 +8,19 @@ import ServiceCard from '../components/design/ServiceCard';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import CTABanner from '../components/sections/CTABanner';
-import { SERVICES } from '../lib copy/data';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-interface RadialBgStyle {
-  backgroundColor: string;
-  background: string;
+interface ServiceData {
+  id: number;
+  title: string;
+  image: string;
+  desc: string;
+  color: string;
+}
+
+interface ServicesPageProps {
+  services: ServiceData[];
 }
 
 // ─── Constants ───────────────────────────────────────────────────────────────
@@ -24,7 +30,7 @@ const DIAGNOSTIC_TESTS: string[] = [
   'Full Pathology', 'ECG & Holter', 'PFT & ABG', 'Bone Densitometry',
 ];
 
-const radialBgStyle: RadialBgStyle = {
+const radialBgStyle = {
   backgroundColor: '#010b14',
   background: `
     radial-gradient(circle at 20% 30%, rgba(0, 194, 203, 0.4) 0%, transparent 50%), 
@@ -69,11 +75,12 @@ const heroStagger: Variants = {
   show: { transition: { staggerChildren: 0.2 } as Transition },
 };
 
-// ─── Component ───────────────────────────────────────────────────────────────
+// ─── Component ──────────────────────────────────────────────────────────────
 
-export default function ServicesPage(): JSX.Element {
+export default function ServicesPage({ services = [] }: ServicesPageProps): JSX.Element {
   return (
     <>
+
       <Navbar />
 
       {/* Page Header */}
@@ -134,9 +141,18 @@ export default function ServicesPage(): JSX.Element {
 
           {/* Cards */}
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {SERVICES.map((s) => (
+            {services.map((s, index) => (
               <div key={s.id}>
-                <ServiceCard service={s} />
+                <ServiceCard 
+                  service={{
+                    id: s.id,
+                    image: s.image,
+                    title: s.title,
+                    desc: s.desc,
+                    color: s.color,
+                  }} 
+                  index={index}
+                />
               </div>
             ))}
           </div>
