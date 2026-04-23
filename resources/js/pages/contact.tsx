@@ -1,10 +1,10 @@
 // src/app/contact/page.jsx
-import MapSection from '../components/sections/MapSection';
-import Faqsection from './faq';
-import PatientInquiryForm from '../components/sections/PatientInquiryForm';
-import Navbar from '../components/layout/Navbar'
-import Footer from '../components/layout/Footer'
 import FloatingActions from '../components/design/FloatingActions'
+import Footer from '../components/layout/Footer'
+import Navbar from '../components/layout/Navbar'
+import MapSection from '../components/sections/MapSection';
+import PatientInquiryForm from '../components/sections/PatientInquiryForm';
+import Faqsection from './faq';
 export const metadata = {
   title: 'Contact Us',
   description: 'Contact Raddiant Plus Hospital Nashik – phone, email, address and map location.',

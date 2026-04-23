@@ -3,12 +3,12 @@
 import { motion } from "framer-motion";
 import type { Variants, Transition } from "framer-motion";
 import type { JSX } from "react";
+import FloatingActions from '../components/design/FloatingActions';
 import ServiceCard from '../components/design/ServiceCard';
+import Footer from '../components/layout/Footer';
+import Navbar from '../components/layout/Navbar';
 import CTABanner from '../components/sections/CTABanner';
 import { SERVICES } from '../lib copy/data';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
-import FloatingActions from '../components/design/FloatingActions';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 

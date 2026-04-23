@@ -1,7 +1,8 @@
 'use client';
-import { useState, ChangeEvent, FormEvent } from 'react';
-import Navbar from '@/components/layout/Navbar';
+import type { ChangeEvent, FormEvent } from 'react';
+import { useState } from 'react';
 import Footer from '@/components/layout/Footer';
+import Navbar from '@/components/layout/Navbar';
 
 interface FormState {
   name: string;
@@ -91,6 +92,7 @@ const OPD_TIMINGS: OpdTiming[] = [
 function FloatingInput({ label, name, type = 'text', value, onChange, error, placeholder, min }: FloatingInputProps) {
   const [focused, setFocused] = useState(false);
   const active = focused || value;
+
   return (
     
     <div style={{ position: 'relative', paddingTop: '8px' }}>
@@ -135,6 +137,7 @@ function FloatingInput({ label, name, type = 'text', value, onChange, error, pla
 function FloatingSelect({ label, name, value, onChange, error, children }: FloatingSelectProps) {
   const [focused, setFocused] = useState(false);
   const active = focused || value;
+
   return (
     <div style={{ position: 'relative', paddingTop: '8px' }}>
       <label style={{
@@ -184,19 +187,41 @@ export default function AppointmentPage() {
 
   const validate = (): FormErrors => {
     const e: FormErrors = {};
-    if (!form.name.trim()) e.name = 'Full name is required';
-    if (!/^\+?[0-9]{10,13}$/.test(form.phone.replace(/\s/g, ''))) e.phone = 'Enter a valid phone number';
-    if (form.email && !/\S+@\S+\.\S+/.test(form.email)) e.email = 'Enter a valid email';
-    if (!form.service) e.service = 'Please select a specialty';
-    if (!form.date) e.date = 'Please select a date';
-    if (!form.gender) e.gender = 'Please select gender';
+
+    if (!form.name.trim()) {
+e.name = 'Full name is required';
+}
+
+    if (!/^\+?[0-9]{10,13}$/.test(form.phone.replace(/\s/g, ''))) {
+e.phone = 'Enter a valid phone number';
+}
+
+    if (form.email && !/\S+@\S+\.\S+/.test(form.email)) {
+e.email = 'Enter a valid email';
+}
+
+    if (!form.service) {
+e.service = 'Please select a specialty';
+}
+
+    if (!form.date) {
+e.date = 'Please select a date';
+}
+
+    if (!form.gender) {
+e.gender = 'Please select gender';
+}
+
     return e;
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
     setForm(f => ({ ...f, [name]: value }));
-    if (errors[name]) setErrors(er => ({ ...er, [name]: '' }));
+
+    if (errors[name]) {
+setErrors(er => ({ ...er, [name]: '' }));
+}
   };
 
   const handleTimeSelect = (t: string): void => {
@@ -206,7 +231,13 @@ export default function AppointmentPage() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const errs = validate();
-    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+
+    if (Object.keys(errs).length > 0) {
+ setErrors(errs);
+
+ return; 
+}
+
     setSubmitted(true);
   };
 
@@ -326,7 +357,9 @@ export default function AppointmentPage() {
                     ))}
                   </div>
                 </div>
-                <button onClick={() => { setSubmitted(false); setForm({ name:'',phone:'',email:'',gender:'',doctor:'',service:'',date:'',time:'',message:'' }); }}
+                <button onClick={() => {
+ setSubmitted(false); setForm({ name:'',phone:'',email:'',gender:'',doctor:'',service:'',date:'',time:'',message:'' }); 
+}}
                   style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', color: '#475569', fontWeight: 600, padding: '12px 28px', borderRadius: '12px', cursor: 'pointer', fontSize: '14px', fontFamily: 'DM Sans, sans-serif', transition: 'all 0.15s' }}>
                   Book Another Appointment
                 </button>

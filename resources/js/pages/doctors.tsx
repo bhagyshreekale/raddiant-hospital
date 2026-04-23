@@ -1,9 +1,9 @@
 import DoctorCard from '../components/design/DoctorCard';
+import FloatingActions from '../components/design/FloatingActions'
+import Footer from '../components/layout/Footer'
+import Navbar from '../components/layout/Navbar'
 import CTABanner from '../components/sections/CTABanner';
 import { DOCTORS } from '../lib copy/data';
-import Navbar from '../components/layout/Navbar'
-import Footer from '../components/layout/Footer'
-import FloatingActions from '../components/design/FloatingActions'
 export const metadata = { 
   title: 'Our Doctors & Specialists', 
   description: 'Meet the expert team of 60+ specialist doctors at Raddiant Plus Hospital Nashik.' 

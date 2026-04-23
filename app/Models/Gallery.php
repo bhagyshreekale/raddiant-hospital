@@ -10,5 +10,7 @@ class Gallery extends Model
     protected $table = "gallery";
     protected $fillable = [
         'image',
+        'title',
+        'category',
     ];
 }
