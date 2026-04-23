@@ -7,10 +7,13 @@ import { SERVICES } from '../../lib copy/data';
 
 /* ────────────────────────────────────────────────
    Filter tags (derive from SERVICES or define manually)
-──────────────────────────────────────────────── */
+─────────────────────────────────────────────── */
 const FILTERS = ['All', 'Diagnostics', 'Surgery', 'Specialty', 'Emergency'];
 
-export default function ServicesSection() {
+export default function ServicesSection({ services = [] }) {
+  // Use database services if available, otherwise use static data
+  const displayServices = services.length > 0 ? services : SERVICES;
+  
   const sectionRef = useRef(null);
   const [inView, setInView]       = useState(false);
   const [active, setActive]       = useState('All');
@@ -29,16 +32,15 @@ export default function ServicesSection() {
   /* Stagger cards into view */
   useEffect(() => {
     if (!inView) return;
-    SERVICES.forEach((_, i) => {
+    displayServices.forEach((_, i) => {
       setTimeout(() => setVisible(prev => [...prev, i]), i * 80);
     });
-  }, [inView]);
+  }, [inView, displayServices]);
 
-  /* Filter logic — if your SERVICES have a `category` field, use it.
-     Otherwise, show all when filter != 'All'. */
+  /* Filter logic */
   const filtered = active === 'All'
-    ? SERVICES
-    : SERVICES.filter(s => s.category === active);
+    ? displayServices
+    : displayServices.filter(s => s.category === active);
 
   return (
     <>
@@ -159,52 +161,6 @@ export default function ServicesSection() {
               </div>
             ))}
           </div>
-
-          {/* ── BOTTOM CTA ROW ──
-          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <a
-              href="/services"
-              className="group inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700
-                         text-white font-bold px-10 py-4 rounded-2xl
-                         shadow-lg shadow-sky-500/30 hover:shadow-xl hover:shadow-sky-500/40
-                         hover:-translate-y-1 active:scale-95 transition-all duration-300"
-            >
-              View All Services
-              <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform"
-                   fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-
-            <a
-              href="/appointment"
-              className="inline-flex items-center gap-2 border-2 border-slate-200
-                         hover:border-sky-400 text-slate-700 hover:text-sky-700
-                         font-bold px-10 py-4 rounded-2xl bg-white
-                         hover:-translate-y-1 active:scale-95 transition-all duration-300"
-            >
-              Book an Appointment
-            </a>
-          </div> */}
-
-          {/* ── TRUST STRIP ── */}
-          {/* <div className="mt-16 flex flex-wrap justify-center items-center gap-6 md:gap-10
-                          pt-10 border-t border-slate-100">
-            {[
-              { icon: '✅', label: 'NABH Accredited' },
-              { icon: '🔬', label: 'NABL Certified Lab' },
-              { icon: '🕐', label: '24×7 Emergency' },
-              { icon: '👨‍⚕️', label: '60+ Specialists' },
-              { icon: '🏆', label: '15+ Years of Trust' },
-            ].map(({ icon, label }) => (
-              <div key={label}
-                   className="flex items-center gap-2 text-slate-500 text-sm font-semibold">
-                <span className="text-base">{icon}</span>
-                {label}
-              </div>
-            ))}
-          </div> */}
 
         </div>
       </section>

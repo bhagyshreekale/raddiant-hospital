@@ -3,30 +3,24 @@
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\BedAvailabilityController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CareerController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HealthPackageController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SpecializationController;
-use App\Http\Controllers\ImageController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
 
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\BlogController;
-
-Route::inertia('/', 'welcome', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home');
-
-Route::inertia('/home', 'home', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('home-one');
+Route::get('/', [HomeController::class, 'publicShow'])->name('home');
 
 Route::get('/services', [ServiceController::class, 'publicShow'])->name('services');
 
@@ -73,10 +67,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('admin/careers', CareerController::class);
     Route::resource('admin/job-applications', JobApplicationController::class);
     Route::resource('admin/admins', AdminUserController::class);
-     Route::resource('admin/blogs', BlogController::class);
+    Route::resource('admin/blogs', BlogController::class);
     Route::inertia('admin/dashboard', 'admin/dashboard')->name('dashboard');
-      Route::resource('admin/contact', ContactController::class);
-      
+    Route::resource('admin/contact', ContactController::class);
+
 });
 
-require __DIR__.'/settings.php'; 
+require __DIR__.'/settings.php';

@@ -10,21 +10,28 @@ import MapSection from '../components/sections/MapSection';
 import ServicesSection from '../components/sections/ServicesSection';
 import TestimonialsSection from '../components/sections/TestimonialsSection';
 import WhyChooseUs from '../components/sections/WhyChooseUs';
-export default function Home() {
+
+interface HomeProps {
+  homeServices?: any[];
+  homeDoctors?: any[];
+  homeTestimonials?: any[];
+}
+
+export default function Home({ homeServices = [], homeDoctors = [], homeTestimonials = [] }: HomeProps) {
   return (
     <>
-    <Navbar/>
+      <Navbar/>
       <HeroSection />
       <EmergencyBanner />
       <AboutPreview />
-      <ServicesSection />
+      <ServicesSection services={homeServices} />
       <WhyChooseUs />
-      <DoctorsSection />
-      <TestimonialsSection />
+      <DoctorsSection doctors={homeDoctors} />
+      <TestimonialsSection testimonials={homeTestimonials} />
       <CTABanner />
       <MapSection />
       <Footer/>
-<FloatingActions/>
+      <FloatingActions/>
     </>
   );
 }
