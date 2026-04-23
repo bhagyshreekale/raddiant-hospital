@@ -101,4 +101,4 @@ export default function BlogPage({ blogs = [] }: BlogPageProps) {
       <FloatingActions />
     </>
   );
-}
+} 
