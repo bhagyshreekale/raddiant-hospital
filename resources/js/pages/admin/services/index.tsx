@@ -16,7 +16,6 @@ interface Service {
     title: string;
     image: string | null;
     description: string | null;
-    color: string | null;
 }
 
 interface Props {
@@ -59,7 +58,6 @@ export default function Index({ services }: Props) {
                                     Title
                                 </TableHead>
                                 <TableHead>Image</TableHead>
-                                <TableHead>Color</TableHead>
                                 <TableHead>Description</TableHead>
                                 <TableHead className="text-right">
                                     Actions
@@ -83,16 +81,6 @@ export default function Index({ services }: Props) {
                                             ) : (
                                                 'No image'
                                             )}
-                                        </TableCell>
-                                        <TableCell>
-                                            <div
-                                                className="h-6 w-6 rounded"
-                                                style={{
-                                                    backgroundColor:
-                                                        service.color ||
-                                                        '#0a4d8c',
-                                                }}
-                                            />
                                         </TableCell>
                                         <TableCell>
                                             {service.description
@@ -132,7 +120,7 @@ export default function Index({ services }: Props) {
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={5}
+                                        colSpan={4}
                                         className="h-24 text-center text-muted-foreground"
                                     >
                                         No services found.

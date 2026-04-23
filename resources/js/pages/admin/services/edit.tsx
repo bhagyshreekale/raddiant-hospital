@@ -11,7 +11,6 @@ interface Service {
     title: string;
     image: string | null;
     description: string | null;
-    color: string | null;
 }
 
 export default function Edit({
@@ -23,7 +22,6 @@ export default function Edit({
         title: service.title || '',
         image: service.image || '',
         description: service.description || '',
-        color: service.color ?? '#0a4d8c',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -66,29 +64,6 @@ export default function Edit({
                                     setData('description', e.target.value)
                                 }
                             />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="color">Accent Color</Label>
-                            <div className="flex items-center gap-3">
-                                <Input
-                                    id="color"
-                                    type="color"
-                                    value={data.color}
-                                    onChange={(e) =>
-                                        setData('color', e.target.value)
-                                    }
-                                    className="h-10 w-20 p-1 cursor-pointer"
-                                />
-                                <Input
-                                    value={data.color}
-                                    onChange={(e) =>
-                                        setData('color', e.target.value)
-                                    }
-                                    className="flex-1"
-                                    placeholder="#0a4d8c"
-                                />
-                            </div>
                         </div>
 
                         <div className="flex gap-4">

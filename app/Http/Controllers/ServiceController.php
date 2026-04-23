@@ -31,7 +31,7 @@ class ServiceController extends Controller
                 'title' => $service->title,
                 'image' => $imagePath,
                 'desc' => $service->description,
-                'color' => $service->color ?? '#0a4d8c',
+                'color' => '#0a4d8c',
             ];
         });
 
