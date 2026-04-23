@@ -31,7 +31,7 @@ export default function Index({ careers }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this career?')) {
-            destroy(`/careers/${id}`);
+            destroy(`/admin/careers/${id}`);
         }
     };
 

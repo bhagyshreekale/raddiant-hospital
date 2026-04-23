@@ -37,7 +37,7 @@ export default function Index({ appointments }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this appointment?')) {
-            destroy(`/appointments/${id}`);
+            destroy(`/admin/appointments/${id}`);
         }
     };
 

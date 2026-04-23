@@ -26,7 +26,7 @@ export default function Index({ admins }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this admin?')) {
-            destroy(`/admins/${id}`);
+            destroy(`/admin/admins/${id}`);
         }
     };
 

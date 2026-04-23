@@ -22,7 +22,7 @@ export default function Index({ tasks }: Props) {
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this task?')) {
             // Using direct string path for the delete request
-            destroy(`/tasks/${id}`);
+            destroy(`/admin/tasks/${id}`);
         }
     };
 

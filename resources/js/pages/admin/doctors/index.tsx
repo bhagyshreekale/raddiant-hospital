@@ -30,7 +30,7 @@ export default function Index({ doctors }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this doctor?')) {
-            destroy(`/doctors/${id}`);
+            destroy(`/admin/doctors/${id}`);
         }
     };
 

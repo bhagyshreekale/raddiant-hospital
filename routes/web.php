@@ -36,9 +36,7 @@ Route::inertia('/facilities', 'facilities', [
     'canRegister' => Features::enabled(Features::registration()),
 ])->name('facilities');
 
-Route::inertia('/doctors', 'doctors', [
-    'canRegister' => Features::enabled(Features::registration()),
-])->name('doctors');
+Route::get('/doctors', [DoctorController::class, 'publicShow'])->name('doctors');
 
 Route::inertia('/about', 'about', [
     'canRegister' => Features::enabled(Features::registration()),

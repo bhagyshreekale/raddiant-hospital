@@ -30,7 +30,7 @@ export default function Index({ testimonials }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this testimonial?')) {
-            destroy(`/testimonials/${id}`);
+            destroy(`/admin/testimonials/${id}`);
         }
     };
 

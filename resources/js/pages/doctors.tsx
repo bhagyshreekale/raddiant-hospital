@@ -3,13 +3,27 @@ import FloatingActions from '../components/design/FloatingActions'
 import Footer from '../components/layout/Footer'
 import Navbar from '../components/layout/Navbar'
 import CTABanner from '../components/sections/CTABanner';
-import { DOCTORS } from '../lib copy/data';
+
 export const metadata = { 
   title: 'Our Doctors & Specialists', 
   description: 'Meet the expert team of 60+ specialist doctors at Raddiant Plus Hospital Nashik.' 
 };
 
-export default function DoctorsPage() {
+interface Doctor {
+  id: number;
+  name: string;
+  specialty: string;
+  experience: string;
+  qual: string;
+  img: string;
+  available: string;
+}
+
+interface DoctorsPageProps {
+  doctors: Doctor[];
+}
+
+export default function DoctorsPage({ doctors = [] }: DoctorsPageProps) {
   return (
  <>
 
@@ -86,7 +100,7 @@ export default function DoctorsPage() {
         <div className="container mx-auto px-4">
           {/* Doctors Grid */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:gap-8">
-            {DOCTORS.map((d) => (
+            {doctors.map((d) => (
               <div key={d.id} className="transition-transform duration-300 hover:z-10 hover:scale-[1.02]">
                 <DoctorCard doctor={d} />
               </div>

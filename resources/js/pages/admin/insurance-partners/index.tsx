@@ -28,7 +28,7 @@ export default function Index({ partners }: Props) {
         if (
             confirm('Are you sure you want to delete this insurance partner?')
         ) {
-            destroy(`/insurance-partners/${id}`);
+            destroy(`/admin/insurance-partners/${id}`);
         }
     };
 

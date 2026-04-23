@@ -27,7 +27,7 @@ export default function Index({ packages }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this health package?')) {
-            destroy(`/health-packages/${id}`);
+            destroy(`/admin/health-packages/${id}`);
         }
     };
 

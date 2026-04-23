@@ -29,7 +29,7 @@ export default function Index({ beds }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this bed availability?')) {
-            destroy(`/bed-availability/${id}`);
+            destroy(`/admin/bed-availability/${id}`);
         }
     };
 
