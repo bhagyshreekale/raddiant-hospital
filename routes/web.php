@@ -7,13 +7,11 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HealthPackageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
@@ -58,7 +56,7 @@ Route::inertia('/gallery', 'gallery', [
     'canRegister' => false,
 ])->name('gallery');
 
-Route::get('/facilities', FacilitiesController::class)->name('facilities');
+Route::get('/facilities', [HealthPackageController::class, 'public'])->name('facilities');
 
 Route::inertia('/doctors', 'doctors', [
     'canRegister' => false,
@@ -89,7 +87,6 @@ Route::delete('/upload/image', [ImageController::class, 'delete'])->name('image.
 
 Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
-    Route::resource('admin/services', ServiceController::class);
     Route::resource('admin/specializations', SpecializationController::class);
     Route::resource('admin/doctors', DoctorController::class);
     Route::resource('admin/testimonials', TestimonialController::class);

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BedAvailability;
 use App\Models\HealthPackage;
+use App\Models\InsurancePartner;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -13,6 +15,32 @@ class HealthPackageController extends Controller
     {
         return Inertia::render('admin/health-packages/index', [
             'packages' => HealthPackage::latest()->get(),
+        ]);
+    }
+
+    public function public(): Response
+    {
+        $bedTypes = ['General Ward', 'Private Rooms', 'ICU / Intensive Care', 'Emergency / ER', 'NICU', 'Maternity'];
+
+        return Inertia::render('facilities', [
+            'healthPackages' => HealthPackage::latest()->get()->map(function ($package) {
+                return [
+                    'id' => $package->id,
+                    'name' => $package->name,
+                    'description' => $package->description,
+                    'price' => $package->price,
+                ];
+            }),
+            'bedAvailability' => BedAvailability::latest()->get()->map(function ($bed, $index) use ($bedTypes) {
+                return [
+                    'id' => $bed->id,
+                    'type' => $bedTypes[$index % count($bedTypes)] ?? 'General Ward',
+                    'available' => $bed->available_beds,
+                    'total' => $bed->total_beds,
+                    'status' => $bed->status,
+                ];
+            }),
+            'partners' => InsurancePartner::latest()->get(),
         ]);
     }
 
