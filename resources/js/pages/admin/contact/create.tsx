@@ -28,9 +28,7 @@ export default function ContactSettings({ contact }: Props) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('admin.contact.update'), {
-            preserveScroll: true,
-        });
+        post('/admin/contact');
     };
 
     return (

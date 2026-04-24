@@ -22,7 +22,7 @@ export default function Home() {
       <DoctorsSection />
       <TestimonialsSection />
       <CTABanner />
-      <MapSection />
+    {/* <MapSection contactData={contactData} /> */}
       <Footer/>
 <FloatingActions/>
     </>

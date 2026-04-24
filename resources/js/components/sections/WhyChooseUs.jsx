@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { USPS } from '../../lib copy/data';
 
 const ICON_MAP = {
@@ -13,27 +13,43 @@ const ICON_MAP = {
 };
 const DEFAULT_META = { emoji: '✅', from: '#0ea5e9', to: '#38bdf8' };
 
+const COLS = 3; // must match lg:grid-cols-3
+
 /* ── USP Card ── */
 function UspCard({ usp, index }) {
   const cardRef = useRef(null);
   const [visible, setVisible] = useState(false);
   const meta = ICON_MAP[usp.icon] ?? DEFAULT_META;
 
+  // Row 0, 2, 4 → slide from RIGHT | Row 1, 3, 5 → slide from LEFT
+  const fromRight      = Math.floor(index / COLS) % 2 === 0;
+  const hiddenTransform = fromRight
+    ? 'translateX(80px) scale(0.97)'
+    : 'translateX(-80px) scale(0.97)';
+
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
+
+    let timer;
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          // stagger each card by its index
-          setTimeout(() => setVisible(true), index * 90);
-          obs.disconnect();
+          // Stagger cards within the same row by column position
+          timer = setTimeout(() => setVisible(true), (index % COLS) * 120);
+        } else {
+          // Card has left the viewport — reset so it re-animates on next scroll
+          clearTimeout(timer);
+          setVisible(false);
         }
+        // ← NO obs.disconnect() here — keeps watching on every scroll
       },
       { threshold: 0.12 }
     );
+
     obs.observe(el);
-    return () => obs.disconnect();
+    return () => { obs.disconnect(); clearTimeout(timer); };
   }, [index]);
 
   return (
@@ -42,11 +58,13 @@ function UspCard({ usp, index }) {
       className="usp-card group relative flex flex-col h-full rounded-3xl overflow-hidden
                  border border-white/10 bg-white/5 backdrop-blur-md
                  hover:-translate-y-2 hover:bg-white/[0.09]
-                 transition-all duration-500 ease-out cursor-default"
+                 cursor-default"
       style={{
-        opacity:   visible ? 1 : 0,
-        transform: visible ? 'translateY(0) scale(1)' : 'translateY(40px) scale(0.97)',
-        transition: `opacity .55s cubic-bezier(.22,1,.36,1), transform .55s cubic-bezier(.22,1,.36,1),
+        opacity:    visible ? 1 : 0,
+        transform:  visible ? 'translateX(0) scale(1)' : hiddenTransform,
+        // ↑ Slowed from .6s → .85s for a smoother, more intentional feel
+        transition: `opacity .85s cubic-bezier(.22,1,.36,1),
+                     transform .85s cubic-bezier(.22,1,.36,1),
                      box-shadow .3s ease, background .3s ease`,
       }}
     >
@@ -109,12 +127,20 @@ function StatPill({ value, label, delay }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let timer;
     const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setTimeout(() => setInView(true), delay); obs.disconnect(); } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          timer = setTimeout(() => setInView(true), delay);
+        } else {
+          clearTimeout(timer);
+          setInView(false); // reset on scroll-out so it re-animates
+        }
+      },
       { threshold: 0.1 }
     );
     obs.observe(el);
-    return () => obs.disconnect();
+    return () => { obs.disconnect(); clearTimeout(timer); };
   }, [delay]);
 
   return (
@@ -125,7 +151,7 @@ function StatPill({ value, label, delay }) {
       style={{
         opacity:   inView ? 1 : 0,
         transform: inView ? 'translateY(0)' : 'translateY(20px)',
-        transition: `opacity .6s ease, transform .6s ease`,
+        transition: `opacity .8s ease, transform .8s ease`,
       }}
     >
       <span className="text-3xl font-black text-white tracking-tight leading-none">{value}</span>
@@ -137,23 +163,25 @@ function StatPill({ value, label, delay }) {
 /* ── Main Section ── */
 export default function WhyChooseUs() {
   const sectionRef = useRef(null);
-  const ctaRef = useRef(null);
-  const headRef = useRef(null);
+  const ctaRef     = useRef(null);
+  const headRef    = useRef(null);
   const [headIn, setHeadIn] = useState(false);
-  const [ctaIn, setCtaIn] = useState(false);
+  const [ctaIn,  setCtaIn]  = useState(false);
 
+  // Header — re-animates on every scroll
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setHeadIn(true); obs.disconnect(); } },
+      ([e]) => setHeadIn(e.isIntersecting),
       { threshold: 0.08 }
     );
     if (headRef.current) obs.observe(headRef.current);
     return () => obs.disconnect();
   }, []);
 
+  // CTA — re-animates on every scroll
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setCtaIn(true); obs.disconnect(); } },
+      ([e]) => setCtaIn(e.isIntersecting),
       { threshold: 0.1 }
     );
     if (ctaRef.current) obs.observe(ctaRef.current);
@@ -187,7 +215,7 @@ export default function WhyChooseUs() {
           50%       { box-shadow: 0 0 0 9px rgba(56,189,248,0); }
         }
         .wcu-pulse { animation: wcu-pulse 2.5s ease-in-out infinite; }
-        .usp-card { will-change: transform, opacity; }
+        .usp-card  { will-change: transform, opacity; }
       `}</style>
 
       <section ref={sectionRef} className="wcu-section wcu-bg wcu-grid relative overflow-hidden py-20 md:py-32">
@@ -214,7 +242,7 @@ export default function WhyChooseUs() {
               style={{
                 opacity:   headIn ? 1 : 0,
                 transform: headIn ? 'translateY(0)' : 'translateY(24px)',
-                transition: 'opacity .7s ease .1s, transform .7s ease .1s',
+                transition: 'opacity .8s ease .1s, transform .8s ease .1s',
               }}
             >
               The{' '}
@@ -229,7 +257,7 @@ export default function WhyChooseUs() {
               style={{
                 opacity:   headIn ? 1 : 0,
                 transform: headIn ? 'translateY(0)' : 'translateY(20px)',
-                transition: 'opacity .7s ease .25s, transform .7s ease .25s',
+                transition: 'opacity .8s ease .25s, transform .8s ease .25s',
               }}
             >
               We combine clinical excellence with compassionate care to deliver
@@ -240,14 +268,14 @@ export default function WhyChooseUs() {
           {/* STATS */}
           <div className="flex flex-wrap justify-center gap-4 mb-14">
             {[
-              { value: '60+',  label: 'Specialists', delay: 0   },
-              { value: '20+',  label: 'Departments', delay: 100 },
+              { value: '60+',  label: 'Specialists',  delay: 0   },
+              { value: '20+',  label: 'Departments',  delay: 100 },
               { value: '15+',  label: 'Years Active', delay: 200 },
-              { value: '24/7', label: 'Emergency',   delay: 300 },
+              { value: '24/7', label: 'Emergency',    delay: 300 },
             ].map(s => <StatPill key={s.label} {...s} />)}
           </div>
 
-          {/* USP GRID — each card watches itself */}
+          {/* USP GRID */}
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {USPS.map((usp, i) => (
               <UspCard key={usp.title} usp={usp} index={i} />
@@ -262,7 +290,7 @@ export default function WhyChooseUs() {
             style={{
               opacity:   ctaIn ? 1 : 0,
               transform: ctaIn ? 'translateY(0)' : 'translateY(28px)',
-              transition: 'opacity .7s ease, transform .7s ease',
+              transition: 'opacity .8s ease, transform .8s ease',
             }}
           >
             <div>
