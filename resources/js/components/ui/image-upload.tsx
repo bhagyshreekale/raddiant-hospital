@@ -27,7 +27,7 @@ export function ImageUpload({ name, label, value, onChange, error }: ImageUpload
         if (!file) return;
 
         setUploading(true);
-        
+
         const formData = new FormData();
         formData.append('image', file);
         formData.append('filename', name);
@@ -41,14 +41,20 @@ export function ImageUpload({ name, label, value, onChange, error }: ImageUpload
                 body: formData,
             });
 
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                console.error('Upload failed:', response.status, errorData);
+                return;
+            }
+
             const data = await response.json();
-            
+
             if (data.url) {
                 setPreview(data.url);
                 onChange?.(data.url);
             }
         } catch (err) {
-            console.error('Upload failed:', err);
+            console.error('Upload error:', err);
         } finally {
             setUploading(false);
         }
