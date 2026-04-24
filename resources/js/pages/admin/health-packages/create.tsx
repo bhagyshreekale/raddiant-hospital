@@ -1,20 +1,40 @@
 import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
-        description: '',
         price: '',
+        features: [''],
+        is_featured: false,
     });
+
+    const addFeature = () => {
+        setData('features', [...data.features, '']);
+    };
+
+    const removeFeature = (index: number) => {
+        setData('features', data.features.filter((_, i) => i !== index));
+    };
+
+    const updateFeature = (index: number, value: string) => {
+        const newFeatures = [...data.features];
+        newFeatures[index] = value;
+        setData('features', newFeatures);
+    };
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/health-packages');
+        post('/admin/health-packages', {
+            data: {
+                ...data,
+                features: data.features.filter(f => f.trim() !== ''),
+            },
+        });
     };
 
     return (
@@ -42,22 +62,6 @@ export default function Create() {
                         </div>
 
                         <div>
-                            <Label htmlFor="description">Description</Label>
-                            <Textarea
-                                id="description"
-                                value={data.description}
-                                onChange={(e) =>
-                                    setData('description', e.target.value)
-                                }
-                            />
-                            {errors.description && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.description}
-                                </p>
-                            )}
-                        </div>
-
-                        <div>
                             <Label htmlFor="price">Price</Label>
                             <Input
                                 id="price"
@@ -73,6 +77,47 @@ export default function Create() {
                                     {errors.price}
                                 </p>
                             )}
+                        </div>
+
+                        <div>
+                            <div className="mb-2 flex items-center justify-between">
+                                <Label>Features</Label>
+                                <Button type="button" variant="outline" size="sm" onClick={addFeature}>
+                                    Add Feature
+                                </Button>
+                            </div>
+                            <div className="space-y-2">
+                                {data.features.map((feature, index) => (
+                                    <div key={index} className="flex gap-2">
+                                        <Input
+                                            value={feature}
+                                            onChange={(e) => updateFeature(index, e.target.value)}
+                                            placeholder={`Feature ${index + 1}`}
+                                        />
+                                        {data.features.length > 1 && (
+                                            <Button
+                                                type="button"
+                                                variant="destructive"
+                                                size="sm"
+                                                onClick={() => removeFeature(index)}
+                                            >
+                                                Remove
+                                            </Button>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                id="is_featured"
+                                checked={data.is_featured}
+                                onChange={(e) => setData('is_featured', e.target.checked)}
+                                className="h-4 w-4 rounded border-gray-300"
+                            />
+                            <Label htmlFor="is_featured">Mark as Featured (Most Popular)</Label>
                         </div>
 
                         <div className="flex gap-4">

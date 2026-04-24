@@ -14,8 +14,9 @@ import {
 interface HealthPackage {
     id: number;
     name: string;
-    description: string;
     price: number;
+    features: string[];
+    is_featured: boolean;
 }
 
 interface Props {
@@ -57,8 +58,8 @@ export default function Index({ packages }: Props) {
                                 <TableHead className="w-[200px]">
                                     Name
                                 </TableHead>
-                                <TableHead>Description</TableHead>
                                 <TableHead>Price</TableHead>
+                                <TableHead>Featured</TableHead>
                                 <TableHead className="text-right">
                                     Actions
                                 </TableHead>
@@ -71,11 +72,17 @@ export default function Index({ packages }: Props) {
                                         <TableCell className="font-medium">
                                             {pkg.name}
                                         </TableCell>
-                                        <TableCell className="max-w-xs truncate">
-                                            {pkg.description}
+                                        <TableCell>
+                                            ₹{Number(pkg.price).toFixed(0)}
                                         </TableCell>
                                         <TableCell>
-                                            ${Number(pkg.price).toFixed(2)}
+                                            {pkg.is_featured ? (
+                                                <span className="rounded-full bg-teal-100 px-2 py-1 text-xs font-semibold text-teal-700">
+                                                    Featured
+                                                </span>
+                                            ) : (
+                                                <span className="text-xs text-muted-foreground">-</span>
+                                            )}
                                         </TableCell>
                                         <TableCell className="space-x-2 text-right">
                                             <Button
@@ -110,14 +117,3 @@ export default function Index({ packages }: Props) {
                                         colSpan={4}
                                         className="h-24 text-center text-muted-foreground"
                                     >
-                                        No health packages found.
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-        </div>
-    );
-}
