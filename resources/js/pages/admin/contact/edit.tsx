@@ -1,11 +1,11 @@
 import { useForm, Link, Head } from '@inertiajs/react';
+import { Save, ArrowLeft, Mail, Phone, Clock, MapPin, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { Save, ArrowLeft, Mail, Phone, Clock, MapPin, Globe } from "lucide-react";
 
 interface Contact {
     id: number;

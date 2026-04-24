@@ -49,13 +49,13 @@ Route::middleware(['web', 'auth:admin'])->group(function () {
         ->name('user-password.update');
 
     Route::post('admin/settings/two-factor/enable', [SecurityController::class, 'enableTwoFactor'])
-        ->name('two-factor.enable');
+        ->name('admin.two-factor.enable');
 
     Route::post('admin/settings/two-factor/disable', [SecurityController::class, 'disableTwoFactor'])
-        ->name('two-factor.disable');
+        ->name('admin.two-factor.disable');
 
     Route::post('admin/settings/two-factor/regenerate', [SecurityController::class, 'regenerateRecoveryCodes'])
-        ->name('two-factor.regenerate');
+        ->name('admin.two-factor.regenerate');
 
     Route::inertia('admin/settings/appearance', 'admin/settings/appearance')->name('appearance.edit');
 });

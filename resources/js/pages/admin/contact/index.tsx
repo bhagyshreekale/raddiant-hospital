@@ -1,19 +1,13 @@
 import { Head, useForm, Link } from '@inertiajs/react';
-import { Pencil, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { 
-    Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
-} from "@/components/ui/table";
-import { Head, Link, router } from '@inertiajs/react'; // Using router for Delete
-import { 
-    Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
-} from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { router } from '@inertiajs/react'; // Using router for Delete
 import { Pencil, Mail, Phone, MapPin, ExternalLink, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+
+import { 
+    Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
+} from "@/components/ui/table";
 
 interface Contact {
     id: number;

@@ -34,11 +34,10 @@ Route::post('/user/confirm-password', fn () => abort(404))->name('password.confi
 Route::get('/user/confirmed-password-status', fn () => abort(404))->name('password.confirmation');
 Route::get('/two-factor-challenge', fn () => abort(404))->name('two-factor.login');
 Route::post('/two-factor-challenge', fn () => abort(404))->name('two-factor.store');
-Route::post('/user/two-factor-authentication', fn () => abort(404))->name('two-factor.enable');
-Route::post('/user/confirmed-two-factor-authentication', fn () => abort(404))->name('two-factor.confirm');
 Route::get('/user/two-factor-qr-code', fn () => abort(404))->name('two-factor.qrcode');
 Route::get('/user/two-factor-recovery-codes', fn () => abort(404))->name('two-factor.recovery-codes');
 Route::post('/user/two-factor-recovery-codes', fn () => abort(404))->name('two-factor.regenerate');
+Route::post('/user/confirmed-two-factor-authentication', fn () => abort(404))->name('two-factor.confirm');
 
 Route::inertia('/', 'welcome', [
     'canRegister' => false,
