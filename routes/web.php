@@ -27,33 +27,35 @@ Route::get('/services', [ServiceController::class, 'publicShow'])->name('service
 Route::get('/gallery', [GalleryController::class, 'publicShow'])->name('gallery');
 
 Route::inertia('/facilities', 'facilities', [
-    'canRegister' => Features::enabled(Features::registration()),
+    'canRegister' => false,
 ])->name('facilities');
 
 Route::get('/doctors', [DoctorController::class, 'publicShow'])->name('doctors');
 
 Route::inertia('/about', 'about', [
-    'canRegister' => Features::enabled(Features::registration()),
+    'canRegister' => false,
 ])->name('about');
 
 Route::inertia('/contact', 'contact', [
-    'canRegister' => Features::enabled(Features::registration()),
+    'canRegister' => false,
 ])->name('contact');
 
 Route::inertia('/careers', 'careers', [
-    'canRegister' => Features::enabled(Features::registration()),
+    'canRegister' => false,
 ])->name('careers');
 
-Route::get('/blog', [BlogController::class, 'public'])->name('blog');
+Route::inertia('/blog', 'blog', [
+    'canRegister' => false,
+])->name('blog');
 
 Route::inertia('/appoinment', 'appoinment', [
-    'canRegister' => Features::enabled(Features::registration()),
+    'canRegister' => false,
 ])->name('appoinment');
 
 Route::post('/upload/image', [ImageController::class, 'upload'])->name('image.upload');
 Route::delete('/upload/image', [ImageController::class, 'delete'])->name('image.delete');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
     Route::resource('admin/specializations', SpecializationController::class);
     Route::resource('admin/services', ServiceController::class);

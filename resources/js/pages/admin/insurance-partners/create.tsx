@@ -8,12 +8,15 @@ import { Label } from '@/components/ui/label';
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
-        logo: '',
+        logo: null as File | string | null,
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post('/admin/insurance-partners');
+        
+        post('/admin/insurance-partners', {
+            preserveScroll: true, 
+        });
     };
 
     return (
@@ -40,16 +43,24 @@ export default function Create() {
                             )}
                         </div>
 
-                        <ImageUpload
-                            name="logo"
-                            label="Logo"
-                            value={data.logo}
-                            onChange={(url) => setData('logo', url)}
-                        />
+                        <div>
+                            <ImageUpload
+                                name="logo"
+                                label="Logo"
+                                // FIX: Ensure we only pass a string or undefined
+                                value={typeof data.logo === 'string' ? data.logo : undefined}
+                                onChange={(val) => setData('logo', val)}
+                            />
+                            {errors.logo && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.logo}
+                                </p>
+                            )}
+                        </div>
 
                         <div className="flex gap-4">
                             <Button type="submit" disabled={processing}>
-                                Save Insurance Partner
+                                {processing ? 'Saving...' : 'Save Insurance Partner'}
                             </Button>
                             <Button variant="ghost" asChild>
                                 <a href="/admin/insurance-partners">Cancel</a>

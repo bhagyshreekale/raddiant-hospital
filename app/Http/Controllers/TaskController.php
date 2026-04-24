@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Task;
@@ -14,7 +15,7 @@ class TaskController extends Controller
     public function index(): Response
     {
         return Inertia::render('admin/tasks/index', [
-            'tasks' => Task::latest()->get()
+            'tasks' => Task::latest()->get(),
         ]);
     }
 
@@ -48,7 +49,7 @@ class TaskController extends Controller
     public function edit(Task $task): Response
     {
         return Inertia::render('admin/tasks/edit', [
-            'task' => $task
+            'task' => $task,
         ]);
     }
 
