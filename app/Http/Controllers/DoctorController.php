@@ -10,6 +10,41 @@ use Inertia\Response;
 
 class DoctorController extends Controller
 {
+    public function publicShow(): Response
+    {
+        $doctors = Doctor::with('specialization')->get()->map(function ($doctor) {
+            $imagePath = $doctor->image;
+            
+            if ($imagePath) {
+                if (str_starts_with($imagePath, '/images/')) {
+                    // Already in public folder - use as-is
+                } elseif (str_starts_with($imagePath, 'http')) {
+                    // External URL - use as-is
+                } else {
+                    // Storage path
+                    $imagePath = '/storage/' . ltrim($imagePath, '/');
+                }
+            } else {
+                // Default placeholder
+                $imagePath = 'https://randomuser.me/api/portraits/doctor.jpg';
+            }
+
+            return [
+                'id' => $doctor->id,
+                'name' => $doctor->name,
+                'specialty' => $doctor->specialization?->name ?? 'General',
+                'qual' => $doctor->education ?? '',
+                'experience' => '10+ Years',
+                'img' => $imagePath,
+                'available' => $doctor->availability ?? 'Mon-Sat',
+            ];
+        });
+
+        return Inertia::render('doctors', [
+            'doctors' => $doctors,
+        ]);
+    }
+
     public function index(): Response
     {
         return Inertia::render('admin/doctors/index', [

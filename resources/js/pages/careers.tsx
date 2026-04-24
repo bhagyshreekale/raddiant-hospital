@@ -1,11 +1,11 @@
 // app/careers/page.jsx
-import JobListingsClient from '../components/sections/JobListingsClient';
 // import { STATS } from '../lib copy/data';
 import { FaEnvelope, FaPhoneAlt, FaUserMd, FaArrowRight, FaMapMarkerAlt } from 'react-icons/fa';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
-import FloatingActions from '../components/design/FloatingActions';
 import { FaHospital, FaGraduationCap, FaHeart } from "react-icons/fa";
+import FloatingActions from '../components/design/FloatingActions';
+import Footer from '../components/layout/Footer';
+import Navbar from '../components/layout/Navbar';
+import JobListingsClient from '../components/sections/JobListingsClient';
 export const metadata = {
   title: 'Careers | Raddiant Plus Hospital',
   description:

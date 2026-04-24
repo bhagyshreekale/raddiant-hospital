@@ -4,44 +4,36 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
-const CATEGORIES = ['Facilities', 'Technology', 'Operation Theatre', 'Staff', 'Patients'];
-
-interface GalleryImage {
+interface Service {
     id: number;
-    image: string;
     title: string;
-    category: string;
+    image: string | null;
+    description: string | null;
 }
 
-interface Props {
-    gallery: GalleryImage;
-}
-
-export default function Edit({ gallery }: Props) {
+export default function Edit({
+    service,
+}: {
+    service: Service;
+}) {
     const { data, setData, put, processing } = useForm({
-        image: gallery.image || '',
-        title: gallery.title || '',
-        category: gallery.category || 'Facilities',
+        title: service.title || '',
+        image: service.image || '',
+        description: service.description || '',
     });
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/gallery/${gallery.id}`);
+        put(`/admin/services/${service.id}`);
     };
 
     return (
         <div className="mx-auto max-w-2xl p-8">
             <Card>
                 <CardHeader>
-                    <CardTitle>Edit Gallery Image</CardTitle>
+                    <CardTitle>Edit Service</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={submit} className="space-y-6">
@@ -50,25 +42,10 @@ export default function Edit({ gallery }: Props) {
                             <Input
                                 id="title"
                                 value={data.title}
-                                onChange={(e) => setData('title', e.target.value)}
-                                placeholder="Enter image title"
+                                onChange={(e) =>
+                                    setData('title', e.target.value)
+                                }
                             />
-                        </div>
-
-                        <div>
-                            <Label htmlFor="category">Category</Label>
-                            <Select value={data.category} onValueChange={(val) => setData('category', val)}>
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {CATEGORIES.map((cat) => (
-                                        <SelectItem key={cat} value={cat}>
-                                            {cat}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
                         </div>
 
                         <ImageUpload
@@ -78,12 +55,23 @@ export default function Edit({ gallery }: Props) {
                             onChange={(url) => setData('image', url)}
                         />
 
+                        <div>
+                            <Label htmlFor="description">Description</Label>
+                            <Textarea
+                                id="description"
+                                value={data.description || ''}
+                                onChange={(e) =>
+                                    setData('description', e.target.value)
+                                }
+                            />
+                        </div>
+
                         <div className="flex gap-4">
                             <Button type="submit" disabled={processing}>
-                                Update Image
+                                Update Service
                             </Button>
                             <Button variant="ghost" asChild>
-                                <a href="/admin/gallery">Cancel</a>
+                                <a href="/admin/services">Cancel</a>
                             </Button>
                         </div>
                     </form>

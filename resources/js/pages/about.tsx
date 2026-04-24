@@ -1,10 +1,10 @@
 'use client';
 
+import FloatingActions from '../components/design/FloatingActions';
+import Footer from '../components/layout/Footer';
+import Navbar from '../components/layout/Navbar';
 import CTABanner from '../components/sections/CTABanner';
 import DoctorsSection from '../components/sections/DoctorsSection';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
-import FloatingActions from '../components/design/FloatingActions';
 
 export default function AboutPage() {
   const stats = [
