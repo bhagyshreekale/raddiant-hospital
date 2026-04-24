@@ -8,8 +8,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
-import { logout } from '@/routes';
-import { edit } from '@/routes/profile';
 import type { User } from '@/types';
 
 type Props = {
@@ -21,7 +19,7 @@ export function UserMenuContent({ user }: Props) {
 
     const handleLogout = () => {
         cleanup();
-        router.flushAll();
+        router.post('/admin/logout');
     };
 
     return (
@@ -33,12 +31,11 @@ export function UserMenuContent({ user }: Props) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem>
                     <Link
-                        className="block w-full cursor-pointer"
-                        href={edit()}
+                        className="flex w-full cursor-pointer items-center"
+                        href="/admin/settings/profile"
                         prefetch
-                        onClick={cleanup}
                     >
                         <Settings className="mr-2" />
                         Settings
@@ -46,17 +43,13 @@ export function UserMenuContent({ user }: Props) {
                 </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-                <Link
-                    className="block w-full cursor-pointer"
-                    href={logout()}
-                    as="button"
-                    onClick={handleLogout}
-                    data-test="logout-button"
-                >
-                    <LogOut className="mr-2" />
-                    Log out
-                </Link>
+            <DropdownMenuItem
+                className="w-full cursor-pointer"
+                onClick={handleLogout}
+                data-test="logout-button"
+            >
+                <LogOut className="mr-2" />
+                Log out
             </DropdownMenuItem>
         </>
     );
