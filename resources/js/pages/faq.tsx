@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
-import { FAQS } from '../lib copy/data';
 import CTABanner from '../components/sections/CTABanner';
+import { FAQS } from '../lib copy/data';
 
 export default function FAQPage() {
   const [open, setOpen] = useState(null);
@@ -24,6 +24,7 @@ export default function FAQPage() {
         <div style={{ maxWidth: 680, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: 12 }}>
           {FAQS.map((faq, i) => {
             const isOpen = open === i;
+
             return (
               <div
                 key={i}

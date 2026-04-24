@@ -1,10 +1,10 @@
 import { Head, useForm } from '@inertiajs/react';
+import { Plus, Pencil, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Pencil, Trash2 } from "lucide-react";
 
 interface Task {
     id: number;
@@ -22,7 +22,7 @@ export default function Index({ tasks }: Props) {
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this task?')) {
             // Using direct string path for the delete request
-            destroy(`/tasks/${id}`);
+            destroy(`/admin/tasks/${id}`);
         }
     };
 

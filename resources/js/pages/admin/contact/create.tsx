@@ -1,11 +1,11 @@
 import { useForm } from '@inertiajs/react';
+import { MapPin, Phone, Mail, Clock, Save, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { MapPin, Phone, Mail, Clock, Save, Globe } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface Props {
     contact?: {
@@ -28,9 +28,7 @@ export default function ContactSettings({ contact }: Props) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route('admin.contact.update'), {
-            preserveScroll: true,
-        });
+        post('/admin/contact');
     };
 
     return (

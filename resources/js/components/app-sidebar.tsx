@@ -17,6 +17,7 @@ import {
     Users,
     LogOut,
     Settings,
+    Activity,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -43,6 +44,11 @@ const adminNavItems: NavItem[] = [
         title: 'Specializations',
         href: '/admin/specializations',
         icon: Stethoscope,
+    },
+    {
+        title: 'Services',
+        href: '/admin/services',
+        icon: Activity,
     },
     {
         title: 'Doctors',

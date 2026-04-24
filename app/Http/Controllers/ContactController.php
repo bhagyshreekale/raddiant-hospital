@@ -24,7 +24,7 @@ class ContactController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('admin/tasks/create');
+        return Inertia::render('admin/contact/create');
     }
 
     /**
@@ -40,7 +40,7 @@ class ContactController extends Controller
             'map_link' => 'nullable|string',
         ]);
 
-        Contact::create($validated);
+        ContactInfo::create($validated);
 
         return redirect()->route('contact.index')
             ->with('message', 'Contact created successfully.');
@@ -49,7 +49,7 @@ class ContactController extends Controller
     /**
      * Show the form for editing the specified task.
      */
-    public function edit(Contact $contact): Response
+    public function edit(ContactInfo $contact): Response
     {
         return Inertia::render('admin/contact/edit', [
             'contact' => $contact,
@@ -59,26 +59,26 @@ class ContactController extends Controller
     /**
      * Update the specified task in storage.
      */
-    public function update(Request $request, Contact $contact)
-    {
-        $validated = $request->validate([
-            'email' => 'required|string|max:255',
-            'phone' => 'nullable|string|max:255',
-            'address' => 'nullable|string',
-            'open_hours' => 'nullable|string',
-            'map_link' => 'nullable|string',
-        ]);
+  public function update(Request $request)
+{
+    $validated = $request->validate([
+        'email' => 'required|email',
+        'phone' => 'required',
+        'address' => 'required',
+        'open_hours' => 'nullable',
+        'map_link' => 'nullable|url',
+    ]);
 
-        $contact->update($validated);
+    // Assuming you have a Contact model or a Settings model
+    ContactInfo::updateOrCreate(['id' => 1], $validated);
 
-        return redirect()->route('contact.index')
-            ->with('message', 'Contact updated successfully.');
-    }
+    return back()->with('success', 'Contact details updated!');
+}
 
     /**
      * Remove the specified task from storage.
      */
-    public function destroy(Contact $contact)
+    public function destroy(ContactInfo $contact)
     {
         $contact->delete();
 

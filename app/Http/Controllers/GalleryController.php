@@ -9,10 +9,45 @@ use Inertia\Response;
 
 class GalleryController extends Controller
 {
+    public function publicShow(): Response
+    {
+        $images = Gallery::all()->map(function ($image) {
+            $imagePath = $image->image;
+            // Handle storage paths - prepend /storage/ if not already a full URL
+            if ($imagePath && !str_starts_with($imagePath, 'http')) {
+                $imagePath = '/storage/' . ltrim($imagePath, '/');
+            }
+
+            return [
+                'id' => $image->id,
+                'title' => $image->title ?? 'Gallery Image',
+                'image' => $imagePath,
+                'category' => $image->category ?? 'Facilities',
+                'span' => 'wide',
+            ];
+        });
+
+        return Inertia::render('gallery', [
+            'images' => $images,
+        ]);
+    }
+
     public function index(): Response
     {
         return Inertia::render('admin/gallery/index', [
-            'images' => Gallery::latest()->get(),
+            'images' => Gallery::latest()->get()->map(function ($image) {
+                $imagePath = $image->image;
+                if ($imagePath && !str_starts_with($imagePath, 'http')) {
+                    $imagePath = '/storage/' . ltrim($imagePath, '/');
+                }
+
+                return [
+                    'id' => $image->id,
+                    'image' => $imagePath,
+                    'title' => $image->title ?? '',
+                    'category' => $image->category ?? 'Facilities',
+                ];
+            }),
         ]);
     }
 
@@ -25,6 +60,8 @@ class GalleryController extends Controller
     {
         $validated = $request->validate([
             'image' => 'required|string',
+            'title' => 'nullable|string|max:255',
+            'category' => 'nullable|string|max:255',
         ]);
 
         Gallery::create($validated);
@@ -36,7 +73,12 @@ class GalleryController extends Controller
     public function edit(Gallery $gallery): Response
     {
         return Inertia::render('admin/gallery/edit', [
-            'gallery' => $gallery,
+            'gallery' => [
+                'id' => $gallery->id,
+                'image' => $gallery->image,
+                'title' => $gallery->title ?? '',
+                'category' => $gallery->category ?? 'Facilities',
+            ],
         ]);
     }
 
@@ -44,6 +86,8 @@ class GalleryController extends Controller
     {
         $validated = $request->validate([
             'image' => 'required|string',
+            'title' => 'nullable|string|max:255',
+            'category' => 'nullable|string|max:255',
         ]);
 
         $gallery->update($validated);

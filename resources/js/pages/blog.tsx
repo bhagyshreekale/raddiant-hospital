@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useMemo, useCallback } from 'react';
-import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import FeaturedCard from '../components/blog/FeaturedCard';
+import Navbar from '@/components/layout/Navbar';
 import BlogCard from '../components/blog/BlogCard';
 import BlogModal from '../components/blog/BlogModal';
+import FeaturedCard from '../components/blog/FeaturedCard';
 import FloatingActions from '../components/design/FloatingActions';
 
 type Blog = {
@@ -30,6 +30,7 @@ export default function BlogPage({ blogs = [] }: BlogPageProps) {
 
   const categories = useMemo(() => {
     const cats = blogs.map((b) => b.category);
+
     return ['All', ...Array.from(new Set(cats))];
   }, [blogs]);
 
