@@ -12,6 +12,7 @@ use App\Http\Controllers\HealthPackageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
@@ -89,6 +90,7 @@ Route::delete('/upload/image', [ImageController::class, 'delete'])->name('image.
 
 Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
+    Route::resource('admin/services', ServiceController::class);
     Route::resource('admin/specializations', SpecializationController::class);
     Route::resource('admin/doctors', DoctorController::class);
     Route::resource('admin/testimonials', TestimonialController::class);
