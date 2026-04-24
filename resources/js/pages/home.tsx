@@ -29,7 +29,7 @@ export default function Home({ homeServices = [], homeDoctors = [], homeTestimon
       <DoctorsSection doctors={homeDoctors} />
       <TestimonialsSection testimonials={homeTestimonials} />
       <CTABanner />
-      <MapSection />
+    {/* <MapSection contactData={contactData} /> */}
       <Footer/>
       <FloatingActions/>
     </>
