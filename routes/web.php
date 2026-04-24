@@ -7,6 +7,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HealthPackageController;
 use App\Http\Controllers\ImageController;
@@ -57,9 +58,7 @@ Route::inertia('/gallery', 'gallery', [
     'canRegister' => false,
 ])->name('gallery');
 
-Route::inertia('/facilities', 'facilities', [
-    'canRegister' => false,
-])->name('facilities');
+Route::get('/facilities', FacilitiesController::class)->name('facilities');
 
 Route::inertia('/doctors', 'doctors', [
     'canRegister' => false,

@@ -20,6 +20,10 @@ interface HealthPackage {
   featured?: boolean;
 }
 
+interface Props {
+  healthPackages: HealthPackage[];
+}
+
 interface TPA {
   name: string;
   cat: 'public' | 'private' | 'tpa';
@@ -47,25 +51,7 @@ const BED_TYPES: BedType[] = [
   { type: 'Maternity', available: 6, total: 10, icon: '◎', cat: 'private' },
 ];
 
-const HEALTH_PACKAGES: HealthPackage[] = [
-  {
-    name: 'Basic Health Checkup',
-    price: '₹1,499',
-    features: ['Complete Blood Count', 'Blood Sugar (Fasting)', 'Urine Analysis', 'Physician Consultation'],
-  },
-  {
-    name: 'Full Body Pro',
-    price: '₹4,999',
-    features: ['50+ Diagnostic Tests', '12-Lead ECG', 'Chest X-Ray', 'Lipid Profile', 'Specialist Physician'],
-    badge: 'Most Popular',
-    featured: true,
-  },
-  {
-    name: 'Cardiac Care Plus',
-    price: '₹7,999',
-    features: ['TMT / Stress Test', '2D Echocardiography', 'Lipid & Liver Panel', 'Cardiologist Review', 'Diet Consultation'],
-  },
-];
+const HEALTH_PACKAGES: HealthPackage[] = [];
 
 const TPA_LIST: TPA[] = [
   { name: 'Star Health', cat: 'private', color: '#1d4ed8', abbr: 'SH' },
@@ -167,7 +153,7 @@ const TPA_CAT_LABELS: Record<string, string> = {
 };
 
 /* ─── PAGE COMPONENT ─────────────────────────────────────────────────────── */
-export default function FacilitiesPage() {
+export default function FacilitiesPage({ healthPackages }: Props) {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [tpaFilter, setTpaFilter] = useState<'all' | 'public' | 'private' | 'tpa'>('all');
 
@@ -381,7 +367,7 @@ export default function FacilitiesPage() {
           </div>
 
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-            {HEALTH_PACKAGES.map((pkg) => (
+            {healthPackages.map((pkg) => (
               <div
                 key={pkg.name}
                 className={`relative flex flex-col rounded-2xl border p-7 transition-all duration-200 hover:-translate-y-1
