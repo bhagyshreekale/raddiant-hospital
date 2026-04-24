@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -10,19 +11,37 @@ class ImageController extends Controller
 {
     public function upload(Request $request)
     {
+        Log::info('Image upload request started', [
+            'has_file' => $request->hasFile('image'),
+            'file_name' => $request->file('image')?->getClientOriginalName(),
+            'filename_input' => $request->input('filename'),
+        ]);
+
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
         ]);
 
         $file = $request->file('image');
-        $filename = Str::slug($request->input('filename', 'image')).'-'.time().'.'.$file->getClientOriginalExtension();
 
-        $path = $file->store('uploads', ['disk' => 'public']);
+        $extension = strtolower($file->getClientOriginalExtension());
+        $filename = Str::slug($request->input('filename', 'image')).'-'.time().'.'.$extension;
 
-        return response()->json([
-            'url' => asset('storage/'.$path),
-            'path' => $path,
-        ]);
+        try {
+            $path = $file->storeAs('uploads', $filename, ['disk' => 'public']);
+
+            Log::info('Image stored', ['path' => $path, 'filename' => $filename]);
+
+            return response()->json([
+                'url' => asset('storage/'.$path),
+                'path' => $path,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Image upload failed', [
+                'error' => $e->getMessage(),
+                'filename' => $filename,
+            ]);
+            throw $e;
+        }
     }
 
     public function delete(Request $request)

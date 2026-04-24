@@ -2,10 +2,10 @@
 
 'use client';
 
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
 import FloatingActions from '../components/design/FloatingActions';
 import GalleryGrid from '../components/gallery/GalleryGrid';
+import Footer from '../components/layout/Footer';
+import Navbar from '../components/layout/Navbar';
 
 /* ─── GALLERY DATA ───────────────────────────────────────────────────────── */
 // Adding 'span' property to create the "Attractive" Masonry effect
