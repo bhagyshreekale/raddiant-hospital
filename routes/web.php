@@ -56,9 +56,7 @@ Route::inertia('/gallery', 'gallery', [
     'canRegister' => false,
 ])->name('gallery');
 
-Route::inertia('/facilities', 'facilities', [
-    'canRegister' => false,
-])->name('facilities');
+Route::get('/facilities', [HealthPackageController::class, 'public'])->name('facilities');
 
 Route::inertia('/doctors', 'doctors', [
     'canRegister' => false,

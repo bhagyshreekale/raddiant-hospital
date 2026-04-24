@@ -14,8 +14,8 @@ class GalleryController extends Controller
         $images = Gallery::all()->map(function ($image) {
             $imagePath = $image->image;
             // Handle storage paths - prepend /storage/ if not already a full URL
-            if ($imagePath && !str_starts_with($imagePath, 'http')) {
-                $imagePath = '/storage/' . ltrim($imagePath, '/');
+            if ($imagePath && ! str_starts_with($imagePath, 'http')) {
+                $imagePath = '/storage/'.ltrim($imagePath, '/');
             }
 
             return [
@@ -37,8 +37,8 @@ class GalleryController extends Controller
         return Inertia::render('admin/gallery/index', [
             'images' => Gallery::latest()->get()->map(function ($image) {
                 $imagePath = $image->image;
-                if ($imagePath && !str_starts_with($imagePath, 'http')) {
-                    $imagePath = '/storage/' . ltrim($imagePath, '/');
+                if ($imagePath && ! str_starts_with($imagePath, 'http')) {
+                    $imagePath = '/storage/'.ltrim($imagePath, '/');
                 }
 
                 return [

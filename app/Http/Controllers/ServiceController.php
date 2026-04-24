@@ -13,7 +13,7 @@ class ServiceController extends Controller
     {
         $services = Service::all()->map(function ($service) {
             $imagePath = $service->image;
-            
+
             // Handle image paths - different locations
             if ($imagePath) {
                 if (str_starts_with($imagePath, '/images/')) {
@@ -22,7 +22,7 @@ class ServiceController extends Controller
                     // External URL - use as-is
                 } else {
                     // Storage path
-                    $imagePath = '/storage/' . ltrim($imagePath, '/');
+                    $imagePath = '/storage/'.ltrim($imagePath, '/');
                 }
             }
 
