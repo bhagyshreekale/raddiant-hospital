@@ -4,15 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\InsurancePartner;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
-use Illuminate\Support\Facades\Storage;
 
 class InsurancePartnerController extends Controller
 {
     public function index(): Response
     {
         return Inertia::render('admin/insurance-partners/index', [
+            'partners' => InsurancePartner::latest()->get(),
+        ]);
+    }
+
+    public function public(): Response
+    {
+        return Inertia::render('facilities', [
             'partners' => InsurancePartner::latest()->get(),
         ]);
     }
@@ -27,7 +34,7 @@ class InsurancePartnerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             // CHANGED: Validate as an actual image file instead of a string
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048', 
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         // Handle the file upload and save the path
@@ -62,12 +69,12 @@ class InsurancePartnerController extends Controller
             if ($insurancePartner->logo) {
                 Storage::disk('public')->delete($insurancePartner->logo);
             }
-            
+
             // Store the new logo
             $path = $request->file('logo')->store('insurance-partners', 'public');
             $validated['logo'] = $path;
         } else {
-            // If no new file was uploaded, remove 'logo' from the update array 
+            // If no new file was uploaded, remove 'logo' from the update array
             // so we don't accidentally overwrite the existing path with null
             unset($validated['logo']);
         }
