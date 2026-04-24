@@ -4,7 +4,10 @@ import DoctorCard from '../design/DoctorCard';
 import SectionHeader from '../design/SectionHeader';
 import { DOCTORS } from '../../lib copy/data';
 
-export default function DoctorsSection() {
+export default function DoctorsSection({ doctors = [] }) {
+  // Use database doctors if available, otherwise use static data
+  const displayDoctors = doctors.length > 0 ? doctors : DOCTORS;
+  
   return (
     <section className="relative bg-gradient-to-b from-slate-50 to-white py-20 md:py-28 overflow-hidden">
 
@@ -55,7 +58,7 @@ export default function DoctorsSection() {
 
         {/* ── Doctor Grid ── */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 xl:gap-7">
-          {DOCTORS.map((doctor) => (
+          {displayDoctors.map((doctor) => (
             <DoctorCard key={doctor.id} doctor={doctor} />
           ))}
         </div>

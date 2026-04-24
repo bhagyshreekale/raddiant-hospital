@@ -1,4 +1,7 @@
 import { Head, useForm } from '@inertiajs/react';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
     Table,
     TableBody,
@@ -7,9 +10,6 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
 
 interface BedAvailability {
     id: number;
@@ -29,7 +29,7 @@ export default function Index({ beds }: Props) {
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this bed availability?')) {
-            destroy(`/bed-availability/${id}`);
+            destroy(`/admin/bed-availability/${id}`);
         }
     };
 

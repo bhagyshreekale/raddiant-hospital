@@ -23,8 +23,8 @@ class BlogController extends Controller
                     'category' => $blog->category,
                     'description' => $blog->description,
                     'read_time' => $blog->read_time,
-                    'image' => $blog->image 
-                        ? asset('storage/' . $blog->image)
+                    'image' => $blog->image
+                        ? asset('storage/'.$blog->image)
                         : null,
                 ];
             }),
@@ -34,22 +34,22 @@ class BlogController extends Controller
     /**
      * ✅ PUBLIC: Blog page
      */
-  public function public(): Response
-{
-    $blogs = Blog::latest()->get()->map(function ($blog) {
-        return [
-            'id' => $blog->id,
-            'title' => $blog->title,
-            'category' => $blog->category,
-            'description' => $blog->description,
-            'read_time' => $blog->read_time,
-            'image' => $blog->image ? asset('storage/' . $blog->image) : null,
-        ];
-    });
+    public function public(): Response
+    {
+        $blogs = Blog::latest()->get()->map(function ($blog) {
+            return [
+                'id' => $blog->id,
+                'title' => $blog->title,
+                'category' => $blog->category,
+                'description' => $blog->description,
+                'read_time' => $blog->read_time,
+                'image' => $blog->image ? asset('storage/'.$blog->image) : null,
+            ];
+        });
 
-    // This renders 'BlogPage.tsx' and passes the $blogs data as a prop
-   return Inertia::render('blog', ['blogs' => $blogs]);
-} 
+        // This renders 'BlogPage.tsx' and passes the $blogs data as a prop
+        return Inertia::render('blog', ['blogs' => $blogs]);
+    }
 
     public function create(): Response
     {
@@ -90,7 +90,7 @@ class BlogController extends Controller
                 'category' => $blog->category,
                 'description' => $blog->description,
                 'read_time' => $blog->read_time,
-                'image' => $blog->image ? asset('storage/' . $blog->image) : null,
+                'image' => $blog->image ? asset('storage/'.$blog->image) : null,
             ],
         ]);
     }

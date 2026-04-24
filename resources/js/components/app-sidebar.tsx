@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import {
     BookOpen,
     FolderGit2,
@@ -14,6 +15,9 @@ import {
     Briefcase,
     FileText,
     Users,
+    LogOut,
+    Settings,
+    Activity,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -30,7 +34,7 @@ import {
 } from '@/components/ui/sidebar';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const adminNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/admin/dashboard',
@@ -40,6 +44,11 @@ const mainNavItems: NavItem[] = [
         title: 'Specializations',
         href: '/admin/specializations',
         icon: Stethoscope,
+    },
+    {
+        title: 'Services',
+        href: '/admin/services',
+        icon: Activity,
     },
     {
         title: 'Doctors',
@@ -93,11 +102,29 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
+const receptionistNavItems: NavItem[] = [
+    {
+        title: 'Dashboard',
+        href: '/admin/dashboard',
+        icon: LayoutGrid,
+    },
+    {
+        title: 'Appointments',
+        href: '/admin/appointments',
+        icon: Calendar,
+    },
+    {
+        title: 'Bed Availability',
+        href: '/admin/bed-availability',
+        icon: Bed,
+    },
+];
+
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: FolderGit2,
+        title: 'Settings',
+        href: '/admin/settings/profile',
+        icon: Settings,
     },
     {
         title: 'Documentation',
@@ -107,6 +134,12 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage().props;
+    const role = auth?.user?.role;
+    const isAdmin = role === 'admin';
+
+    const mainNavItems = isAdmin ? adminNavItems : receptionistNavItems;
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>

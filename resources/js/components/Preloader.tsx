@@ -10,15 +10,20 @@ const Preloader: React.FC = () => {
                 if (p >= 100) {
                     clearInterval(timer);
                     setTimeout(() => setVisible(false), 400);
+
                     return 100;
                 }
+
                 return p + Math.random() * 18;
             });
         }, 180);
+
         return () => clearInterval(timer);
     }, []);
 
-    if (!visible) return null;
+    if (!visible) {
+return null;
+}
 
     return (
         <>

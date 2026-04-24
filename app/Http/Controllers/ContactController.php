@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\ContactInfo;
@@ -14,7 +15,7 @@ class ContactController extends Controller
     public function index(): Response
     {
         return Inertia::render('admin/contact/index', [
-            'contacts' => ContactInfo::latest()->get()
+            'contacts' => ContactInfo::latest()->get(),
         ]);
     }
 
@@ -51,7 +52,7 @@ class ContactController extends Controller
     public function edit(ContactInfo $contact): Response
     {
         return Inertia::render('admin/contact/edit', [
-            'contact' => $contact
+            'contact' => $contact,
         ]);
     }
 

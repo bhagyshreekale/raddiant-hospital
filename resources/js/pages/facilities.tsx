@@ -1,8 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Navbar from '../components/layout/Navbar'
-import Footer from '../components/layout/Footer'
 import FloatingActions from '../components/design/FloatingActions'
+import Footer from '../components/layout/Footer'
+import Navbar from '../components/layout/Navbar'
 /* ─── TYPES ─────────────────────────────────────────────────────────────── */
 interface BedType {
   type: string;
@@ -148,8 +148,15 @@ const FACILITIES: Facility[] = [
 /* ─── HELPERS ────────────────────────────────────────────────────────────── */
 function getBedColor(available: number, total: number) {
   const r = available / total;
-  if (r > 0.5) return { hex: '#059669', chipBg: '#d1fae5', chipText: '#065f46', label: 'Good Availability' };
-  if (r > 0.2) return { hex: '#d97706', chipBg: '#fef3c7', chipText: '#92400e', label: 'Limited Beds' };
+
+  if (r > 0.5) {
+return { hex: '#059669', chipBg: '#d1fae5', chipText: '#065f46', label: 'Good Availability' };
+}
+
+  if (r > 0.2) {
+return { hex: '#d97706', chipBg: '#fef3c7', chipText: '#92400e', label: 'Limited Beds' };
+}
+
   return { hex: '#dc2626', chipBg: '#fee2e2', chipText: '#991b1b', label: 'Critical — Low' };
 }
 
@@ -167,6 +174,7 @@ export default function FacilitiesPage() {
   useEffect(() => {
     setCurrentTime(new Date());
     const timer = setInterval(() => setCurrentTime(new Date()), 60000);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -276,6 +284,7 @@ export default function FacilitiesPage() {
             {BED_TYPES.map((bed) => {
               const c = getBedColor(bed.available, bed.total);
               const pct = Math.round((bed.available / bed.total) * 100);
+
               return (
                 <div
                   key={bed.type}

@@ -155,7 +155,7 @@ function TestimonialCard({ t, index }) {
         </div>
         <div>
           <div className="text-[13px] font-black text-white leading-tight">{t.name}</div>
-          <div className="text-[11px] text-white/38 mt-0.5 tracking-wide">{t.role}</div>
+          <div className="text-[11px] text-white/38 mt-0.5 tracking-wide italic">{t.role}</div>
         </div>
       </div>
     </article>
@@ -181,7 +181,9 @@ function RatingBar({ label, val, pct, animate }) {
   );
 }
 
-export default function TestimonialsSection() {
+export default function TestimonialsSection({ testimonials = [] }) {
+  // Use database testimonials if available, otherwise use static data
+  const displayTestimonials = testimonials.length > 0 ? testimonials : TESTIMONIALS;
   const footerRef = useRef(null);
   const [footerIn, setFooterIn] = useState(false);
 
@@ -257,7 +259,7 @@ export default function TestimonialsSection() {
 
           {/* Grid */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-14">
-            {TESTIMONIALS.map((t, i) => (
+            {displayTestimonials.map((t, i) => (
               <TestimonialCard key={t.id} t={t} index={i} />
             ))}
           </div>
