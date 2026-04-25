@@ -10,5 +10,15 @@ class HealthPackage extends Model
         'name',
         'description',
         'price',
+        'features',
+        'is_featured',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'features' => 'array',
+            'is_featured' => 'boolean',
+        ];
+    }
 }

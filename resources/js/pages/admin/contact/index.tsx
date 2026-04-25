@@ -1,28 +1,12 @@
-import { Head, Link, router } from '@inertiajs/react';
-import { 
-    Pencil, 
-    Mail, 
-    Phone, 
-    MapPin, 
-    ExternalLink, 
-    Trash2 
-} from "lucide-react";
+import { Head, useForm, Link } from '@inertiajs/react';
+import { router } from '@inertiajs/react'; // Using router for Delete
+import { Pencil, Mail, Phone, MapPin, ExternalLink, Trash2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+
 import { 
-    Card, 
-    CardContent, 
-    CardHeader, 
-    CardTitle, 
-    CardDescription 
-} from "@/components/ui/card";
-import { 
-    Table, 
-    TableBody, 
-    TableCell, 
-    TableHead, 
-    TableHeader, 
-    TableRow 
+    Table, TableBody, TableCell, TableHead, TableHeader, TableRow 
 } from "@/components/ui/table";
 
 interface Contact {
@@ -113,21 +97,28 @@ export default function Index({ contacts }: Props) {
                                             )}
                                         </TableCell>
                                         <TableCell className="text-right space-x-2">
-                                            {/* EDIT BUTTON */}
-                                            <Button variant="outline" size="sm" asChild>
-                                                <Link href={`/admin/contact-settings/${contact.id}/edit`}>
-                                                    <Pencil className="h-4 w-4 mr-2" /> Edit Info
-                                                </Link>
-                                            </Button>
+                                            {/* EDIT BUTTON: Opens the info */}
+                                     {/* Inside your contacts.map((contact) => ( ... )) */}
+
+<Button variant="outline" size="sm" asChild>
+    <Link href={`/admin/contact-settings/${contact.id}/edit`}>
+        <Pencil className="h-4 w-4 mr-2" /> Edit Info
+    </Link>
+</Button>
 
                                             {/* DELETE BUTTON */}
-                                            <Button 
-                                                variant="destructive" 
-                                                size="sm" 
-                                                onClick={() => handleDelete(contact.id)}
-                                            >
-                                                <Trash2 className="h-4 w-4" />
-                                            </Button>
+                                        <Button 
+        variant="destructive" 
+        size="sm" 
+        onClick={() => {
+            if(confirm('Delete?')) {
+                // ADD THE LEADING SLASH HERE TOO
+                router.delete(`/admin/contact-settings/${contact.id}`);
+            }
+        }}
+    >
+        <Trash2 className="h-4 w-4" />
+    </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))
