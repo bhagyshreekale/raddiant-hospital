@@ -2,6 +2,8 @@ import React from 'react';
 import { Head } from '@inertiajs/react';
 import MapSection from '../components/sections/MapSection';
 import PatientInquiryForm from '../components/sections/PatientInquiryForm';
+// Added the missing import below
+import Faqsection from '../components/sections/Faqsection'; 
 import Navbar from '../components/layout/Navbar';
 import Footer from '../components/layout/Footer';
 import FloatingActions from '../components/design/FloatingActions';
