@@ -112,7 +112,6 @@ export default function ContactPage({ contactData }: PageProps) {
 
       <MapSection contactData={contactData} />
 
-      <Faqsection />
       <Footer/>
       <FloatingActions/>
     </>
