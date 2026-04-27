@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 type FormData = {
     title: string;
     category: string;
-    image: File | null; // ✅ FIX HERE
+    image: File | null; 
     description: string;
     read_time: string;
 };
@@ -26,7 +26,7 @@ export default function Create() {
         e.preventDefault();
 
         post('/admin/blogs', {
-            forceFormData: true, // ✅ VERY IMPORTANT for file upload
+            forceFormData: true, 
         });
     };
 

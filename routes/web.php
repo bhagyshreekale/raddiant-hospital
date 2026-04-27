@@ -57,6 +57,7 @@ Route::inertia('/gallery', 'gallery', [
 
 Route::get('/facilities', [HealthPackageController::class, 'public'])->name('facilities');
 
+Route::get('/doctors', [DoctorController::class, 'publicShow'])->name('doctors');
 Route::inertia('/doctors', 'doctors', [
     'doctors' => \App\Models\Doctor::with('specialization')->get()->map(function($doc) {
         return [
@@ -97,6 +98,7 @@ Route::inertia('/careers', 'careers', [
     'canRegister' => false,
 ])->name('careers');
 
+Route::get('/blog', [BlogController::class, 'public'])->name('blog');
 Route::inertia('/blog', 'blog', [
     'blogs' => \App\Models\Blog::latest()->get(),
     'canRegister' => false,
