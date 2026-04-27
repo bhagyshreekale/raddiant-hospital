@@ -238,7 +238,7 @@ function ApplyModal({ job, onClose }) {
         {/* Scrollable body */}
         <div className="flex-1 overflow-y-auto px-6 sm:px-7 py-5 sm:py-6">
           {submitted ? (
-            <div className="flex flex-col items-center text-center py-8 gap-4">
+            <div className="flex flex-col items-center text-center py-10 gap-4">
               <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center">
                 <FaCheckCircle className="text-emerald-500 text-3xl" />
               </div>
@@ -400,7 +400,7 @@ function DetailsDrawer({ job, onClose, onApply }) {
           </div>
           <div>
             <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Key Responsibilities</h4>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {job.responsibilities.map((r) => (
                 <li key={r} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
                   <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
@@ -411,7 +411,7 @@ function DetailsDrawer({ job, onClose, onApply }) {
           </div>
           <div>
             <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Requirements</h4>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {job.requirements.map((r) => (
                 <li key={r} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
                   <FaCheckCircle className="mt-0.5 text-emerald-500 shrink-0 text-xs" />
