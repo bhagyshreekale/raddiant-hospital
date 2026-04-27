@@ -331,7 +331,7 @@ export default function HeroSection() {
 
               {/* Buttons */}
               <div className="hs-su5 hs-btns" style={{ display:'flex', flexWrap:'wrap', gap:'0.85rem' }}>
-                <a href="/appointment" className="hs-btn-primary" style={{
+                <a href="/appoinment" className="hs-btn-primary" style={{
                   display:'inline-flex', alignItems:'center', gap:10,
                   padding:'14px 32px', borderRadius:50,
                   background:'linear-gradient(135deg,#00c2cb,#0090b0)',
