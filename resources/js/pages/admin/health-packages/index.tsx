@@ -117,3 +117,14 @@ export default function Index({ packages }: Props) {
                                         colSpan={4}
                                         className="h-24 text-center text-muted-foreground"
                                     >
+                                        No packages found.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+        </div>
+    );
+}

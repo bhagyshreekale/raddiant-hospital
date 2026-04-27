@@ -184,25 +184,36 @@ function ApplyModal({ job, onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center p-4 overflow-y-auto bg-black/60 backdrop-blur-sm pt-10 sm:pt-20"
+      onClick={onClose}
+    >
+      {/* FIX: added `relative` here so the absolute close button is anchored to this modal card */}
       <div
-        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#0A1F44] px-7 pt-7 pb-6">
-          <button onClick={onClose} className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+        <div className="bg-[#0A1F44] px-7 pt-7 pb-7 rounded-t-3xl relative">
+          {/* FIX: close button now lives inside the header div which is `relative`,
+              positioned top-right with enough offset to be fully visible */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
+            aria-label="Close modal"
+          >
             <FaTimes className="text-xs" />
           </button>
-          <p className="text-white/50 text-[11px] font-bold uppercase tracking-widest mb-1">Applying for</p>
-          <h3 className="text-white text-xl font-extrabold leading-tight">{job.title}</h3>
+
+          <p className="text-white/50 text-[11px] font-bold uppercase tracking-widest mb-1 pr-10">Applying for</p>
+          <h3 className="text-white text-xl font-extrabold leading-tight pr-10">{job.title}</h3>
           <p className="text-white/60 text-sm mt-1">{job.department} · {job.location}</p>
         </div>
 
-        {/* Body */}
-        <div className="px-7 py-6 max-h-[70vh] overflow-y-auto">
+        {/* Body — improved padding & spacing */}
+        <div className="px-7 py-7 max-h-[70vh] overflow-y-auto">
           {submitted ? (
-            <div className="flex flex-col items-center text-center py-8 gap-4">
+            <div className="flex flex-col items-center text-center py-10 gap-4">
               <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center">
                 <FaCheckCircle className="text-emerald-500 text-3xl" />
               </div>
@@ -210,12 +221,15 @@ function ApplyModal({ job, onClose }) {
               <p className="text-slate-500 text-sm max-w-xs leading-relaxed">
                 Thanks <strong className="text-slate-700">{form.name}</strong>! Our HR team will review your application and get back to you within 3–5 business days.
               </p>
-              <button onClick={onClose} className="mt-2 px-8 py-3 bg-[#0A1F44] text-white text-sm font-bold rounded-xl hover:bg-slate-800 transition-colors">
+              <button
+                onClick={onClose}
+                className="mt-2 px-8 py-3 bg-[#0A1F44] text-white text-sm font-bold rounded-xl hover:bg-slate-800 transition-colors"
+              >
                 Close
               </button>
             </div>
           ) : (
-            <form onSubmit={submit} className="flex flex-col gap-4">
+            <form onSubmit={submit} className="flex flex-col gap-5">
               {/* Name + Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-1.5">
@@ -281,7 +295,9 @@ function ApplyModal({ job, onClose }) {
 
               {/* Cover note */}
               <div className="flex flex-col gap-1.5">
-                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">Cover Note <span className="normal-case font-normal">(optional)</span></label>
+                <label className="text-[11px] font-bold text-slate-500 uppercase tracking-widest">
+                  Cover Note <span className="normal-case font-normal">(optional)</span>
+                </label>
                 <textarea
                   name="message" value={form.message} onChange={handle} rows={3}
                   placeholder="Briefly tell us why you're a great fit…"
@@ -316,15 +332,23 @@ function ApplyModal({ job, onClose }) {
 // ── View Details Drawer ───────────────────────────────────────
 function DetailsDrawer({ job, onClose, onApply }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:justify-end bg-black/50 backdrop-blur-sm" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:justify-end bg-black/50 backdrop-blur-sm"
+      onClick={onClose}
+    >
       <div
         className="relative w-full sm:w-[480px] sm:h-full bg-white sm:rounded-l-3xl rounded-t-3xl shadow-2xl overflow-hidden flex flex-col"
         style={{ maxHeight: '92vh' }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="bg-[#0A1F44] px-7 pt-7 pb-6 shrink-0">
-          <button onClick={onClose} className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors">
+        <div className="bg-[#0A1F44] px-7 pt-8 pb-7 shrink-0 relative">
+          {/* FIX: close button anchored to this relative header, always visible */}
+          <button
+            onClick={onClose}
+            className="absolute top-5 right-5 w-8 h-8 rounded-full bg-white/15 hover:bg-white/30 flex items-center justify-center text-white transition-colors"
+            aria-label="Close drawer"
+          >
             <FaTimes className="text-xs" />
           </button>
 
@@ -337,7 +361,7 @@ function DetailsDrawer({ job, onClose, onApply }) {
               </span>
             );
           })()}
-          <h3 className="text-white text-xl font-extrabold leading-snug">{job.title}</h3>
+          <h3 className="text-white text-xl font-extrabold leading-snug pr-10">{job.title}</h3>
 
           {/* Meta chips */}
           <div className="flex flex-wrap gap-2 mt-3">
@@ -355,8 +379,8 @@ function DetailsDrawer({ job, onClose, onApply }) {
           <p className="mt-3 text-amber-300 font-bold text-sm">{job.salary}</p>
         </div>
 
-        {/* Scrollable body */}
-        <div className="flex-1 overflow-y-auto px-7 py-6 flex flex-col gap-6">
+        {/* Scrollable body — improved padding */}
+        <div className="flex-1 overflow-y-auto px-7 py-7 flex flex-col gap-7">
 
           {/* Description */}
           <div>
@@ -367,7 +391,7 @@ function DetailsDrawer({ job, onClose, onApply }) {
           {/* Responsibilities */}
           <div>
             <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Key Responsibilities</h4>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {job.responsibilities.map((r) => (
                 <li key={r} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
                   <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
@@ -380,7 +404,7 @@ function DetailsDrawer({ job, onClose, onApply }) {
           {/* Requirements */}
           <div>
             <h4 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-3">Requirements</h4>
-            <ul className="flex flex-col gap-2.5">
+            <ul className="flex flex-col gap-3">
               {job.requirements.map((r) => (
                 <li key={r} className="flex items-start gap-3 text-sm text-slate-600 leading-relaxed">
                   <FaCheckCircle className="mt-0.5 text-emerald-500 shrink-0 text-xs" />
@@ -394,9 +418,12 @@ function DetailsDrawer({ job, onClose, onApply }) {
           <p className="text-[11px] text-slate-300 font-medium">Posted {job.posted}</p>
         </div>
 
-        {/* Footer CTA */}
+        {/* Footer CTA — improved padding */}
         <div className="shrink-0 px-7 py-5 border-t border-slate-100 bg-white flex gap-3">
-          <button onClick={onClose} className="flex-1 py-3 border border-slate-200 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-colors">
+          <button
+            onClick={onClose}
+            className="flex-1 py-3 border border-slate-200 text-slate-600 text-sm font-semibold rounded-xl hover:bg-slate-50 transition-colors"
+          >
             Close
           </button>
           <button
