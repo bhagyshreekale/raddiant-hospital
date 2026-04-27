@@ -59,21 +59,21 @@ class ContactController extends Controller
     /**
      * Update the specified task in storage.
      */
-  public function update(Request $request)
-{
-    $validated = $request->validate([
-        'email' => 'required|email',
-        'phone' => 'required',
-        'address' => 'required',
-        'open_hours' => 'nullable',
-        'map_link' => 'nullable|url',
-    ]);
+    public function update(Request $request)
+    {
+        $validated = $request->validate([
+            'email' => 'required|email',
+            'phone' => 'required',
+            'address' => 'required',
+            'open_hours' => 'nullable',
+            'map_link' => 'nullable|url',
+        ]);
 
-    // Assuming you have a Contact model or a Settings model
-    ContactInfo::updateOrCreate(['id' => 1], $validated);
+        // Assuming you have a Contact model or a Settings model
+        ContactInfo::updateOrCreate(['id' => 1], $validated);
 
-    return back()->with('success', 'Contact details updated!');
-}
+        return back()->with('success', 'Contact details updated!');
+    }
 
     /**
      * Remove the specified task from storage.

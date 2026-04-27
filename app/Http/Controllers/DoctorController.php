@@ -14,7 +14,7 @@ class DoctorController extends Controller
     {
         $doctors = Doctor::with('specialization')->get()->map(function ($doctor) {
             $imagePath = $doctor->image;
-            
+
             if ($imagePath) {
                 if (str_starts_with($imagePath, '/images/')) {
                     // Already in public folder - use as-is
@@ -22,7 +22,7 @@ class DoctorController extends Controller
                     // External URL - use as-is
                 } else {
                     // Storage path
-                    $imagePath = '/storage/' . ltrim($imagePath, '/');
+                    $imagePath = '/storage/'.ltrim($imagePath, '/');
                 }
             } else {
                 // Default placeholder

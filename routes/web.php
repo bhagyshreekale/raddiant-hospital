@@ -7,13 +7,11 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DoctorController;
-use App\Http\Controllers\FacilitiesController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HealthPackageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
-use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
@@ -36,11 +34,10 @@ Route::post('/user/confirm-password', fn () => abort(404))->name('password.confi
 Route::get('/user/confirmed-password-status', fn () => abort(404))->name('password.confirmation');
 Route::get('/two-factor-challenge', fn () => abort(404))->name('two-factor.login');
 Route::post('/two-factor-challenge', fn () => abort(404))->name('two-factor.store');
-Route::post('/user/two-factor-authentication', fn () => abort(404))->name('two-factor.enable');
-Route::post('/user/confirmed-two-factor-authentication', fn () => abort(404))->name('two-factor.confirm');
 Route::get('/user/two-factor-qr-code', fn () => abort(404))->name('two-factor.qrcode');
 Route::get('/user/two-factor-recovery-codes', fn () => abort(404))->name('two-factor.recovery-codes');
 Route::post('/user/two-factor-recovery-codes', fn () => abort(404))->name('two-factor.regenerate');
+Route::post('/user/confirmed-two-factor-authentication', fn () => abort(404))->name('two-factor.confirm');
 
 Route::inertia('/', 'welcome', [
     'canRegister' => false,
@@ -58,7 +55,7 @@ Route::inertia('/gallery', 'gallery', [
     'canRegister' => false,
 ])->name('gallery');
 
-Route::get('/facilities', FacilitiesController::class)->name('facilities');
+Route::get('/facilities', [HealthPackageController::class, 'public'])->name('facilities');
 
 Route::inertia('/doctors', 'doctors', [
     'doctors' => \App\Models\Doctor::with('specialization')->get()->map(function($doc) {
@@ -118,7 +115,6 @@ Route::delete('/upload/image', [ImageController::class, 'delete'])->name('image.
 
 Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
-    Route::resource('admin/services', ServiceController::class);
     Route::resource('admin/specializations', SpecializationController::class);
     Route::resource('admin/doctors', DoctorController::class);
     Route::resource('admin/testimonials', TestimonialController::class);

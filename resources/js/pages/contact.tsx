@@ -1,10 +1,10 @@
-import React from 'react';
 import { Head } from '@inertiajs/react';
+import React from 'react';
+import FloatingActions from '../components/design/FloatingActions';
+import Footer from '../components/layout/Footer';
+import Navbar from '../components/layout/Navbar';
 import MapSection from '../components/sections/MapSection';
 import PatientInquiryForm from '../components/sections/PatientInquiryForm';
-import Navbar from '../components/layout/Navbar';
-import Footer from '../components/layout/Footer';
-import FloatingActions from '../components/design/FloatingActions';
 
 // 1. Define the Interface for the contact data
 interface ContactData {

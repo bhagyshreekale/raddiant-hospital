@@ -11,7 +11,7 @@ class DoctorSeeder extends Seeder
     public function run(): void
     {
         $specs = Specialization::pluck('id', 'name');
-        
+
         $doctors = [
             [
                 'name' => 'Dr. Priya Sharma',
