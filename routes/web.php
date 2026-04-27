@@ -57,7 +57,19 @@ Route::inertia('/gallery', 'gallery', [
 
 Route::get('/facilities', [HealthPackageController::class, 'public'])->name('facilities');
 
+Route::get('/doctors', [DoctorController::class, 'publicShow'])->name('doctors');
 Route::inertia('/doctors', 'doctors', [
+    'doctors' => \App\Models\Doctor::with('specialization')->get()->map(function($doc) {
+        return [
+            'id' => $doc->id,
+            'name' => $doc->name,
+            'specialty' => $doc->specialization?->name ?? 'General',
+            'experience' => '5+ years',
+            'qual' => $doc->education ?? 'MBBS',
+            'img' => $doc->image ? $doc->image : '/images/doctors/default-doctor.png',
+            'available' => $doc->availability ?? 'Mon-Sat',
+        ];
+    }),
     'canRegister' => false,
 ])->name('doctors');
 
@@ -66,16 +78,35 @@ Route::inertia('/about', 'about', [
 ])->name('about');
 
 Route::inertia('/contact', 'contact', [
+    'contactData' => \App\Models\ContactInfo::first(),
     'canRegister' => false,
 ])->name('contact');
 
 Route::inertia('/careers', 'careers', [
+    'jobs' => \App\Models\Career::latest()->get()->map(function($job) {
+        return [
+            'id' => $job->id,
+            'title' => $job->title,
+            'department' => $job->specialization,
+            'location' => $job->location ?? 'Nashik',
+            'type' => $job->job_type ?? 'Full Time',
+            'salary' => $job->salary,
+            'experience' => $job->experience,
+            'description' => $job->description,
+        ];
+    }),
     'canRegister' => false,
 ])->name('careers');
 
+Route::get('/blog', [BlogController::class, 'public'])->name('blog');
 Route::inertia('/blog', 'blog', [
+    'blogs' => \App\Models\Blog::latest()->get(),
     'canRegister' => false,
 ])->name('blog');
+
+Route::inertia('/appointment', 'appoinment', [
+    'canRegister' => false,
+])->name('appointment');
 
 Route::inertia('/appoinment', 'appoinment', [
     'canRegister' => false,

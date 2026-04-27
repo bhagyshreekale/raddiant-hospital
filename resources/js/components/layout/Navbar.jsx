@@ -101,7 +101,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="/appoinment"
+              href="/appointment"
               className="ml-2 bg-blue-600 text-white px-5 py-2.5 rounded-lg text-[0.88rem] font-semibold hover:bg-blue-700 transition-all shadow-sm active:scale-95"
             >
               Book Appointment
@@ -138,7 +138,7 @@ export default function Navbar() {
               </a>
             ))}
             <a
-              href="/appoinment"
+              href="/appointment"
               className="mt-2 bg-blue-600 text-white text-center py-3 rounded-lg font-semibold active:bg-blue-700 transition-colors"
               onClick={() => setMenuOpen(false)}
             >

@@ -41,6 +41,7 @@ class HealthPackageController extends Controller
                 ];
             }),
             'partners' => InsurancePartner::latest()->get(),
+            'canRegister' => false,
         ]);
     }
 

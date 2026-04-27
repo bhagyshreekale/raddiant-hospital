@@ -61,6 +61,9 @@ export default function Index({ doctors }: Props) {
                                 <TableHead>Specialization</TableHead>
                                 <TableHead>Education</TableHead>
                                 <TableHead>Availability</TableHead>
+                                <TableHead className="w-[100px]">
+                                    Photo
+                                </TableHead>
                                 <TableHead className="text-right">
                                     Actions
                                 </TableHead>
@@ -82,6 +85,19 @@ export default function Index({ doctors }: Props) {
                                         </TableCell>
                                         <TableCell>
                                             {doctor.availability || 'N/A'}
+                                        </TableCell>
+                                        <TableCell>
+                                            {doctor.image ? (
+                                                <img
+                                                    src={doctor.image}
+                                                    alt={doctor.name}
+                                                    className="h-12 w-12 rounded-full object-cover"
+                                                />
+                                            ) : (
+                                                <div className="h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center">
+                                                    <span className="text-xs text-gray-500">No img</span>
+                                                </div>
+                                            )}
                                         </TableCell>
                                         <TableCell className="space-x-2 text-right">
                                             <Button
