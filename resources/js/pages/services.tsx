@@ -43,16 +43,25 @@ const radialBgStyle = {
 
 // ─── Animation Variants ──────────────────────────────────────────────────────
 
+const heroStagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12 } },
+};
 const textReveal: Variants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95, filter: "blur(10px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    filter: "blur(0px)",
-    transition: { duration: 1, ease: "easeInOut" } as Transition,
+  hidden: { opacity: 0, y: 18 },
+  show: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { duration: 0.5 } as Transition,
   },
 };
+ 
+const stats = [
+  { value: '20+', label: 'Specialties' },
+  { value: 'NABH', label: 'Accredited' },
+  { value: '350+', label: 'Specialists' },
+  { value: '24/7', label: 'Emergency' },
+];
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -71,9 +80,7 @@ const itemVariants: Variants = {
   },
 };
 
-const heroStagger: Variants = {
-  show: { transition: { staggerChildren: 0.2 } as Transition },
-};
+
 
 // ─── Component ──────────────────────────────────────────────────────────────
 
@@ -83,57 +90,90 @@ export default function ServicesPage({ services = [] }: ServicesPageProps): JSX.
 
       <Navbar />
 
-      {/* Page Header */}
-      <section
-        className="relative overflow-hidden py-28 text-center lg:py-28"
+  <section className="relative overflow-hidden bg-white pt-20 pb-0 text-center">
+ 
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-blue-500 via-violet-500 to-rose-400" />
+ 
+      {/* Radial light bloom behind heading */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[360px] bg-[radial-gradient(ellipse_at_top,#ede9fe60_0%,transparent_65%)] pointer-events-none" />
+ 
+      {/* Subtle dot grid */}
+      <div
+        className="absolute inset-0 opacity-[0.045] pointer-events-none"
         style={{
-          ...radialBgStyle,
-          clipPath: "ellipse(180% 110% at 50% 0%)",
+          backgroundImage: 'radial-gradient(circle, #1bd10e 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
         }}
+      />
+ 
+      {/* Decorative half-ring top-right */}
+      <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full border border-violet-200/60 opacity-60 pointer-events-none" />
+      <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full border border-violet-200/40 pointer-events-none" />
+ 
+      {/* Decorative half-ring bottom-left */}
+      <div className="absolute -bottom-16 -left-16 w-56 h-56 rounded-full border border-blue-200/50 pointer-events-none" />
+ 
+      <motion.div
+        initial="hidden"
+        animate="show"
+        variants={heroStagger}
+        className="relative z-10 container mx-auto px-4 pb-0"
       >
-        {/* Grid overlay */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-10"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)",
-            backgroundSize: "30px 30px",
-          }}
-        />
-
-        <motion.div
-          initial="hidden"
-          animate="show"
-          variants={heroStagger}
-          className="container relative z-10 mx-auto px-4"
-        >
-          {/* Badge */}
-          <motion.div variants={textReveal} className="flex justify-center">
-            <div className="relative group overflow-hidden rounded-full p-[1px]">
-              <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#001E3C_0%,#00C2CB_25%,#052c1a_50%,#10B981_75%,#001E3C_100%)] opacity-80" />
-              <span className="relative inline-block rounded-full bg-[#010b14]/90 backdrop-blur-xl px-4 py-1 text-sm font-semibold tracking-wide text-white shadow-2xl">
-                Specialties
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Title */}
-          <motion.h1
-            variants={textReveal}
-            className="mt-6 text-4xl font-extrabold text-white md:text-5xl tracking-tight"
-          >
-            Our Medical Services
-          </motion.h1>
-
-          {/* Subtitle */}
-          <motion.p
-            variants={textReveal}
-            className="mx-auto mt-6 max-w-xl text-lg text-slate-300 font-medium leading-relaxed"
-          >
-            20+ specialties, advanced diagnostics, and surgical excellence — all under one NABH-accredited roof.
-          </motion.p>
+        {/* Badge */}
+        <motion.div variants={textReveal} className="flex justify-center mb-6">
+          <span className="inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-[10px] font-bold uppercase tracking-widest px-5 py-2 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+            Our Specialties
+          </span>
         </motion.div>
-      </section>
+ 
+        {/* Title */}
+        <motion.h1
+          variants={textReveal}
+          className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 tracking-tight leading-[1.07] mb-5"
+        >
+          World-Class{' '}
+          <span className="relative inline-block">
+            <span className="bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+              Medical
+            </span>
+          </span>
+          {' '}Services
+        </motion.h1>
+ 
+        {/* Subtitle */}
+        <motion.p
+          variants={textReveal}
+          className="mx-auto max-w-lg text-slate-500 text-base sm:text-lg font-medium leading-relaxed mb-10"
+        >
+          20+ specialties, advanced diagnostics, and surgical excellence —{' '}
+          <span className="text-slate-700 font-semibold">all under one NABH-accredited roof.</span>
+        </motion.p>
+ 
+        {/* Stats strip */}
+        <motion.div
+          variants={textReveal}
+          className="inline-flex flex-wrap justify-center gap-0 bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden mx-auto mb-0 shadow-sm"
+        >
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              className={`flex flex-col items-center px-8 py-4 ${
+                i !== stats.length - 1 ? 'border-r border-slate-200' : ''
+              }`}
+            >
+              <span className="text-2xl font-black text-sky-600 leading-none">{s.value}</span>
+              <span className="text-[10px] text-slate-400 font-semibold uppercase tracking-widest mt-1">{s.label}</span>
+            </div>
+          ))}
+        </motion.div>
+ 
+      </motion.div>
+ 
+      {/* Bottom fade */}
+      <div className="relative mt-10 h-8 bg-gradient-to-b from-transparent to-slate-50 pointer-events-none" />
+    </section>
 
       {/* Services Grid */}
       <section className="py-16 md:py-24 bg-gray-50">
