@@ -49,7 +49,7 @@ export const useTwoFactorAuth = (): UseTwoFactorAuthReturn => {
     const fetchQrCode = useCallback(async (): Promise<void> => {
         try {
             const { svg } = (await submit(qrcode())) as {
-                svg: string;
+                svg: string;    
                 url: string;
             };
 

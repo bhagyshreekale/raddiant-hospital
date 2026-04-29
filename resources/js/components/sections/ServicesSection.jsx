@@ -42,6 +42,15 @@ export default function ServicesSection({ services = [] }) {
     ? displayServices
     : displayServices.filter(s => s.category === active);
 
+  /* Re-animate when filter changes */
+  useEffect(() => {
+    setVisible([]);
+    if (!inView) return;
+    filtered.forEach((_, i) => {
+      setTimeout(() => setVisible(prev => [...prev, i]), i * 80);
+    });
+  }, [inView, active, filtered]);
+
   return (
     <>
       <style>{`

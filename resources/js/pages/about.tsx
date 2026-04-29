@@ -143,7 +143,7 @@ export default function AboutPage() {
                 <p className="mt-1 text-sm text-blue-100/80">Book an appointment with our specialist today.</p>
               </div>
               <a
-                href="/book"
+                href="/appointment"
                 className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-bold text-blue-800 shadow-lg transition-all hover:-translate-y-1 hover:shadow-xl active:scale-95"
               >
                 Book Appointment →
