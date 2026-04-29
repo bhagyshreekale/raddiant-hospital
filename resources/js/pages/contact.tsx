@@ -85,7 +85,7 @@ export default function ContactPage({ contactData }: PageProps) {
     <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight">
       Let's Start a
       <span className="relative block w-fit mx-auto">
-        <span className="bg-gradient-to-r from-sky-500 via-blue-500 to-indigo-500 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-sky-500 via-green-500 to-green-500 bg-clip-text text-transparent">
           Conversation
         </span>
         <span className="hero-underline" />
