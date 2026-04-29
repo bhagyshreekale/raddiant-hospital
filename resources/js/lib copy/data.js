@@ -19,22 +19,25 @@ export const SITE = {
 
 export const SERVICES = [
   
-    {
-id:"Eye Care",
-image: "/images/services/eye-care.jpg",
-title: "Eye Care",
-desc: "Comprehensive ophthalmology services including cataract surgery and vision correction.",
-color: "#f4a261",
+  {
+    id:"Eye Care",
+    category: "Specialty",
+    image: "/images/services/eye-care.jpg",
+    title: "Eye Care",
+    desc: "Comprehensive ophthalmology services including cataract surgery and vision correction.",
+    color: "#f4a261",
   },
   {
     id: "cardiology",
+    category: "Specialty",
     image: "/images/services/cardiology.jpg",
     title: "Cardiology",
     desc: "Advanced cardiac care with state-of-the-art catheterization labs and expert cardiologists.",
     color: "#e63946",
   },
-    {
+  {
     id: "pediatrics",
+    category: "Specialty",
     image: "/images/services/pediatrics.jpg",
     title: "Pediatrics",
     desc: "Specialized care for children from newborns to adolescents in a child-friendly environment.",
@@ -42,13 +45,15 @@ color: "#f4a261",
   },
   {
     id: "orthopedics",
+    category: "Specialty",
     image: "/images/services/orthopedics.jpg",
     title: "Orthopedics",
     desc: "Comprehensive bone, joint, and muscle treatments including joint replacement surgeries.",
     color: "#0a4d8c",
   },
-    {
+  {
     id: "gynecology",
+    category: "Specialty",
     image: "/images/services/gynecology.jpg",
     title: "Gynecology & Obstetrics",
     desc: "Complete women's health care from prenatal to postnatal with experienced specialists.",
@@ -56,6 +61,7 @@ color: "#f4a261",
   },
   {
     id: "neurology",
+    category: "Specialty",
     image: "/images/services/neurology.jpg",
     title: "Neurology",
     desc: "Expert diagnosis and treatment of neurological disorders with advanced imaging.",
@@ -65,6 +71,7 @@ color: "#f4a261",
 
   {
     id: "diagnostics",
+    category: "Diagnostics",
     image: "/images/services/diagnostics.jpg",
     title: "Diagnostics",
     desc: "NABL-accredited lab with advanced imaging: MRI, CT Scan, X-Ray, USG, and pathology.",
@@ -72,6 +79,7 @@ color: "#f4a261",
   },
   {
     id: "emergency",
+    category: "Emergency",
     image: "/images/services/emergency.jpg",
     title: "24x7 Emergency",
     desc: "Round-the-clock emergency services with a dedicated trauma centre and ICU.",
@@ -79,6 +87,7 @@ color: "#f4a261",
   },
   {
     id: "surgery",
+    category: "Surgery",
     image: "/images/services/surgery.jpg",
     title: "General Surgery",
     desc: "Minimally invasive laparoscopic and open surgery by experienced surgeons.",
