@@ -12,6 +12,7 @@ import PatientInquiryForm from '../components/sections/PatientInquiryForm';
 import Faqsection from '../components/sections/Faqsection'; 
 
 // 1. Define the Interface for the contact data
+import Faqsection from '../components/sections/Faqsection';
 interface ContactData {
     address: string;
     phone: string;

@@ -22,6 +22,11 @@ interface Props {
 export default function Index({ blogs = [] }: Props) {
     const { delete: destroy } = useForm();
 
+    const stripHtml = (html: string) => {
+        if (!html) return '';
+        return html.replace(/<[^>]*>/g, '').slice(0, 100) + (html.length > 100 ? '...' : '');
+    };
+
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this blog?')) {
             destroy(`/admin/blogs/${id}`);
@@ -65,7 +70,7 @@ export default function Index({ blogs = [] }: Props) {
                                         <TableCell>{blog.category}</TableCell>
                                         <TableCell>{blog.read_time || "N/A"}</TableCell>
                                         <TableCell className="max-w-[200px] truncate">
-                                            {blog.description || "No description"}
+                                            {stripHtml(blog.description) || "No description"}
                                         </TableCell>
                                         <TableCell>
                                             {blog.image ? (

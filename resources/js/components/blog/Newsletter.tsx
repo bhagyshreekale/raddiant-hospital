@@ -1,16 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, FormEvent, ChangeEvent } from 'react';
+
+interface FormData {
+  name: string;
+  email: string;
+}
 
 export default function Newsletter() {
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ name: '', email: '' });
+  const [form, setForm] = useState<FormData>({ name: '', email: '' });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!form.email) return;
     setSubmitted(true);
-    // Wire to Laravel API: fetch('/api/newsletter', { method: 'POST', body: JSON.stringify(form) })
   };
 
   return (
@@ -54,7 +58,7 @@ export default function Newsletter() {
                   type="text"
                   placeholder="Full Name"
                   value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, name: e.target.value })}
                   className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all duration-300"
                 />
               </div>
@@ -64,7 +68,7 @@ export default function Newsletter() {
                   placeholder="Email Address"
                   required
                   value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => setForm({ ...form, email: e.target.value })}
                   className="w-full px-6 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/40 focus:border-teal-500/50 transition-all duration-300"
                 />
               </div>

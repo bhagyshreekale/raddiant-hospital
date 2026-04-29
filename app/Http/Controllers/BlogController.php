@@ -51,6 +51,31 @@ class BlogController extends Controller
         return Inertia::render('blog', ['blogs' => $blogs]);
     }
 
+    /**
+     * ✅ PUBLIC: Single blog page
+     */
+    public function show(Blog $blog): Response
+    {
+        return Inertia::render('blog/show', [
+            'blog' => [
+                'id' => $blog->id,
+                'title' => $blog->title,
+                'category' => $blog->category,
+                'description' => $blog->description,
+                'read_time' => $blog->read_time,
+                'image' => $blog->image ? asset('storage/'.$blog->image) : null,
+                'created_at' => $blog->created_at,
+            ],
+            'recentBlogs' => Blog::where('id', '!=', $blog->id)->latest()->take(3)->get()->map(fn ($b) => [
+                'id' => $b->id,
+                'title' => $b->title,
+                'category' => $b->category,
+                'image' => $b->image ? asset('storage/'.$b->image) : null,
+                'read_time' => $b->read_time,
+            ]),
+        ]);
+    }
+
     public function create(): Response
     {
         return Inertia::render('admin/blogs/create');

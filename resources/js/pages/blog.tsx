@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import BlogCard from '../components/blog/BlogCard';
-import BlogModal from '../components/blog/BlogModal';
 import FeaturedCard from '../components/blog/FeaturedCard';
 import FloatingActions from '../components/design/FloatingActions';
 
@@ -23,14 +22,9 @@ interface BlogPageProps {
 
 export default function BlogPage({ blogs = [] }: BlogPageProps) {
   const [activeCategory, setActiveCategory] = useState('All');
-  const [activePost, setActivePost] = useState<Blog | null>(null);
-
-  const handleReadMore = useCallback((post: Blog) => setActivePost(post), []);
-  const handleClose = useCallback(() => setActivePost(null), []);
 
   const categories = useMemo(() => {
     const cats = blogs.map((b) => b.category);
-
     return ['All', ...Array.from(new Set(cats))];
   }, [blogs]);
 
@@ -51,7 +45,7 @@ export default function BlogPage({ blogs = [] }: BlogPageProps) {
               Your Guide to a <span className="text-teal-400">Healthier</span> Life
             </h1>
             <p className="text-slate-400 text-base sm:text-lg max-w-xl mx-auto mb-10">
-              Latest blogs from our system — dynamically powered 🚀
+              Latest blogs from our system — dynamically powered
             </p>
           </div>
         </section>
@@ -79,7 +73,7 @@ export default function BlogPage({ blogs = [] }: BlogPageProps) {
         <div className="max-w-7xl mx-auto px-4">
           {featured && activeCategory === 'All' && (
             <section className="pt-10">
-              <FeaturedCard post={featured} onReadMore={handleReadMore} />
+              <FeaturedCard post={featured} />
             </section>
           )}
 
@@ -89,7 +83,7 @@ export default function BlogPage({ blogs = [] }: BlogPageProps) {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filtered.map((post) => (
-                  <BlogCard key={post.id} post={post} onReadMore={handleReadMore} />
+                  <BlogCard key={post.id} post={post} />
                 ))}
               </div>
             )}
@@ -97,9 +91,8 @@ export default function BlogPage({ blogs = [] }: BlogPageProps) {
         </div>
       </main>
 
-      {activePost && <BlogModal post={activePost} onClose={handleClose} />}
       <Footer />
       <FloatingActions />
     </>
   );
-} 
+}
