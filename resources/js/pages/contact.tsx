@@ -5,6 +5,8 @@ import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 import MapSection from '../components/sections/MapSection';
 import PatientInquiryForm from '../components/sections/PatientInquiryForm';
+
+// 1. Define the Interface for the contact data
 import Faqsection from '../components/sections/Faqsection';
 interface ContactData {
     address: string;

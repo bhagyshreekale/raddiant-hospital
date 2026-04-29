@@ -18,6 +18,7 @@ import {
     LogOut,
     Settings,
     Activity,
+    File,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -100,6 +101,11 @@ const adminNavItems: NavItem[] = [
         href: '/admin/admins',
         icon: Users,
     },
+    {
+        title: 'Blogs',
+        href: '/admin/blogs',
+        icon: File,
+    },
 ];
 
 const receptionistNavItems: NavItem[] = [
@@ -117,6 +123,11 @@ const receptionistNavItems: NavItem[] = [
         title: 'Bed Availability',
         href: '/admin/bed-availability',
         icon: Bed,
+    },
+    {
+        title: 'Blogs',
+        href: '/admin/blogs',
+        icon: File,
     },
 ];
 

@@ -35,7 +35,7 @@ export default function Footer() {
             <div className="flex items-center gap-3">
                       <a href="/" className="no-underline flex items-center gap-2">
             <img
-              src="images/preloader.png"
+              src="/images/preloader.png"
               alt="Raddiant Plus Hospital"
               width={140}
               height={70}

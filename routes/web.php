@@ -16,6 +16,10 @@ use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Middleware\EnsureUserIsAdmin;
+use App\Models\Blog;
+use App\Models\Career;
+use App\Models\ContactInfo;
+use App\Models\Doctor;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', fn () => abort(404))->name('login');
@@ -59,7 +63,7 @@ Route::get('/facilities', [HealthPackageController::class, 'public'])->name('fac
 
 Route::get('/doctors', [DoctorController::class, 'publicShow'])->name('doctors');
 Route::inertia('/doctors', 'doctors', [
-    'doctors' => \App\Models\Doctor::with('specialization')->get()->map(function($doc) {
+    'doctors' => Doctor::with('specialization')->get()->map(function ($doc) {
         return [
             'id' => $doc->id,
             'name' => $doc->name,
@@ -78,12 +82,12 @@ Route::inertia('/about', 'about', [
 ])->name('about');
 
 Route::inertia('/contact', 'contact', [
-    'contactData' => \App\Models\ContactInfo::first(),
+    'contactData' => ContactInfo::first(),
     'canRegister' => false,
 ])->name('contact');
 
 Route::inertia('/careers', 'careers', [
-    'jobs' => \App\Models\Career::latest()->get()->map(function($job) {
+    'jobs' => Career::latest()->get()->map(function ($job) {
         return [
             'id' => $job->id,
             'title' => $job->title,
@@ -100,9 +104,11 @@ Route::inertia('/careers', 'careers', [
 
 Route::get('/blog', [BlogController::class, 'public'])->name('blog');
 Route::inertia('/blog', 'blog', [
-    'blogs' => \App\Models\Blog::latest()->get(),
+    'blogs' => Blog::latest()->get(),
     'canRegister' => false,
 ])->name('blog');
+
+Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::inertia('/appointment', 'appoinment', [
     'canRegister' => false,
