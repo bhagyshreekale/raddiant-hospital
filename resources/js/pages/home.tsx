@@ -15,12 +15,13 @@ interface HomeProps {
   homeServices?: any[];
   homeDoctors?: any[];
   homeTestimonials?: any[];
+  siteData?: any;
 }
 
-export default function Home({ homeServices = [], homeDoctors = [], homeTestimonials = [] }: HomeProps) {
+export default function Home({ homeServices = [], homeDoctors = [], homeTestimonials = [], siteData }: HomeProps) {
   return (
     <>
-      <Navbar/>
+      <Navbar siteData={siteData} />
       <HeroSection />
       <EmergencyBanner />
       <AboutPreview />
@@ -30,7 +31,7 @@ export default function Home({ homeServices = [], homeDoctors = [], homeTestimon
       <TestimonialsSection testimonials={homeTestimonials} />
       <CTABanner />
     {/* <MapSection contactData={contactData} /> */}
-      <Footer/>
+      <Footer siteData={siteData} />
       <FloatingActions/>
     </>
   );

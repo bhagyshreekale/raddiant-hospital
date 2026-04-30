@@ -19,6 +19,7 @@ import {
     Settings,
     Activity,
     File,
+    Globe,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -105,6 +106,11 @@ const adminNavItems: NavItem[] = [
         title: 'Blogs',
         href: '/admin/blogs',
         icon: File,
+    },
+    {
+        title: 'Website Settings',
+        href: '/admin/website-settings',
+        icon: Globe,
     },
 ];
 
