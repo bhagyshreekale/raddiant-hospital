@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface InsurancePartner {
     id: number;
     name: string;
+    category: 'public' | 'private' | 'tpa';
     logo: string | null;
 }
 
@@ -18,6 +20,7 @@ interface Props {
 export default function Edit({ insurancePartner }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         name: insurancePartner.name || '',
+        category: insurancePartner.category || 'tpa',
         logo: insurancePartner.logo || '',
     });
 
@@ -43,6 +46,23 @@ export default function Edit({ insurancePartner }: Props) {
                                     setData('name', e.target.value)
                                 }
                             />
+                        </div>
+
+                        <div>
+                            <Label htmlFor="category">Sector Category</Label>
+                            <Select
+                                value={data.category}
+                                onValueChange={(val) => setData('category', val as 'public' | 'private' | 'tpa')}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="public">Public Sector</SelectItem>
+                                    <SelectItem value="private">Private Sector</SelectItem>
+                                    <SelectItem value="tpa">TPA Agency</SelectItem>
+                                </SelectContent>
+                            </Select>
                         </div>
 
                         <ImageUpload
