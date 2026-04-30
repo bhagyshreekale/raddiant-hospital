@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Settings\SecurityController;
+use App\Http\Controllers\Admin\WebsiteSettingsController;
 use App\Http\Controllers\Auth\AdminAuthenticatedSessionController;
 use App\Http\Controllers\Auth\AdminNewPasswordController;
 use App\Http\Controllers\Auth\AdminPasswordResetController;
@@ -36,7 +37,11 @@ Route::middleware('web')->group(function () {
 });
 
 Route::middleware(['web', 'auth:admin'])->group(function () {
-    Route::redirect('settings', '/admin/settings/profile');
+    Route::redirect('settings', '/admin/website-settings');
+
+    Route::get('admin/website-settings', [WebsiteSettingsController::class, 'edit'])->name('website-settings.edit');
+    Route::post('admin/website-settings', [WebsiteSettingsController::class, 'update'])->name('website-settings.update');
+    Route::patch('admin/website-settings', [WebsiteSettingsController::class, 'update']);
 
     Route::get('admin/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('admin/settings/profile', [ProfileController::class, 'update'])->name('profile.update');
