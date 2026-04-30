@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\BedAvailabilityController;
@@ -14,12 +13,15 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\SiteDataController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/api/site-data', [SiteDataController::class, '__invoke']);
 
 Route::get('/login', fn () => abort(404))->name('login');
 Route::post('/login', fn () => abort(404))->name('login.store');
@@ -96,9 +98,6 @@ Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(functi
     Route::resource('admin/admins', AdminUserController::class);
     Route::resource('admin/blogs', BlogController::class);
     Route::resource('admin/contact', ContactController::class);
-    Route::get('admin/website-settings', [SettingsController::class, 'index'])->name('admin.settings.index');
-    Route::get('admin/website-settings/edit', [SettingsController::class, 'edit'])->name('admin.settings.edit');
-    Route::put('admin/website-settings', [SettingsController::class, 'update'])->name('admin.settings.update');
 });
 
 Route::middleware(['web', 'auth:admin'])->group(function () {
