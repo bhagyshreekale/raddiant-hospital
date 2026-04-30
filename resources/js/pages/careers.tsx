@@ -435,7 +435,7 @@ export default function CareersPage() {
                     Call HR Dept
                   </p>
                   <p className="text-white font-bold text-sm group-hover:text-emerald-400 transition-colors">
-                    +91 123 456 7890
+                   +91 93565 10704
                   </p>
                 </div>
               </a>
