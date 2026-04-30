@@ -13,14 +13,28 @@ class InsurancePartnerController extends Controller
     public function index(): Response
     {
         return Inertia::render('admin/insurance-partners/index', [
-            'partners' => InsurancePartner::latest()->get(),
+            'partners' => InsurancePartner::latest()->get()->map(function ($partner) {
+                return [
+                    'id' => $partner->id,
+                    'name' => $partner->name,
+                    'category' => $partner->category,
+                    'logo' => $this->formatLogoUrl($partner->logo),
+                ];
+            }),
         ]);
     }
 
     public function public(): Response
     {
         return Inertia::render('facilities', [
-            'partners' => InsurancePartner::latest()->get(),
+            'partners' => InsurancePartner::latest()->get()->map(function ($partner) {
+                return [
+                    'id' => $partner->id,
+                    'name' => $partner->name,
+                    'category' => $partner->category,
+                    'logo' => $this->formatLogoUrl($partner->logo),
+                ];
+            }),
         ]);
     }
 
@@ -33,19 +47,25 @@ class InsurancePartnerController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'category' => 'required|in:public,private,tpa',
             'logo' => 'nullable|string',
         ]);
 
         // Handle the file upload and save the path
         if ($request->hasFile('logo')) {
-            $path = $request->file('logo')->store('insurance-partners', 'public');
+            $path = $request->file('logo')->store('uploads', 'public');
             $validated['logo'] = $path;
         }
-        // If logo is a string (URL from ImageUpload component), use it directly
+        // If logo is a string (URL from ImageUpload component), extract path
         elseif ($request->filled('logo') && is_string($request->input('logo'))) {
-            // Extract storage path from URL if it's from our storage
             $logoUrl = $request->input('logo');
-            $validated['logo'] = $this->extractStoragePath($logoUrl) ?? $logoUrl;
+            // Extract path from URL like http://localhost:8000/storage/uploads/xxx.jpg -> uploads/xxx.jpg
+            if (str_contains($logoUrl, '/storage/')) {
+                $path = explode('/storage/', $logoUrl);
+                $validated['logo'] = end($path);
+            } else {
+                $validated['logo'] = $logoUrl;
+            }
         }
 
         InsurancePartner::create($validated);
@@ -54,24 +74,35 @@ class InsurancePartnerController extends Controller
             ->with('message', 'Insurance partner created successfully.');
     }
 
-    private function extractStoragePath(string $url): ?string
+    private function formatLogoUrl(?string $logo): ?string
     {
-        // If URL is from our storage, extract the path
-        if (str_contains($url, '/storage/')) {
-            return ltrim(str_replace(asset(''), '', $url), '/');
-        }
-        // If it's an external URL, return as-is
-        if (str_starts_with($url, 'http')) {
+        if (! $logo) {
             return null;
         }
 
-        return $url;
+        // If it's already a full URL, return as is
+        if (str_starts_with($logo, 'http')) {
+            return $logo;
+        }
+
+        // If it's already a storage path, use asset()
+        if (str_starts_with($logo, 'storage/')) {
+            return asset($logo);
+        }
+
+        // Otherwise, assume it's in the uploads folder
+        return asset('storage/'.$logo);
     }
 
     public function edit(InsurancePartner $insurancePartner): Response
     {
         return Inertia::render('admin/insurance-partners/edit', [
-            'insurancePartner' => $insurancePartner,
+            'insurancePartner' => [
+                'id' => $insurancePartner->id,
+                'name' => $insurancePartner->name,
+                'category' => $insurancePartner->category,
+                'logo' => $this->formatLogoUrl($insurancePartner->logo),
+            ],
         ]);
     }
 
@@ -79,6 +110,7 @@ class InsurancePartnerController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'category' => 'required|in:public,private,tpa',
             'logo' => 'nullable|string',
         ]);
 
@@ -89,12 +121,18 @@ class InsurancePartnerController extends Controller
             }
 
             // Store the new logo
-            $path = $request->file('logo')->store('insurance-partners', 'public');
+            $path = $request->file('logo')->store('uploads', 'public');
             $validated['logo'] = $path;
         } elseif ($request->filled('logo') && is_string($request->input('logo'))) {
-            // If logo is a string (URL from ImageUpload), use it
+            $logoUrl = $request->input('logo');
+            // Extract path from URL like http://localhost:8000/storage/uploads/xxx.jpg -> uploads/xxx.jpg
+            if (str_contains($logoUrl, '/storage/')) {
+                $path = explode('/storage/', $logoUrl);
+                $newLogo = end($path);
+            } else {
+                $newLogo = $logoUrl;
+            }
             // Only update if it's a different URL to avoid removing existing logo
-            $newLogo = $this->extractStoragePath($request->input('logo')) ?? $request->input('logo');
             if ($newLogo !== $insurancePartner->logo) {
                 $validated['logo'] = $newLogo;
             } else {

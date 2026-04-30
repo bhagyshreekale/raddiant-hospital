@@ -40,6 +40,7 @@ interface BackendBedType {
 interface InsurancePartnerData {
   id: number;
   name: string;
+  category: 'public' | 'private' | 'tpa';
   logo: string | null;
 }
 
@@ -56,6 +57,7 @@ interface TPA {
   cat: 'public' | 'private' | 'tpa';
   color: string;
   abbr: string;
+  logo?: string | null;
 }
 
 interface Facility {
@@ -99,22 +101,22 @@ const HEALTH_PACKAGES: StaticHealthPackage[] = [
 ];
 
 const TPA_LIST: TPA[] = [
-  { name: 'Star Health', cat: 'private', color: '#1d4ed8', abbr: 'SH' },
-  { name: 'ICICI Lombard', cat: 'private', color: '#0f766e', abbr: 'IL' },
-  { name: 'HDFC ERGO', cat: 'private', color: '#7c3aed', abbr: 'HE' },
-  { name: 'Bajaj Allianz', cat: 'private', color: '#b45309', abbr: 'BA' },
-  { name: 'New India Assurance', cat: 'public', color: '#166534', abbr: 'NI' },
-  { name: 'United India', cat: 'public', color: '#1e3a5f', abbr: 'UI' },
-  { name: 'Oriental Insurance', cat: 'public', color: '#7c2d12', abbr: 'OI' },
-  { name: 'National Insurance', cat: 'public', color: '#0f172a', abbr: 'NA' },
-  { name: 'Medi Assist', cat: 'tpa', color: '#0e7490', abbr: 'MA' },
-  { name: 'Paramount TPA', cat: 'tpa', color: '#4338ca', abbr: 'PT' },
-  { name: 'Heritage Health TPA', cat: 'tpa', color: '#065f46', abbr: 'HH' },
-  { name: 'E-Meditek', cat: 'tpa', color: '#991b1b', abbr: 'EM' },
-  { name: 'Raksha TPA', cat: 'tpa', color: '#6b21a8', abbr: 'RT' },
-  { name: 'Alankit Assignments', cat: 'tpa', color: '#854d0e', abbr: 'AA' },
-  { name: 'Vidal Health TPA', cat: 'tpa', color: '#0369a1', abbr: 'VH' },
-  { name: 'Genins India TPA', cat: 'tpa', color: '#155e75', abbr: 'GI' },
+  { name: 'Star Health', cat: 'private', color: '#1d4ed8', abbr: 'SH', logo: undefined },
+  { name: 'ICICI Lombard', cat: 'private', color: '#0f766e', abbr: 'IL', logo: undefined },
+  { name: 'HDFC ERGO', cat: 'private', color: '#7c3aed', abbr: 'HE', logo: undefined },
+  { name: 'Bajaj Allianz', cat: 'private', color: '#b45309', abbr: 'BA', logo: undefined },
+  { name: 'New India Assurance', cat: 'public', color: '#166534', abbr: 'NI', logo: undefined },
+  { name: 'United India', cat: 'public', color: '#1e3a5f', abbr: 'UI', logo: undefined },
+  { name: 'Oriental Insurance', cat: 'public', color: '#7c2d12', abbr: 'OI', logo: undefined },
+  { name: 'National Insurance', cat: 'public', color: '#0f172a', abbr: 'NA', logo: undefined },
+  { name: 'Medi Assist', cat: 'tpa', color: '#0e7490', abbr: 'MA', logo: undefined },
+  { name: 'Paramount TPA', cat: 'tpa', color: '#4338ca', abbr: 'PT', logo: undefined },
+  { name: 'Heritage Health TPA', cat: 'tpa', color: '#065f46', abbr: 'HH', logo: undefined },
+  { name: 'E-Meditek', cat: 'tpa', color: '#991b1b', abbr: 'EM', logo: undefined },
+  { name: 'Raksha TPA', cat: 'tpa', color: '#6b21a8', abbr: 'RT', logo: undefined },
+  { name: 'Alankit Assignments', cat: 'tpa', color: '#854d0e', abbr: 'AA', logo: undefined },
+  { name: 'Vidal Health TPA', cat: 'tpa', color: '#0369a1', abbr: 'VH', logo: undefined },
+  { name: 'Genins India TPA', cat: 'tpa', color: '#155e75', abbr: 'GI', logo: undefined },
 ];
 
 const FACILITIES: Facility[] = [
@@ -262,12 +264,19 @@ export default function FacilitiesPage() {
   };
 
   const partnersFromBackend = props.partners || [];
+  
+  const partnerColors: Record<string, string> = {
+    public: '#166534',
+    private: '#1d4ed8',
+    tpa: '#0e7490',
+  };
+
   const displayPartners = partnersFromBackend.length > 0
     ? partnersFromBackend.map(p => {
-        const info = staticPartnerNames[p.name] || { cat: 'tpa' as const, color: '#0e7490' };
+        const cat = p.category || 'tpa';
         const abbr = p.name.split(' ').map(w => w[0]).slice(0, 2).join('');
 
-        return { name: p.name, cat: info.cat, color: info.color, abbr };
+        return { name: p.name, cat: cat as 'public' | 'private' | 'tpa', color: partnerColors[cat] || '#0e7490', abbr, logo: p.logo };
       })
     : TPA_LIST;
 
@@ -557,12 +566,20 @@ export default function FacilitiesPage() {
                   key={t.name}
                   className="group flex flex-col items-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-300 hover:shadow-md"
                 >
-                  <div
-                    className="flex h-9 w-9 items-center justify-center rounded-lg text-xs font-bold text-white"
-                    style={{ backgroundColor: t.color }}
-                  >
-                    {t.abbr}
-                  </div>
+                  {t.logo ? (
+                    <img 
+                      src={t.logo} 
+                      alt={t.name}
+                      className="h-9 w-9 object-contain rounded-lg"
+                    />
+                  ) : (
+                    <div
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-xs font-bold text-white"
+                      style={{ backgroundColor: t.color }}
+                    >
+                      {t.abbr}
+                    </div>
+                  )}
                   <span className="text-center text-[11px] font-medium leading-tight text-slate-800">{t.name}</span>
                   <span className="rounded-full bg-teal-50 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-teal-700">
                     {TPA_CAT_LABELS[t.cat]}

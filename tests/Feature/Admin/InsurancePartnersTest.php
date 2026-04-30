@@ -27,10 +27,11 @@ test('admin can create insurance partner', function () {
 
     $response = $this->post(route('insurance-partners.store'), [
         'name' => 'Test Insurance',
+        'category' => 'tpa',
     ]);
 
     $response->assertRedirect(route('insurance-partners.index'));
-    $this->assertDatabaseHas('insurance_partners', ['name' => 'Test Insurance']);
+    $this->assertDatabaseHas('insurance_partners', ['name' => 'Test Insurance', 'category' => 'tpa']);
 });
 
 test('admin can view insurance partner', function () {
@@ -63,10 +64,11 @@ test('admin can update insurance partner', function () {
 
     $response = $this->put(route('insurance-partners.update', $partner), [
         'name' => 'Updated Insurance',
+        'category' => 'private',
     ]);
 
     $response->assertRedirect(route('insurance-partners.index'));
-    $this->assertDatabaseHas('insurance_partners', ['name' => 'Updated Insurance']);
+    $this->assertDatabaseHas('insurance_partners', ['name' => 'Updated Insurance', 'category' => 'private']);
 });
 
 test('admin can delete insurance partner', function () {

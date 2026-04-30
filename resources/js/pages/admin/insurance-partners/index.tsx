@@ -14,6 +14,7 @@ import {
 interface InsurancePartner {
     id: number;
     name: string;
+    category: 'public' | 'private' | 'tpa';
     logo: string | null;
 }
 
@@ -58,6 +59,7 @@ export default function Index({ partners }: Props) {
                                 <TableHead className="w-[200px]">
                                     Name
                                 </TableHead>
+                                <TableHead>Category</TableHead>
                                 <TableHead>Logo</TableHead>
                                 <TableHead className="text-right">
                                     Actions
@@ -72,7 +74,26 @@ export default function Index({ partners }: Props) {
                                             {partner.name}
                                         </TableCell>
                                         <TableCell>
-                                            {partner.logo || 'No logo'}
+                                            <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium capitalize ${
+                                                partner.category === 'public' 
+                                                    ? 'bg-green-100 text-green-800'
+                                                    : partner.category === 'private'
+                                                    ? 'bg-blue-100 text-blue-800'
+                                                    : 'bg-purple-100 text-purple-800'
+                                            }`}>
+                                                {partner.category === 'tpa' ? 'TPA Agency' : `${partner.category} Sector`}
+                                            </span>
+                                        </TableCell>
+                                        <TableCell>
+                                            {partner.logo ? (
+                                                <img 
+                                                    src={partner.logo} 
+                                                    alt={partner.name}
+                                                    className="h-10 w-10 object-contain"
+                                                />
+                                            ) : (
+                                                'No logo'
+                                            )}
                                         </TableCell>
                                         <TableCell className="space-x-2 text-right">
                                             <Button
