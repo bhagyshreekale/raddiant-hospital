@@ -4,10 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ImageUpload } from '@/components/ui/image-upload';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
+        category: 'tpa' as 'public' | 'private' | 'tpa',
         logo: null as File | string | null,
     });
 
@@ -44,10 +46,31 @@ export default function Create() {
                         </div>
 
                         <div>
+                            <Label htmlFor="category">Sector Category</Label>
+                            <Select
+                                value={data.category}
+                                onValueChange={(val) => setData('category', val as 'public' | 'private' | 'tpa')}
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select category" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="public">Public Sector</SelectItem>
+                                    <SelectItem value="private">Private Sector</SelectItem>
+                                    <SelectItem value="tpa">TPA Agency</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            {errors.category && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.category}
+                                </p>
+                            )}
+                        </div>
+
+                        <div>
                             <ImageUpload
                                 name="logo"
                                 label="Logo"
-                                // FIX: Ensure we only pass a string or undefined
                                 value={typeof data.logo === 'string' ? data.logo : undefined}
                                 onChange={(val) => setData('logo', val)}
                             />
