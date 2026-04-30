@@ -40,7 +40,14 @@ class HealthPackageController extends Controller
                     'status' => $bed->status,
                 ];
             }),
-            'partners' => InsurancePartner::latest()->get(),
+            'partners' => InsurancePartner::latest()->get()->map(function ($partner) {
+                return [
+                    'id' => $partner->id,
+                    'name' => $partner->name,
+                    'category' => $partner->category,
+                    'logo' => $partner->logo ? asset('storage/'.$partner->logo) : null,
+                ];
+            }),
             'canRegister' => false,
         ]);
     }

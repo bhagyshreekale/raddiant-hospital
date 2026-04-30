@@ -8,6 +8,7 @@ class InsurancePartner extends Model
 {
     protected $fillable = [
         'name',
+        'category',
         'logo',
     ];
 }
