@@ -72,23 +72,53 @@ export default function GalleryPage() {
       <main className="min-vh-100 bg-white">
         
         {/* ── Hero Section ────────────────────────────────────────────────── */}
-        <section className="gallery-hero">
-          <div className="hero-blob-top" />
-          <div className="hero-blob-bottom" />
-
-          <div className="container text-center position-relative">
-            <span className="gallery-badge">
-              Raddiant Plus Experience
-            </span>
-            <h1 className="gallery-title">
-              Our Hospital Gallery
-            </h1>
-            <p className="gallery-subtitle">
-              A visual journey through our state-of-the-art medical facilities, 
-              cutting-edge technology, and the dedicated team behind our care.
-            </p>
-          </div>
-        </section>
+      <section className="relative bg-slate-50 overflow-hidden pt-16 pb-0 text-center">
+ 
+      {/* Top accent */}
+      <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-500" />
+ 
+      {/* Soft top glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[280px] bg-[radial-gradient(ellipse_at_top,#dbeafe60_0%,transparent_65%)] pointer-events-none" />
+ 
+      {/* Dot grid */}
+      <div
+        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #1e40af 1px, transparent 1px)',
+          backgroundSize: '30px 30px',
+        }}
+      />
+ 
+      <div className="relative z-10 container mx-auto px-4">
+ 
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 text-[10px] font-bold uppercase tracking-widest px-5 py-2 rounded-full mb-6">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+          NABH Accredited · Nashik, MH
+        </div>
+ 
+        {/* Heading */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-slate-900 leading-[1.08] tracking-tight mb-5">
+          Compassionate Care,{' '}
+          <br className="hidden sm:block" />
+          <span className="bg-gradient-to-r from-green-600 to-green-500 bg-clip-text text-transparent">
+            Advanced Medicine
+          </span>
+        </h1>
+ 
+        {/* Subtitle */}
+        <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-md mx-auto mb-8">
+          Raddiant Plus Hospital — your trusted partner for 20+ specialties,
+          expert surgeons, and 24/7 emergency services under one roof.
+        </p>
+ 
+       
+ 
+      </div>
+ 
+      {/* Bottom fade */}
+      <div className="mt-8 h-8 bg-gradient-to-b from-transparent to-slate-100 pointer-events-none" />
+    </section>
 
         {/* ── Gallery Component ───────────────────────────────────────────── */}
         <div className="bg-light/30">
