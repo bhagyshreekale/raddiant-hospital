@@ -15,7 +15,7 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
     /**
-     * Show the user's profile settings page.
+     * Show the admin's profile settings page.
      */
     public function edit(Request $request): Response
     {
@@ -26,35 +26,39 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Update the admin's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $admin = Auth::guard('admin')->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->has('name')) {
+            $admin->username = $request->name;
         }
 
-        $request->user()->save();
+        if ($request->has('email')) {
+            $admin->email = $request->email;
+        }
+
+        $admin->save();
 
         return to_route('profile.edit');
     }
 
     /**
-     * Delete the user's profile.
+     * Delete the admin's profile.
      */
     public function destroy(ProfileDeleteRequest $request): RedirectResponse
     {
-        $user = $request->user();
+        $admin = Auth::guard('admin')->user();
 
-        Auth::logout();
+        Auth::guard('admin')->logout();
 
-        $user->delete();
+        $admin->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/admin/login');
     }
 }
