@@ -36,7 +36,7 @@ Route::middleware('web')->group(function () {
 });
 
 Route::middleware(['web', 'auth:admin'])->group(function () {
-    Route::redirect('settings', '/admin/settings/profile');
+    Route::redirect('settings', '/admin/website-settings');
 
     Route::get('admin/settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('admin/settings/profile', [ProfileController::class, 'update'])->name('profile.update');

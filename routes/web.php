@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\BedAvailabilityController;
@@ -12,13 +13,11 @@ use App\Http\Controllers\HealthPackageController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Middleware\EnsureUserIsAdmin;
-use App\Models\Blog;
-use App\Models\Career;
-use App\Models\ContactInfo;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Route;
 
@@ -43,21 +42,13 @@ Route::get('/user/two-factor-recovery-codes', fn () => abort(404))->name('two-fa
 Route::post('/user/two-factor-recovery-codes', fn () => abort(404))->name('two-factor.regenerate');
 Route::post('/user/confirmed-two-factor-authentication', fn () => abort(404))->name('two-factor.confirm');
 
-Route::inertia('/', 'welcome', [
-    'canRegister' => false,
-])->name('home');
+Route::get('/', [SiteController::class, 'home'])->name('home');
 
-Route::inertia('/home', 'home', [
-    'canRegister' => false,
-])->name('home-one');
+Route::get('/home', [SiteController::class, 'home'])->name('home-one');
 
-Route::inertia('/services', 'services', [
-    'canRegister' => false,
-])->name('services');
+Route::get('/services', [SiteController::class, 'services'])->name('services');
 
-Route::inertia('/gallery', 'gallery', [
-    'canRegister' => false,
-])->name('gallery');
+Route::get('/gallery', [SiteController::class, 'gallery'])->name('gallery');
 
 Route::get('/facilities', [HealthPackageController::class, 'public'])->name('facilities');
 
@@ -77,46 +68,17 @@ Route::inertia('/doctors', 'doctors', [
     'canRegister' => false,
 ])->name('doctors');
 
-Route::inertia('/about', 'about', [
-    'canRegister' => false,
-])->name('about');
+Route::get('/about', [SiteController::class, 'about'])->name('about');
 
-Route::inertia('/contact', 'contact', [
-    'contactData' => ContactInfo::first(),
-    'canRegister' => false,
-])->name('contact');
+Route::get('/contact', [SiteController::class, 'contact'])->name('contact');
 
-Route::inertia('/careers', 'careers', [
-    'jobs' => Career::latest()->get()->map(function ($job) {
-        return [
-            'id' => $job->id,
-            'title' => $job->title,
-            'department' => $job->specialization,
-            'location' => $job->location ?? 'Nashik',
-            'type' => $job->job_type ?? 'Full Time',
-            'salary' => $job->salary,
-            'experience' => $job->experience,
-            'description' => $job->description,
-        ];
-    }),
-    'canRegister' => false,
-])->name('careers');
+Route::get('/careers', [SiteController::class, 'careers'])->name('careers');
 
-Route::get('/blog', [BlogController::class, 'public'])->name('blog');
-Route::inertia('/blog', 'blog', [
-    'blogs' => Blog::latest()->get(),
-    'canRegister' => false,
-])->name('blog');
+Route::get('/blog', [SiteController::class, 'blog'])->name('blog');
 
-Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/appointment', [SiteController::class, 'appointment'])->name('appointment');
 
-Route::inertia('/appointment', 'appoinment', [
-    'canRegister' => false,
-])->name('appointment');
-
-Route::inertia('/appoinment', 'appoinment', [
-    'canRegister' => false,
-])->name('appoinment');
+Route::get('/appoinment', [SiteController::class, 'appoinment'])->name('appoinment');
 
 Route::post('/upload/image', [ImageController::class, 'upload'])->name('image.upload');
 Route::delete('/upload/image', [ImageController::class, 'delete'])->name('image.delete');
@@ -134,6 +96,9 @@ Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(functi
     Route::resource('admin/admins', AdminUserController::class);
     Route::resource('admin/blogs', BlogController::class);
     Route::resource('admin/contact', ContactController::class);
+    Route::get('admin/website-settings', [SettingsController::class, 'index'])->name('admin.settings.index');
+    Route::get('admin/website-settings/edit', [SettingsController::class, 'edit'])->name('admin.settings.edit');
+    Route::put('admin/website-settings', [SettingsController::class, 'update'])->name('admin.settings.update');
 });
 
 Route::middleware(['web', 'auth:admin'])->group(function () {
