@@ -23,7 +23,7 @@ const SOCIAL_LINKS = [
   {
     id:    'instagram',
     label: 'Instagram',
-    href:  SITE.instagram ?? 'https://instagram.com',
+    href:  SITE.social?.instagram ?? 'https://instagram.com',
     color: '#E1306C',
     hoverShadow: 'rgba(225,48,108,.40)',
     icon: (
@@ -35,7 +35,7 @@ const SOCIAL_LINKS = [
   {
     id:    'facebook',
     label: 'Facebook',
-    href:  SITE.facebook ?? 'https://facebook.com',
+    href:  SITE.social?.facebook ?? 'https://facebook.com',
     color: '#1877F2',
     hoverShadow: 'rgba(24,119,242,.40)',
     icon: (
@@ -47,7 +47,7 @@ const SOCIAL_LINKS = [
   {
     id:    'youtube',
     label: 'YouTube',
-    href:  SITE.youtube ?? 'https://youtube.com',
+    href:  SITE.social?.youtube ?? 'https://youtube.com',
     color: '#FF0000',
     hoverShadow: 'rgba(255,0,0,.35)',
     icon: (
