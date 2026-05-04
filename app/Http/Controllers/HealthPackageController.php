@@ -29,6 +29,7 @@ class HealthPackageController extends Controller
                     'name' => $package->name,
                     'description' => $package->description,
                     'price' => $package->price,
+                    'features' => $package->features ?? [],
                 ];
             }),
             'bedAvailability' => BedAvailability::latest()->get()->map(function ($bed, $index) use ($bedTypes) {
@@ -61,6 +62,7 @@ class HealthPackageController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'features' => 'nullable|array',
             'features.*' => 'string|max:255',
@@ -84,6 +86,7 @@ class HealthPackageController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'price' => 'required|numeric|min:0',
             'features' => 'nullable|array',
             'features.*' => 'string|max:255',

@@ -13,11 +13,11 @@ class SiteDataController extends Controller
         // 1. Fetch & Parse the Master Navigation (Syncs Navbar and Footer Column 2)
         $navMenuRaw = WebsiteSettings::getSetting('nav_menu');
         $masterNav = [];
-        
+
         if ($navMenuRaw) {
             $masterNav = json_decode($navMenuRaw, true) ?? [];
         }
-        
+
         // Fallback navigation if database is empty
         if (empty($masterNav)) {
             $masterNav = [
@@ -34,23 +34,23 @@ class SiteDataController extends Controller
         // 2. Fetch Specialties for Footer Column 3
         $specializations = Specialization::pluck('name')->toArray();
         $footerSpecialties = WebsiteSettings::getSetting('footer_specialties');
-        
+
         // Parse JSON links for Column 3
         $column3Raw = WebsiteSettings::getSetting('footer_column3_links');
         $column3Links = [];
-        
+
         if ($column3Raw) {
             $decoded = json_decode($column3Raw, true);
             if (is_array($decoded)) {
                 $column3Links = $decoded;
             }
         }
-        
+
         // Fallback for Column 3 if empty
         if (empty($column3Links)) {
             $specialtiesList = $footerSpecialties ? explode(',', $footerSpecialties) : ($specializations ?: ['Cardiology', 'Orthopedics', 'Neurology']);
-            $column3Links = array_map(function($s) {
-                return ['label' => trim($s), 'href' => '/services?specialty=' . urlencode(trim($s))];
+            $column3Links = array_map(function ($s) {
+                return ['label' => trim($s), 'href' => '/services?specialty='.urlencode(trim($s))];
             }, $specialtiesList);
         }
 
@@ -68,20 +68,20 @@ class SiteDataController extends Controller
                 'youtube' => WebsiteSettings::getSetting('youtube', '#'),
             ],
             'emergency' => WebsiteSettings::getSetting('emergency_number', '108'),
-            
+
             // Shared Master Navigation passed to the frontend Header
-            'nav' => $masterNav, 
-            
+            'nav' => $masterNav,
+
             'footer' => [
                 'tagline' => WebsiteSettings::getSetting('footer_tagline', 'Touching Lives, Healing Souls'),
                 'description' => WebsiteSettings::getSetting('footer_description', 'Delivering comprehensive multispecialty hospital and diagnostic care.'),
-                
+
                 // Shared Master Navigation automatically synced to Footer Column 2
                 'quickLinks' => $masterNav,
-                
+
                 'column3Title' => WebsiteSettings::getSetting('footer_specialties_title', 'Specialties'),
                 'column3Links' => $column3Links,
-                
+
                 'contactTitle' => WebsiteSettings::getSetting('footer_contact_title', 'Contact Information'),
                 'address' => WebsiteSettings::getSetting('footer_address', 'Nashik, Maharashtra'),
                 'phone' => WebsiteSettings::getSetting('footer_phone', '+91 93565 10704'),
