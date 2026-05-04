@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { router } from '@inertiajs/react';
 import {
   FaBriefcase,
   FaMapMarkerAlt,
@@ -163,8 +164,6 @@ const JOBS = [
   },
 ];
 
-const DEPARTMENTS = ['All', ...Array.from(new Set(JOBS.map((j) => j.department)))];
-
 const DEPT_COLORS = {
   Radiology:      { bg: 'bg-violet-50',  text: 'text-violet-700',  border: 'border-violet-100'  },
   Nursing:        { bg: 'bg-pink-50',    text: 'text-pink-700',    border: 'border-pink-100'    },
@@ -193,7 +192,28 @@ function ApplyModal({ job, onClose }) {
   const submit = (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => { setLoading(false); setSubmitted(true); }, 1400);
+
+    const formData = new FormData();
+    formData.append('job_id', job.id);
+    formData.append('full_name', form.name);
+    formData.append('email', form.email);
+    formData.append('phone', form.phone);
+    formData.append('experience', form.experience);
+    if (form.file) {
+      formData.append('resume', form.file);
+    }
+
+    router.post('/job-application', formData, {
+      forceFormData: true,
+      onSuccess: () => {
+        setLoading(false);
+        setSubmitted(true);
+      },
+      onError: () => {
+        setLoading(false);
+        alert('Failed to submit application. Please try again.');
+      },
+    });
   };
 
   return (
@@ -495,19 +515,36 @@ function JobCard({ job, onApply, onDetails }) {
   );
 }
 
-// ── Main Component ────────────────────────────────────────────────────────────
-export default function JobListingsClient() {
+export default function JobListingsClient({ jobs = [] }) {
   const [activeDept, setActiveDept] = useState('All');
   const [applyJob,   setApplyJob]   = useState(null);
   const [detailJob,  setDetailJob]  = useState(null);
 
-  const filtered = activeDept === 'All' ? JOBS : JOBS.filter((j) => j.department === activeDept);
+  // Transform database jobs to match expected format
+  const jobsArray = Array.isArray(jobs) ? jobs : [];
+  const displayJobs = jobsArray.map((job) => ({
+    id: job.id,
+    title: job.title,
+    department: job.specialization || job.title,
+    location: job.location || 'Nashik, MH',
+    type: job.job_type || 'Full-time',
+    experience: job.experience || '1+ years',
+    salary: job.salary || 'Competitive',
+    posted: 'Recently',
+    description: job.description || 'Join our team!',
+    responsibilities: ['Work with a dedicated team', 'Professional growth opportunities'],
+    requirements: ['Relevant qualifications', 'Passion for healthcare'],
+  }));
+
+  const allJobs = displayJobs.length > 0 ? displayJobs : JOBS;
+  const departments = ['All', ...Array.from(new Set(allJobs.map((j) => j.department)))];
+  const filtered = activeDept === 'All' ? allJobs : allJobs.filter((j) => j.department === activeDept);
 
   return (
     <>
       {/* Department filter tabs */}
       <div className="flex flex-wrap gap-2 mb-8">
-        {DEPARTMENTS.map((dept) => (
+        {departments.map((dept) => (
           <button
             key={dept}
             onClick={() => setActiveDept(dept)}

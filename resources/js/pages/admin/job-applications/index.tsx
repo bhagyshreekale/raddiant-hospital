@@ -82,13 +82,17 @@ export default function Index({ applications }: Props) {
                                             {app.experience || 'N/A'}
                                         </TableCell>
                                         <TableCell>
-                                            <a
-                                                href={app.resume_url}
-                                                target="_blank"
-                                                className="text-blue-600 underline"
-                                            >
-                                                View
-                                            </a>
+                                            {app.resume_url ? (
+                                                <a
+                                                    href={`/admin/job-applications/${app.id}/download`}
+                                                    target="_blank"
+                                                    className="text-blue-600 underline"
+                                                >
+                                                    View Resume
+                                                </a>
+                                            ) : (
+                                                <span className="text-gray-400">No Resume</span>
+                                            )}
                                         </TableCell>
                                         <TableCell className="space-x-2 text-right">
                                             <Button
