@@ -148,16 +148,18 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="border-t border-white/10 py-4">
-        <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2 text-[0.82rem]">
-          <p>© {new Date().getFullYear()} {data.name}. All rights reserved.</p>
-          <p>
-            Part of the <strong className="text-cyan-400">Raddiant Group</strong>
-            <span className="mx-2 opacity-20">|</span>
-            NABH Compliant
-          </p>
-        </div>
-      </div>
+    <div className="border-t border-white/10 py-4">
+  <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-2 text-[0.82rem] text-white/70">
+    <p>© {new Date().getFullYear()} {data.name}. All rights reserved.</p>
+    <p className="flex items-center flex-wrap justify-center">
+      Part of the <strong className="text-cyan-400 ml-1">Raddiant Group</strong>
+      <span className="mx-2 opacity-20">|</span>
+      NABH Compliant
+      <span className="mx-2 opacity-20">|</span>
+      <span>Developed by <a href="https://blendigitals.com/" className="hover:text-cyan-400 transition-colors">Blen Digital</a></span>
+    </p>
+  </div>
+</div>
     </footer>
   );
 }

@@ -10,9 +10,9 @@ export const SITE = {
   address: "4th & 5th Floor, Roongta Bellvista, Mumbai Agra Service road, near Bhujbal farm, Sadguru Nagar, Nashik, Maharashtra 422009",
   mapEmbedUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3749.7186604907492!2d73.77543167522843!3d19.978330581421005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bddebb97ecc1ae9%3A0x3edc146497f64723!2sRaddiant%20Plus%20Hospital%2C%20Bhujbal%20farm!5e0!3m2!1sen!2sin!4v1775040564194!5m2!1sen!2sin",
   social: {
-    facebook: "#",
-    instagram: "#",
-    youtube: "#",
+    facebook: "https://www.facebook.com/profile.php?id=61572568329238&sk=directory_contact_info",
+    instagram: "https://www.instagram.com/raddiant_plus_hospital/",
+    youtube: "https://www.youtube.com/@RaddiantHospital",
   },
   emergency: "108",
 };
