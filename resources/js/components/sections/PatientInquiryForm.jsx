@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { usePage, router } from '@inertiajs/react';
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaClock } from 'react-icons/fa';
 import { SITE } from '../../lib copy/data';
 
@@ -97,13 +98,31 @@ export default function PatientInquiryForm() {
   const set = k => e => setForm(f => ({ ...f, [k]: e.target.value }));
   const fi  = k => inpStyle(k, focused);
 
+  const { props } = usePage();
+  
+  useEffect(() => {
+    if (props.reference_id && !refId) {
+      setRefId(props.reference_id);
+      setSubmitted(true);
+    }
+  }, [props.reference_id]);
+
   const handleSubmit = async e => {
     e.preventDefault();
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1400));
-    setRefId(generateRef());
-    setLoading(false);
-    setSubmitted(true);
+
+    const fullName = `${form.firstName} ${form.lastName}`.trim();
+
+    router.post('/inquiry', {
+      name: fullName,
+      phone: form.phone,
+      email: form.email,
+      department: form.department,
+      visit_type: form.visitType,
+      preferred_date: form.preferredDate,
+      preferred_time: form.preferredSlot,
+      message: form.message,
+    });
   };
 
   const CONTACT_ITEMS = [

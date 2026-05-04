@@ -233,14 +233,16 @@ export default function FacilitiesPage() {
   // Map Backend Packages to display format
   const displayPackages = healthPackagesFromBackend.length > 0
     ? healthPackagesFromBackend.map(pkg => ({
-        ...pkg,
-        description: Array.isArray(pkg.description) ? pkg.description.join(', ') : pkg.description
+        id: pkg.id,
+        name: pkg.name,
+        price: pkg.price,
+        features: Array.isArray(pkg.features) ? pkg.features : (typeof pkg.description === 'string' ? pkg.description.split(',') : [])
       }))
     : HEALTH_PACKAGES.map((pkg, i) => ({
         id: i,
         name: pkg.name,
         price: pkg.price.replace('₹', '').replace(',', ''),
-        description: pkg.features.join(', ')
+        features: pkg.features
       }));
 
   // Convert backend partners to TPA format
@@ -493,7 +495,7 @@ export default function FacilitiesPage() {
                     <span className="font-serif text-3xl font-semibold" style={{ color: '#ffffff' }}>₹{Number(pkg.price).toLocaleString('en-IN')}</span>
                   </div>
                   <ul className="mb-7 space-y-2.5">
-                    {pkg.description.split(',').map((f: string, i: number) => (
+                    {(pkg.features || []).map((f: string, i: number) => (
                       <li key={i} className="flex items-center gap-2.5 text-xs" style={{ color: 'rgba(255,255,255,0.75)' }}>
                         <span
                           className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full text-[9px] font-bold

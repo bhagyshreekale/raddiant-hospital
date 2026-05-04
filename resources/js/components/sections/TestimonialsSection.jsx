@@ -2,57 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const TESTIMONIALS = [
-  {
-    id: 1, name: 'Priya Sharma', initials: 'PS', role: 'Cardiac Patient',
-    dept: 'Cardiology', from: '#8b5cf6', to: '#a78bfa',
-    avFrom: '#3C3489', avTo: '#7F77DD', stars: 5,
-    text: 'The cardiology team at Raddiant Plus gave me my life back. From diagnosis to surgery, everything was handled with incredible precision and warmth. I felt safe every step of the way.',
-  },
-  {
-    id: 2, name: 'Rajan Mehta', initials: 'RM', role: 'Orthopaedic Surgery',
-    dept: 'Orthopaedics', from: '#0ea5e9', to: '#38bdf8',
-    avFrom: '#0C447C', avTo: '#378ADD', stars: 5,
-    text: 'After my knee replacement, the physiotherapy team guided me through recovery so patiently. I was back to walking without pain in just six weeks. Truly world-class care.',
-  },
-  {
-    id: 3, name: 'Anita Kulkarni', initials: 'AK', role: 'Maternity Patient',
-    dept: 'Obstetrics', from: '#ec4899', to: '#f472b6',
-    avFrom: '#72243E', avTo: '#D4537E', stars: 5,
-    text: 'Delivering my daughter at Raddiant Plus was a beautiful experience. The nursing staff were like family — attentive, kind, and always present. The facilities are spotless and modern.',
-  },
-  {
-    id: 4, name: 'Deepak Joshi', initials: 'DJ', role: 'Cancer Survivor',
-    dept: 'Oncology', from: '#10b981', to: '#34d399',
-    avFrom: '#085041', avTo: '#1D9E75', stars: 5,
-    text: 'Three years in remission and I owe it all to the oncology team. They were honest about my diagnosis, compassionate in treatment, and celebrated every milestone alongside me.',
-  },
-  {
-    id: 5, name: 'Sunita Patil', initials: 'SP', role: 'Diabetes Management',
-    dept: 'Endocrinology', from: '#f59e0b', to: '#fbbf24',
-    avFrom: '#633806', avTo: '#BA7517', stars: 5,
-    text: 'Managing Type 2 diabetes felt overwhelming until I joined the wellness programme here. The dietitian and endocrinologist work as one team. My HbA1c has dropped dramatically.',
-  },
-  {
-    id: 6, name: 'Vikram Nair', initials: 'VN', role: 'Emergency Patient',
-    dept: 'Emergency', from: '#ef4444', to: '#f87171',
-    avFrom: '#791F1F', avTo: '#E24B4A', stars: 5,
-    text: 'Brought in at midnight with severe chest pain, I was triaged within minutes. The emergency response here is genuinely life-saving. Cannot thank the team enough.',
-  },
-  {
-    id: 7, name: 'Meera Desai', initials: 'MD', role: 'Paediatrics Parent',
-    dept: 'Paediatrics', from: '#06b6d4', to: '#22d3ee',
-    avFrom: '#0C447C', avTo: '#185FA5', stars: 5,
-    text: 'Our son was admitted with dengue and the paediatric team monitored him round the clock. The doctors explained every step calmly. He recovered fully in five days.',
-  },
-  {
-    id: 8, name: 'Arun Bhosale', initials: 'AB', role: 'Neurology Patient',
-    dept: 'Neurology', from: '#8b5cf6', to: '#c084fc',
-    avFrom: '#26215C', avTo: '#534AB7', stars: 5,
-    text: 'After my stroke, the neurologist and rehab team designed a personalised recovery plan. Six months later I am back at work. This hospital is truly exceptional.',
-  },
-];
-
 const RATING_BARS = [
   { label: 'Overall care', val: '4.9', pct: 97 },
   { label: 'Cleanliness',  val: '4.8', pct: 95 },
@@ -182,10 +131,30 @@ function RatingBar({ label, val, pct, animate }) {
 }
 
 export default function TestimonialsSection({ testimonials = [] }) {
-  // Use database testimonials if available, otherwise use static data
-  const displayTestimonials = testimonials.length > 0 ? testimonials : TESTIMONIALS;
+  const displayTestimonials = testimonials;
   const footerRef = useRef(null);
   const [footerIn, setFooterIn] = useState(false);
+
+  if (displayTestimonials.length === 0) {
+    return (
+      <section className="ts-section ts-bg ts-grid-lines relative overflow-hidden py-20 md:py-32">
+        <div className="relative container mx-auto px-4 lg:px-10 max-w-7xl">
+          <div className="flex flex-col items-center text-center mb-14">
+            <div className="inline-flex items-center gap-2 border border-violet-500/35 bg-violet-500/12 text-violet-300 text-[11px] font-bold uppercase tracking-[0.12em] px-4 py-2 rounded-full mb-6">
+              <span className="w-2 h-2 bg-violet-400 rounded-full ts-pulse" />
+              Patient Stories
+            </div>
+            <h2 className="text-4xl md:text-5xl xl:text-[3.2rem] font-black text-white leading-[1.08] tracking-tight mb-4 max-w-2xl">
+              What Our <span className="font-['Georgia',serif] italic font-normal ts-grad">Patients</span> Say
+            </h2>
+            <p className="text-white/48 text-[15px] leading-relaxed max-w-md">
+              No testimonials found. Please add testimonials from the admin panel.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   useEffect(() => {
     const el = footerRef.current;

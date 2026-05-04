@@ -34,9 +34,19 @@ export default function Edit({ blog }: { blog: Blog }) {
 
     const submit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(`/admin/blogs/${blog.id}`, {
-            forceFormData: true,
-        });
+        
+        const submitData = new FormData();
+        submitData.append('title', data.title);
+        submitData.append('category', data.category);
+        submitData.append('description', data.description);
+        submitData.append('read_time', data.read_time);
+        
+        // Only append image if it's a new file upload, not the existing URL string
+        if (data.image && typeof data.image !== 'string') {
+            submitData.append('image', data.image);
+        }
+        
+        put(`/admin/blogs/${blog.id}`, submitData);
     };
 
     return (
