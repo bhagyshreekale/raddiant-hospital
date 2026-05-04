@@ -54,7 +54,23 @@ const DEFAULT_STATS = [
   { value: '4.9★', label: 'Average Rating' },
 ];
 
-export default function CareersPage() {
+interface Job {
+  id: number;
+  title: string;
+  specialization: string;
+  salary: string;
+  location: string;
+  job_type: string;
+  experience: string;
+  description: string;
+}
+
+interface CareersPageProps {
+  jobs?: Job[];
+  siteData?: any;
+}
+
+export default function CareersPage({ jobs = [] }: CareersPageProps) {
 
  const floatingCards = [
     { icon: <FaHospital />, label: 'Modern Facility', sub: 'State-of-the-art equipment', color: 'from-blue-50 to-blue-100', accent: 'bg-blue-600', iconColor: 'text-blue-600' },
@@ -366,7 +382,7 @@ export default function CareersPage() {
               </a>
             </div>
 
-            <JobListingsClient />
+            <JobListingsClient jobs={jobs} />
           </div>
         </section>
 

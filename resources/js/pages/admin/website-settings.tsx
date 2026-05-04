@@ -4,13 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Trash2, Plus } from 'lucide-react';
 import { useState } from 'react';
-import { edit, update } from '@/routes/website-settings';
 
 interface Props {
     hospital_name?: string;
     tagline?: string;
+    logo?: string;
     phone?: string;
     email?: string;
     address?: string;
@@ -19,11 +18,10 @@ interface Props {
     instagram?: string;
     youtube?: string;
     whatsapp?: string;
-    nav_menu?: string; // Replaces all the individual nav_ variables
     footer_tagline?: string;
     footer_description?: string;
     footer_specialties_title?: string;
-    footer_column3_links?: string;
+    footer_specialties?: string;
     footer_contact_title?: string;
     footer_address?: string;
     footer_phone?: string;
@@ -34,6 +32,7 @@ interface Props {
 export default function WebsiteSettings({
     hospital_name,
     tagline,
+    logo,
     phone,
     email,
     address,
@@ -42,45 +41,67 @@ export default function WebsiteSettings({
     instagram,
     youtube,
     whatsapp,
-    nav_menu,
     footer_tagline,
     footer_description,
     footer_specialties_title,
-    footer_column3_links,
+    footer_specialties,
     footer_contact_title,
     footer_address,
     footer_phone,
     footer_email,
     footer_timing,
 }: Props) {
-    // Parse existing JSON for the menu, or provide a default layout
-    const [navItems, setNavItems] = useState<{ label: string; href: string }[]>(() => {
-        try {
-            return nav_menu ? JSON.parse(nav_menu) : [
-                { label: 'Home', href: '/' },
-                { label: 'About Us', href: '/about' },
-                { label: 'Services', href: '/services' },
-                { label: 'Facilities', href: '/facilities' },
-                { label: 'Gallery', href: '/gallery' },
-                { label: 'Contact', href: '/contact' },
-            ];
-        } catch {
-            return [{ label: 'Home', href: '/' }];
-        }
-    });
+    const [logoUrl, setLogoUrl] = useState(logo || '/images/logo.png');
+    const [uploading, setUploading] = useState(false);
 
-    const addNavItem = () => setNavItems([...navItems, { label: '', href: '' }]);
-    
-    const removeNavItem = (index: number) => {
-        const newItems = [...navItems];
-        newItems.splice(index, 1);
-        setNavItems(newItems);
+    const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('filename', 'logo');
+
+        try {
+            const response = await fetch('/upload/image', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '',
+                },
+                body: formData,
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                setLogoUrl(data.url);
+            }
+        } catch (error) {
+            console.error('Upload failed', error);
+        } finally {
+            setUploading(false);
+        }
     };
 
-    const updateNavItem = (index: number, field: 'label' | 'href', value: string) => {
-        const newItems = [...navItems];
-        newItems[index][field] = value;
-        setNavItems(newItems);
+    const [specialties, setSpecialties] = useState<string[]>(() => {
+        if (footer_specialties) {
+            return footer_specialties.split(',').map(s => s.trim());
+        }
+        return ['Cardiology', 'Orthopedics', 'Neurology'];
+    });
+
+    const addSpecialty = () => setSpecialties([...specialties, '']);
+    
+    const removeSpecialty = (index: number) => {
+        const newItems = [...specialties];
+        newItems.splice(index, 1);
+        setSpecialties(newItems);
+    };
+
+    const updateSpecialty = (index: number, value: string) => {
+        const newItems = [...specialties];
+        newItems[index] = value;
+        setSpecialties(newItems);
     };
 
     return (
@@ -90,9 +111,31 @@ export default function WebsiteSettings({
                 <Heading title="Website Settings" description="Manage your hospital website header/navbar and footer content" />
             </div>
 
-            <Form action={update.url()} method="post" className="space-y-8">
-                {/* Hidden input to pass the dynamic JSON to the backend */}
-                <input type="hidden" name="nav_menu" value={JSON.stringify(navItems)} />
+            <Form action="/admin/website-settings" method="post" className="space-y-8">
+                <input type="hidden" name="logo" value={logoUrl} />
+                <input type="hidden" name="footer_specialties" value={specialties.join(',')} />
+
+                {/* Logo Upload */}
+                <div className="rounded-lg border bg-card p-6">
+                    <h3 className="mb-4 text-lg font-semibold">Logo</h3>
+                    <div className="flex items-center gap-4">
+                        <div className="w-40 h-24 border rounded-lg flex items-center justify-center bg-gray-50 overflow-hidden">
+                            <img src={logoUrl} alt="Logo" className="max-w-full max-h-full object-contain" />
+                        </div>
+                        <div>
+                            <Input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleLogoUpload}
+                                disabled={uploading}
+                                className="max-w-xs"
+                            />
+                            <p className="text-sm text-muted-foreground mt-1">
+                                {uploading ? 'Uploading...' : 'Upload logo (recommended: 320x170px)'}
+                            </p>
+                        </div>
+                    </div>
+                </div>
 
                 {/* Header Information */}
                 <div className="rounded-lg border bg-card p-6">
@@ -129,72 +172,31 @@ export default function WebsiteSettings({
                     </div>
                 </div>
 
-                {/* Dynamic Navbar Builder */}
+                {/* Social Links */}
                 <div className="rounded-lg border bg-card p-6">
-                    <h3 className="mb-4 text-lg font-semibold">Navigation Menu & Footer Quick Links</h3>
-                    <p className="mb-4 text-sm text-muted-foreground">
-                        Define the links for your Header. These will automatically sync to your Footer's Quick Links (Column 2).
-                    </p>
-                    <div className="space-y-4">
-                        {navItems.map((item, index) => (
-                            <div key={index} className="flex gap-4 items-end border-b pb-4">
-                                <div className="grid flex-1 gap-2">
-                                    <Label>Menu Label</Label>
-                                    <Input 
-                                        value={item.label} 
-                                        onChange={(e) => updateNavItem(index, 'label', e.target.value)}
-                                        placeholder="e.g. Testimonials" 
-                                    />
-                                </div>
-                                <div className="grid flex-1 gap-2">
-                                    <Label>URL Path</Label>
-                                    <Input 
-                                        value={item.href} 
-                                        onChange={(e) => updateNavItem(index, 'href', e.target.value)}
-                                        placeholder="e.g. /testimonials" 
-                                    />
-                                </div>
-                                <Button 
-                                    type="button" 
-                                    variant="destructive" 
-                                    size="icon" 
-                                    onClick={() => removeNavItem(index)}
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
-                            </div>
-                        ))}
-                        <Button type="button" variant="outline" onClick={addNavItem} className="w-full">
-                            <Plus className="mr-2 h-4 w-4" /> Add Menu Item
-                        </Button>
-                    </div>
-                </div>
-
-                {/* Social Media Links */}
-                <div className="rounded-lg border bg-card p-6">
-                    <h3 className="mb-4 text-lg font-semibold">Social Media Links</h3>
+                    <h3 className="mb-4 text-lg font-semibold">Social Links</h3>
                     <div className="grid gap-4 sm:grid-cols-3">
                         <div className="grid gap-2">
-                            <Label htmlFor="facebook">Facebook URL</Label>
-                            <Input id="facebook" name="facebook" defaultValue={facebook} placeholder="https://facebook.com/hospital" />
+                            <Label htmlFor="facebook">Facebook</Label>
+                            <Input id="facebook" name="facebook" defaultValue={facebook} placeholder="https://facebook.com/..." />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="instagram">Instagram URL</Label>
-                            <Input id="instagram" name="instagram" defaultValue={instagram} placeholder="https://instagram.com/hospital" />
+                            <Label htmlFor="instagram">Instagram</Label>
+                            <Input id="instagram" name="instagram" defaultValue={instagram} placeholder="https://instagram.com/..." />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="youtube">YouTube URL</Label>
-                            <Input id="youtube" name="youtube" defaultValue={youtube} placeholder="https://youtube.com/hospital" />
+                            <Label htmlFor="youtube">YouTube</Label>
+                            <Input id="youtube" name="youtube" defaultValue={youtube} placeholder="https://youtube.com/..." />
                         </div>
                     </div>
                 </div>
 
-                {/* Footer - Column 1: Brand */}
+                {/* Footer Information */}
                 <div className="rounded-lg border bg-card p-6">
-                    <h3 className="mb-4 text-lg font-semibold">Footer Column 1: Brand & Description</h3>
+                    <h3 className="mb-4 text-lg font-semibold">Footer Information</h3>
                     <div className="grid gap-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="footer_tagline">Tagline (below logo)</Label>
+                            <Label htmlFor="footer_tagline">Tagline</Label>
                             <Input id="footer_tagline" name="footer_tagline" defaultValue={footer_tagline} placeholder="Touching Lives, Healing Souls" />
                         </div>
                         <div className="grid gap-2">
@@ -204,55 +206,57 @@ export default function WebsiteSettings({
                     </div>
                 </div>
 
-                {/* Footer - Column 3: Custom Links */}
+                {/* Specialties */}
                 <div className="rounded-lg border bg-card p-6">
-                    <h3 className="mb-4 text-lg font-semibold">Footer Column 3: Custom Links (Specialties)</h3>
-                    <div className="grid gap-4">
-                        <div className="grid gap-2">
-                            <Label htmlFor="footer_specialties_title">Column Title</Label>
-                            <Input id="footer_specialties_title" name="footer_specialties_title" defaultValue={footer_specialties_title} placeholder="Specialties" />
-                        </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="footer_column3_links">Column 3 Links (Enter as JSON array)</Label>
-                            <p className="text-xs text-muted-foreground">Format: [&#123;"label":"Cardiology","href":"/services"&#125;,&#123;"label":"Orthopedics","href":"/doctors"&#125;]</p>
-                            <Textarea id="footer_column3_links" name="footer_column3_links" defaultValue={footer_column3_links} placeholder='[{"label":"Cardiology","href":"/services"},{"label":"Orthopedics","href":"/doctors"}]' rows={4} />
-                        </div>
+                    <h3 className="mb-4 text-lg font-semibold">Specialties</h3>
+                    <div className="grid gap-2">
+                        <Label htmlFor="footer_specialties_title">Specialties Title</Label>
+                        <Input id="footer_specialties_title" name="footer_specialties_title" defaultValue={footer_specialties_title || 'Specialties'} placeholder="Specialties" />
+                    </div>
+                    <div className="mt-4 space-y-2">
+                        {specialties.map((specialty, index) => (
+                            <div key={index} className="flex gap-2">
+                                <Input
+                                    value={specialty}
+                                    onChange={(e) => updateSpecialty(index, e.target.value)}
+                                    placeholder="Specialty name"
+                                />
+                                <Button type="button" variant="destructive" onClick={() => removeSpecialty(index)}>Remove</Button>
+                            </div>
+                        ))}
+                        <Button type="button" onClick={addSpecialty}>Add Specialty</Button>
                     </div>
                 </div>
 
-                {/* Footer - Column 4: Contact Info */}
+                {/* Contact Information */}
                 <div className="rounded-lg border bg-card p-6">
-                    <h3 className="mb-4 text-lg font-semibold">Footer Column 4: Contact Information</h3>
-                    <div className="grid gap-4">
+                    <h3 className="mb-4 text-lg font-semibold">Contact Information</h3>
+                    <div className="grid gap-4 sm:grid-cols-2">
                         <div className="grid gap-2">
-                            <Label htmlFor="footer_contact_title">Column Title</Label>
-                            <Input id="footer_contact_title" name="footer_contact_title" defaultValue={footer_contact_title} placeholder="Contact Information" />
+                            <Label htmlFor="footer_contact_title">Contact Title</Label>
+                            <Input id="footer_contact_title" name="footer_contact_title" defaultValue={footer_contact_title || 'Contact Information'} placeholder="Contact Information" />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="footer_address">Location</Label>
+                            <Label htmlFor="footer_address">Address</Label>
                             <Input id="footer_address" name="footer_address" defaultValue={footer_address} placeholder="Nashik, Maharashtra" />
                         </div>
                         <div className="grid gap-2">
-                            <Label htmlFor="footer_phone">Phone Number</Label>
-                            <Input id="footer_phone" name="footer_phone" defaultValue={footer_phone} placeholder="+91 93565 10704" />
+                            <Label htmlFor="footer_phone">Phone</Label>
+                            <Input id="footer_phone" name="footer_phone" defaultValue={footer_phone} placeholder="+91 98765 43210" />
                         </div>
                         <div className="grid gap-2">
                             <Label htmlFor="footer_email">Email</Label>
-                            <Input id="footer_email" name="footer_email" type="email" defaultValue={footer_email} placeholder="care@raddiantplus.com" />
+                            <Input id="footer_email" name="footer_email" type="email" defaultValue={footer_email} placeholder="info@hospital.com" />
                         </div>
-                        <div className="grid gap-2">
-                            <Label htmlFor="footer_timing">Hospital Timing</Label>
+                        <div className="grid gap-2 sm:col-span-2">
+                            <Label htmlFor="footer_timing">Timing</Label>
                             <Input id="footer_timing" name="footer_timing" defaultValue={footer_timing} placeholder="24x7 Emergency | OPD: Mon-Sat 9:00 AM - 6:00 PM" />
                         </div>
                     </div>
                 </div>
 
-                <Button type="submit">Save Changes</Button>
+                <Button type="submit">Save Settings</Button>
             </Form>
         </div>
     );
 }
-
-WebsiteSettings.layout = {
-    breadcrumbs: [{ title: 'Website Settings', href: edit() }],
-};

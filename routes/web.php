@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\NavigationLinkController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\BedAvailabilityController;
@@ -10,8 +12,10 @@ use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HealthPackageController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\InsurancePartnerController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SiteDataController;
 use App\Http\Controllers\SpecializationController;
@@ -22,6 +26,8 @@ use App\Models\Doctor;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/api/site-data', [SiteDataController::class, '__invoke']);
+
+Route::get('/api/navigation-links', [NavigationLinkController::class, 'index']);
 
 Route::get('/login', fn () => abort(404))->name('login');
 Route::post('/login', fn () => abort(404))->name('login.store');
@@ -78,6 +84,8 @@ Route::get('/careers', [SiteController::class, 'careers'])->name('careers');
 
 Route::get('/blog', [SiteController::class, 'blog'])->name('blog');
 
+Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
+
 Route::get('/appointment', [SiteController::class, 'appointment'])->name('appointment');
 
 Route::get('/appoinment', [SiteController::class, 'appoinment'])->name('appoinment');
@@ -88,6 +96,7 @@ Route::delete('/upload/image', [ImageController::class, 'delete'])->name('image.
 Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(function () {
     Route::resource('admin/tasks', TaskController::class);
     Route::resource('admin/specializations', SpecializationController::class);
+    Route::resource('admin/services', ServiceController::class);
     Route::resource('admin/doctors', DoctorController::class);
     Route::resource('admin/testimonials', TestimonialController::class);
     Route::resource('admin/health-packages', HealthPackageController::class);
@@ -106,8 +115,11 @@ Route::middleware(['web', 'auth:admin'])->group(function () {
 });
 
 Route::middleware(['web', 'auth:admin'])->group(function () {
-    Route::inertia('admin/dashboard', 'admin/dashboard')->name('dashboard');
+    Route::get('admin/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+Route::post('/inquiry', [InquiryController::class, 'store'])->name('inquiry.store');
+Route::post('/job-application', [JobApplicationController::class, 'publicStore'])->name('job-application.store');
 
 Route::get('/settings', fn () => redirect('/admin/settings/profile'));
 
