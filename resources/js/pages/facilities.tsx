@@ -290,67 +290,97 @@ export default function FacilitiesPage() {
       <div className="min-h-screen bg-slate-50 font-sans">
 
         {/* ── HERO ── */}
-        <section
+    <section
           className="relative overflow-hidden px-4 py-5 text-center"
-          style={{ backgroundColor: '#0a2342' }}
+          style={{ backgroundColor: '#f0f8ff' }}
         >
+          {/* subtle grid overlay */}
           <div
             className="pointer-events-none absolute inset-0"
             style={{
-              opacity: 0.06,
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")`,
+              opacity: 0.045,
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%230a2342'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")`,
             }}
           />
+
+          {/* soft radial glow — top-right */}
+          <div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(ellipse 55% 50% at 80% 10%, rgba(0,194,203,0.10) 0%, transparent 70%),' +
+                'radial-gradient(ellipse 50% 45% at 15% 80%, rgba(180,230,255,0.40) 0%, transparent 65%)',
+            }}
+          />
+
           <div className="relative mx-auto max-w-3xl">
+            {/* Badge */}
             <span
               className="mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-widest"
               style={{
-                border: '1px solid rgba(45,212,191,0.35)',
-                backgroundColor: 'rgba(45,212,191,0.12)',
-                color: '#2dd4bf',
+                border: '1px solid rgba(0,150,190,0.25)',
+                backgroundColor: 'rgba(0,194,203,0.08)',
+                color: '#007a99',
               }}
             >
               <span
                 className="inline-block h-1.5 w-1.5 animate-pulse rounded-full"
-                style={{ backgroundColor: '#2dd4bf' }}
+                style={{ backgroundColor: '#00a8b5' }}
               />
               Infrastructure Overview
             </span>
 
+            {/* Heading */}
             <h1
               className="mt-4 font-serif text-4xl font-semibold leading-tight md:text-5xl lg:text-6xl"
-              style={{ color: '#ffffff' }}
+              style={{ color: '#0a1f3c' }}
             >
-              World-Class<br />Medical Facilities
+              World-Class<br />
+              <span
+                style={{
+                  background: 'linear-gradient(90deg, #00a8b5, #00c2cb)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+              >
+                Medical Facilities
+              </span>
             </h1>
 
+            {/* Subtitle */}
             <p
               className="mx-auto mt-5 max-w-xl text-base font-light leading-relaxed"
-              style={{ color: 'rgba(255,255,255,0.65)' }}
+              style={{ color: 'rgba(10,31,60,0.58)' }}
             >
-              State-of-the-art equipment, 24/7 emergency support, and dedicated care teams ensuring the highest standards of patient treatment.
+              State-of-the-art equipment, 24/7 emergency support, and dedicated care teams ensuring
+              the highest standards of patient treatment.
             </p>
 
+            {/* Stats row */}
             <div
               className="mt-12 grid grid-cols-3 pt-8"
-              style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }}
+              style={{ borderTop: '1px solid rgba(0,150,200,0.15)' }}
             >
               {[
                 { num: '350+', lbl: 'Total Beds' },
-                { num: '40+', lbl: 'Specialties' },
-                { num: '24/7', lbl: 'Emergency' },
+                { num: '40+',  lbl: 'Specialties' },
+                { num: '24/7', lbl: 'Emergency'   },
               ].map((s, i) => (
                 <div
                   key={s.lbl}
                   className="px-4"
-                  style={i > 0 ? { borderLeft: '1px solid rgba(255,255,255,0.12)' } : {}}
+                  style={i > 0 ? { borderLeft: '1px solid rgba(0,150,200,0.15)' } : {}}
                 >
-                  <div className="font-serif text-3xl font-semibold" style={{ color: '#ffffff' }}>
+                  <div
+                    className="font-serif text-3xl font-semibold"
+                    style={{ color: '#0a1f3c' }}
+                  >
                     {s.num}
                   </div>
                   <div
                     className="mt-1 text-xs uppercase tracking-widest"
-                    style={{ color: 'rgba(255,255,255,0.45)' }}
+                    style={{ color: 'rgba(10,31,60,0.42)' }}
                   >
                     {s.lbl}
                   </div>
