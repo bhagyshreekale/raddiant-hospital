@@ -122,27 +122,30 @@ class BlogController extends Controller
 
     public function update(Request $request, Blog $blog)
     {
-        $validated = $request->validate([
+        $rules = [
             'title' => 'required|string|max:255',
             'category' => 'required|string|max:255',
             'description' => 'nullable|string',
             'read_time' => 'nullable|string|max:255',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-        ]);
+        ];
+
+        // Only validate image as file if it's actually being uploaded
+        if ($request->hasFile('image')) {
+            $rules['image'] = 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048';
+        }
+
+        $validated = $request->validate($rules);
 
         if ($request->hasFile('image')) {
             if ($blog->image) {
                 Storage::disk('public')->delete($blog->image);
             }
             $validated['image'] = $request->file('image')->store('blogs', 'public');
-        } else {
-            unset($validated['image']);
         }
 
         $blog->update($validated);
 
-        return redirect()->route('blogs.index')
-            ->with('message', 'Blog updated successfully.');
+        return to_route('blogs.index')->with('success', 'Blog updated successfully.');
     }
 
     public function destroy(Blog $blog)

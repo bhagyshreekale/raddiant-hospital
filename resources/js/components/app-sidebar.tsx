@@ -1,25 +1,24 @@
 import { Link } from '@inertiajs/react';
 import { usePage } from '@inertiajs/react';
 import {
-    BookOpen,
-    FolderGit2,
     LayoutGrid,
-    Stethoscope,
-    UserCog,
-    MessageSquare,
-    Calendar,
-    Bed,
-    Package,
-    Shield,
-    Image,
-    Briefcase,
-    FileText,
     Users,
-    LogOut,
-    Settings,
+    CalendarCheck,
+    BedDouble,
+    Stethoscope,
     Activity,
-    File,
+    MessageSquareQuote,
+    FileText,
+    Images,
+    GraduationCap,
+    UserPlus,
+    PackageCheck,
+    ShieldCheck,
     Globe,
+    Link2,
+    Settings,
+    BookOpen,
+    Cross,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -43,9 +42,29 @@ const adminNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
+        title: 'Doctors',
+        href: '/admin/doctors',
+        icon: Users,
+    },
+    {
+        title: 'Appointments',
+        href: '/admin/appointments',
+        icon: CalendarCheck,
+    },
+    {
+        title: 'Inquiries',
+        href: '/admin/inquiries',
+        icon: MessageSquareQuote,
+    },
+    {
+        title: 'Bed Availability',
+        href: '/admin/bed-availability',
+        icon: BedDouble,
+    },
+    {
         title: 'Specializations',
         href: '/admin/specializations',
-        icon: Stethoscope,
+        icon: Cross,
     },
     {
         title: 'Services',
@@ -53,64 +72,54 @@ const adminNavItems: NavItem[] = [
         icon: Activity,
     },
     {
-        title: 'Doctors',
-        href: '/admin/doctors',
-        icon: UserCog,
-    },
-    {
         title: 'Testimonials',
         href: '/admin/testimonials',
-        icon: MessageSquare,
+        icon: MessageSquareQuote,
     },
     {
-        title: 'Appointments',
-        href: '/admin/appointments',
-        icon: Calendar,
-    },
-    {
-        title: 'Bed Availability',
-        href: '/admin/bed-availability',
-        icon: Bed,
-    },
-    {
-        title: 'Health Packages',
-        href: '/admin/health-packages',
-        icon: Package,
-    },
-    {
-        title: 'Insurance Partners',
-        href: '/admin/insurance-partners',
-        icon: Shield,
+        title: 'Blogs',
+        href: '/admin/blogs',
+        icon: FileText,
     },
     {
         title: 'Gallery',
         href: '/admin/gallery',
-        icon: Image,
+        icon: Images,
     },
     {
         title: 'Careers',
         href: '/admin/careers',
-        icon: Briefcase,
+        icon: GraduationCap,
     },
     {
         title: 'Job Applications',
         href: '/admin/job-applications',
-        icon: FileText,
+        icon: UserPlus,
+    },
+    {
+        title: 'Health Packages',
+        href: '/admin/health-packages',
+        icon: PackageCheck,
+    },
+    {
+        title: 'Insurance Partners',
+        href: '/admin/insurance-partners',
+        icon: ShieldCheck,
+    },
+    {
+        title: 'Website Settings',
+        href: '/admin/website-settings',
+        icon: Settings,
+    },
+    {
+        title: 'Navigation Links',
+        href: '/admin/navigation-links',
+        icon: Link2,
     },
     {
         title: 'Admins',
         href: '/admin/admins',
         icon: Users,
-    },
-    {
-        title: 'Blogs',
-        href: '/admin/blogs',
-        icon: File,
-    },
-    {
-        title: 'Website Settings',
-        href: '/admin/website-settings',
-        icon: Globe,
     },
 ];
 
@@ -123,32 +132,26 @@ const receptionistNavItems: NavItem[] = [
     {
         title: 'Appointments',
         href: '/admin/appointments',
-        icon: Calendar,
+        icon: CalendarCheck,
+    },
+    {
+        title: 'Inquiries',
+        href: '/admin/inquiries',
+        icon: MessageSquareQuote,
     },
     {
         title: 'Bed Availability',
         href: '/admin/bed-availability',
-        icon: Bed,
+        icon: BedDouble,
     },
     {
-        title: 'Blogs',
-        href: '/admin/blogs',
-        icon: File,
+        title: 'Job Applications',
+        href: '/admin/job-applications',
+        icon: UserPlus,
     },
 ];
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Settings',
-        href: '/admin/settings/profile',
-        icon: Settings,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
-    },
-];
+const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
     const { auth } = usePage().props;

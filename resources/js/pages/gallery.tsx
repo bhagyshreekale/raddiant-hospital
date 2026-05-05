@@ -7,65 +7,21 @@ import GalleryGrid from '../components/gallery/GalleryGrid';
 import Footer from '../components/layout/Footer';
 import Navbar from '../components/layout/Navbar';
 
-/* ─── GALLERY DATA ───────────────────────────────────────────────────────── */
-// Adding 'span' property to create the "Attractive" Masonry effect
+interface GalleryItem {
+  id: number;
+  title: string;
+  category: string;
+  image: string;
+}
+
+interface GalleryPageProps {
+  gallery?: GalleryItem[];
+  siteData?: any;
+}
+
 const CATEGORIES = ['All', 'Facilities', 'Technology', 'Operation Theatre', 'Staff', 'Patients'];
 
-const GALLERY_ITEMS = [
-  { 
-    id: 1, 
-    title: 'Advanced Modular OT', 
-    category: 'Operation Theatre', 
-    image: '/images/2024-10-14 (1).webp',
-    span: 'wide' // Spans 2 columns on desktop
-  },
-  { 
-    id: 2, 
-    title: 'High-End CT Scan', 
-    category: 'Technology', 
-    image: '/images/2024-10-14 (2).webp' 
-  },
-  { 
-    id: 3, 
-    title: 'Executive Patient Suite', 
-    category: 'Facilities', 
-    image: '/images/2024-10-14 (3).webp',
-    span: 'tall' // Spans 2 rows
-  },
-  { 
-    id: 4, 
-    title: 'Expert Medical Team', 
-    category: 'Staff', 
-    image: '/images/2024-10-14 (4).webp' 
-  },
-  { 
-    id: 5, 
-    title: 'Neonatal Care Unit', 
-    category: 'Facilities', 
-    image: '/images/2024-10-14 (5).webp' 
-  },
-  { 
-    id: 6, 
-    title: '24/7 Emergency Care', 
-    category: 'Facilities', 
-    image: '/images/2024-10-14 (6).webp',
-    span: 'wide'
-  },
-  { 
-    id: 7, 
-    title: 'Robotic Surgery System', 
-    category: 'Technology', 
-    image: '/images/2024-10-14 (7).webp' 
-  },
-  { 
-    id: 8, 
-    title: 'Comfortable Recovery Lounge', 
-    category: 'Patients', 
-    image: '/images/2024-10-14.webp' 
-  },
-];
-
-export default function GalleryPage() {
+export default function GalleryPage({ gallery = [] }: GalleryPageProps) {
   return (
     <>
       <Navbar />
@@ -123,7 +79,7 @@ export default function GalleryPage() {
         {/* ── Gallery Component ───────────────────────────────────────────── */}
         <div className="bg-light/30">
           <GalleryGrid 
-            items={GALLERY_ITEMS} 
+            items={gallery} 
             categories={CATEGORIES} 
           />
         </div>

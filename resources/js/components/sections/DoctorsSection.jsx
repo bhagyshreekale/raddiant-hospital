@@ -2,11 +2,30 @@
 
 import DoctorCard from '../design/DoctorCard';
 import SectionHeader from '../design/SectionHeader';
-import { DOCTORS } from '../../lib copy/data';
 
 export default function DoctorsSection({ doctors = [] }) {
-  // Use database doctors if available, otherwise use static data
-  const displayDoctors = doctors.length > 0 ? doctors : DOCTORS;
+  const displayDoctors = doctors;
+
+  if (displayDoctors.length === 0) {
+    return (
+      <section className="relative bg-gradient-to-b from-slate-50 to-white py-20 md:py-28 overflow-hidden">
+        <div className="relative container mx-auto px-4 max-w-7xl">
+          <div className="mb-14 text-center md:mb-16">
+            <span className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 text-blue-700 text-xs font-semibold px-4 py-1.5 rounded-full mb-5 tracking-widest uppercase">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+              Our Specialists
+            </span>
+            <SectionHeader
+              title="Meet Our Expert Doctors"
+              subtitle="Experienced, compassionate specialists committed to your health and well-being."
+              align="center"
+            />
+          </div>
+          <p className="text-center text-gray-500">No doctors found. Please add doctors from the admin panel.</p>
+        </div>
+      </section>
+    );
+  }
   
   return (
     <section className="relative bg-gradient-to-b from-slate-50 to-white py-20 md:py-28 overflow-hidden">

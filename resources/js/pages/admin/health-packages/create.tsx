@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
+        description: '',
         price: '',
         features: [''],
         is_featured: false,
@@ -57,6 +58,24 @@ export default function Create() {
                             {errors.name && (
                                 <p className="mt-1 text-sm text-red-500">
                                     {errors.name}
+                                </p>
+                            )}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="description">Description</Label>
+                            <textarea
+                                id="description"
+                                value={data.description}
+                                onChange={(e) =>
+                                    setData('description', e.target.value)
+                                }
+                                className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                rows={3}
+                            />
+                            {errors.description && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.description}
                                 </p>
                             )}
                         </div>
