@@ -29,7 +29,7 @@ class HomeController extends Controller
     public function publicShow(): Response
     {
         // Get services (4 for homepage)
-        $services = Service::limit(4)->get()->map(function ($service) {
+        $services = Service::query()->limit(4)->get()->map(function ($service) {
             $imagePath = $service->image;
 
             if ($imagePath) {
@@ -53,7 +53,7 @@ class HomeController extends Controller
         });
 
         // Get doctors (3 for homepage)
-        $doctors = Doctor::with('specialization')->limit(3)->get()->map(function ($doctor) {
+        $doctors = Doctor::query()->with('specialization')->limit(3)->get()->map(function ($doctor) {
             $imagePath = $doctor->image;
 
             if ($imagePath) {
@@ -80,7 +80,7 @@ class HomeController extends Controller
         });
 
         // Get testimonials (homepage - show up to 8)
-        $testimonials = Testimonial::with('specialization')->limit(8)->get()->map(function ($testimonial) {
+        $testimonials = Testimonial::query()->with('specialization')->limit(8)->get()->map(function ($testimonial) {
             $specName = $testimonial->specialization?->name ?? 'General';
             $colors = $this->getGradientColors($specName);
             $initials = collect(explode(' ', $testimonial->patient_name))

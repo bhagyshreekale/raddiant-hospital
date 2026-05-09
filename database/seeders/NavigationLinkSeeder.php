@@ -20,7 +20,10 @@ class NavigationLinkSeeder extends Seeder
         ];
 
         foreach ($headerLinks as $link) {
-            NavigationLink::create(['type' => 'header', ...$link]);
+            NavigationLink::firstOrCreate(
+                ['type' => 'header', 'sort_order' => $link['sort_order']],
+                $link
+            );
         }
 
         $footerLinks = [
@@ -34,7 +37,10 @@ class NavigationLinkSeeder extends Seeder
         ];
 
         foreach ($footerLinks as $link) {
-            NavigationLink::create(['type' => 'footer', ...$link]);
+            NavigationLink::firstOrCreate(
+                ['type' => 'footer', 'sort_order' => $link['sort_order']],
+                $link
+            );
         }
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Doctor;
 use App\Models\Inquiry;
 use App\Models\JobApplication;
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -24,13 +25,13 @@ class DashboardController extends Controller
         $appointmentChart = $this->getAppointmentChart();
         $inquiryChart = $this->getInquiryChart();
 
-        return inertia('admin/dashboard', [
+        return Inertia::render('admin/dashboard', [
+            'isAdmin' => $isAdmin,
             'stats' => $stats,
             'recentAppointments' => $recentAppointments,
             'recentInquiries' => $recentInquiries,
             'appointmentChart' => $appointmentChart,
             'inquiryChart' => $inquiryChart,
-            'isAdmin' => $isAdmin,
         ]);
     }
 

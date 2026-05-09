@@ -14,19 +14,6 @@ class Admin extends Authenticatable
 {
     use HasFactory, TwoFactorAuthenticatable;
 
-    protected $fillable = [
-        'username',
-        'password',
-        'role',
-    ];
-
-    protected $hidden = [
-        'password',
-        'two_factor_secret',
-        'two_factor_recovery_codes',
-        'remember_token',
-    ];
-
     protected function casts(): array
     {
         return [
