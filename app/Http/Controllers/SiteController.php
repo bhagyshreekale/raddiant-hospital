@@ -77,7 +77,29 @@ class SiteController extends Controller
 
     public function home()
     {
-        $doctors = Doctor::with('specialization')->limit(3)->get()->map(function ($doctor) {
+        $services = Service::query()->limit(8)->get()->map(function ($service) {
+            $imagePath = $service->image;
+
+            if ($imagePath) {
+                if (str_starts_with($imagePath, '/images/')) {
+                    // Already in public folder
+                } elseif (str_starts_with($imagePath, 'http')) {
+                    // External URL
+                } else {
+                    $imagePath = '/storage/'.ltrim($imagePath, '/');
+                }
+            }
+
+            return [
+                'id' => $service->id,
+                'title' => $service->title,
+                'image' => $imagePath,
+                'desc' => $service->description,
+                'color' => $service->color ?? '#0a4d8c',
+            ];
+        });
+
+        $doctors = Doctor::query()->with('specialization')->limit(3)->get()->map(function ($doctor) {
             $imagePath = $doctor->image;
 
             if ($imagePath) {
@@ -103,7 +125,7 @@ class SiteController extends Controller
             ];
         });
 
-        $testimonials = Testimonial::with('specialization')->limit(8)->get()->map(function ($testimonial) {
+        $testimonials = Testimonial::query()->with('specialization')->limit(8)->get()->map(function ($testimonial) {
             $specName = $testimonial->specialization?->name ?? 'General';
             $colors = $this->getGradientColors($specName);
             $initials = collect(explode(' ', $testimonial->patient_name))
@@ -125,6 +147,7 @@ class SiteController extends Controller
 
         return Inertia::render('home', [
             'siteData' => $this->getSiteData(),
+            'homeServices' => $services,
             'homeDoctors' => $doctors,
             'homeTestimonials' => $testimonials,
         ]);
@@ -132,7 +155,7 @@ class SiteController extends Controller
 
     public function services()
     {
-        $services = Service::all()->map(function ($service) {
+        $services = Service::query()->get()->map(function ($service) {
             $imagePath = $service->image;
 
             if ($imagePath) {
@@ -162,7 +185,7 @@ class SiteController extends Controller
 
     public function gallery()
     {
-        $galleries = Gallery::latest()->get()->map(function ($gallery) {
+        $galleries = Gallery::query()->latest()->get()->map(function ($gallery) {
             $imagePath = $gallery->image;
 
             if ($imagePath) {
@@ -204,7 +227,7 @@ class SiteController extends Controller
 
     public function careers()
     {
-        $careers = Career::latest()->get()->map(function ($career) {
+        $careers = Career::query()->latest()->get()->map(function ($career) {
             return [
                 'id' => $career->id,
                 'title' => $career->title,
@@ -225,7 +248,7 @@ class SiteController extends Controller
 
     public function blog()
     {
-        $blogs = Blog::latest()->get()->map(function ($blog) {
+        $blogs = Blog::query()->latest()->get()->map(function ($blog) {
             $imagePath = $blog->image;
 
             if ($imagePath) {
