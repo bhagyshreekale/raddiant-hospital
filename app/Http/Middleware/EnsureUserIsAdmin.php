@@ -10,7 +10,9 @@ class EnsureUserIsAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || ! $request->user()->isAdmin()) {
+        $admin = auth()->guard('admin')->user();
+
+        if (! $admin || ! $admin->isAdmin()) {
             abort(403, 'You do not have permission to access this resource.');
         }
 
