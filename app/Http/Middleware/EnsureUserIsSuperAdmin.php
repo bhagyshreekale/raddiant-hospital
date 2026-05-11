@@ -6,14 +6,14 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureUserIsAdmin
+class EnsureUserIsSuperAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
         $admin = auth()->guard('admin')->user();
 
-        if (! $admin || ! $admin->hasRole(['Super Admin', 'Admin'])) {
-            abort(403, 'You do not have permission to access this resource.');
+        if (! $admin || ! $admin->hasRole('Super Admin')) {
+            abort(403, 'Only Super Admin can perform this action.');
         }
 
         return $next($request);

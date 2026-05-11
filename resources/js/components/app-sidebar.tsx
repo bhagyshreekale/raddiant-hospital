@@ -155,8 +155,8 @@ const footerNavItems: NavItem[] = [];
 
 export function AppSidebar() {
     const { auth } = usePage().props;
-    const role = auth?.user?.role;
-    const isAdmin = role === 'admin';
+    const roles = auth?.user?.roles ?? [];
+    const isAdmin = roles.includes('Super Admin') || roles.includes('Admin');
 
     const mainNavItems = isAdmin ? adminNavItems : receptionistNavItems;
 

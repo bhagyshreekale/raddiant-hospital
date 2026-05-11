@@ -35,9 +35,12 @@ class HandleInertiaRequests extends Middleware
                     'id' => $user->id,
                     'name' => $user->username ?? $user->name ?? $user->email ?? null,
                     'email' => $user->email ?? null,
-                    'role' => method_exists($user, 'isAdmin')
-                        ? ($user->isAdmin() ? 'admin' : 'receptionist')
+                    'role' => method_exists($user, 'hasRole')
+                        ? ($user->hasRole(['Super Admin', 'Admin']) ? 'admin' : 'receptionist')
                         : null,
+                    'roles' => method_exists($user, 'getRoleNames')
+                        ? $user->getRoleNames()
+                        : [],
                 ] : null,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
