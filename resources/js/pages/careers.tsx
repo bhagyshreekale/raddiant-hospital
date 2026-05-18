@@ -86,7 +86,7 @@ export default function CareersPage({ jobs = [] }: CareersPageProps) {
   return (
     <>
       <Navbar />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-white overflow-x-hidden">
 
         {/* ════════════════════════════════════
             1. HERO
@@ -120,7 +120,7 @@ export default function CareersPage({ jobs = [] }: CareersPageProps) {
       {/* Thin accent bar at top */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-sky-400 to-emerald-500" />
  
-      <div className="relative z-10 container mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-28">
+      <div className="relative z-10 container mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-28 max-w-full">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
  
           {/* LEFT: Content */}

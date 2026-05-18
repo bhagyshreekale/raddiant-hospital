@@ -208,6 +208,7 @@ export default function FacilitiesPage() {
   const bedAvailabilityFromBackend = props.bedAvailability || [];
   const [tpaFilter, setTpaFilter] = useState<'all' | 'public' | 'private' | 'tpa'>('all');
   const [timeStr, setTimeStr] = useState<string>('');
+  const [showHowItWorks, setShowHowItWorks] = useState(false);
 
   // UseEffect to set time on client-side only (prevents hydration mismatch)
   useEffect(() => {
@@ -538,6 +539,7 @@ export default function FacilitiesPage() {
                     ))}
                   </ul>
                   <button
+                    onClick={() => window.location.href = `/appointment?package=${encodeURIComponent(pkg.name)}`}
                     className={`mt-auto w-full rounded-xl py-3 text-sm font-semibold tracking-wide transition-all
                       ${index === 1
                         ? 'bg-white text-teal-700 hover:bg-white/90'
@@ -570,7 +572,7 @@ export default function FacilitiesPage() {
                   </p>
                 </div>
               </div>
-              <button className="self-start rounded-xl bg-teal-600 px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-teal-700 sm:self-auto sm:flex-shrink-0">
+              <button onClick={() => setShowHowItWorks(true)} className="self-start rounded-xl bg-teal-600 px-5 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-teal-700 sm:self-auto sm:flex-shrink-0">
                 How It Works →
               </button>
             </div>
@@ -630,17 +632,47 @@ export default function FacilitiesPage() {
               </p>
             </div>
             <div className="flex flex-shrink-0 flex-wrap gap-3">
-              <button className="rounded-xl bg-teal-600 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-teal-700">
+              <a href="/appointment" className="rounded-xl bg-teal-600 px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-teal-700 inline-block">
                 Book Appointment
-              </button>
-              <button className="rounded-xl border border-white/20 bg-transparent px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10">
+              </a>
+              <a href="tel:+919356510704" className="rounded-xl border border-white/20 bg-transparent px-7 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-white/10 inline-block">
                 Call Helpdesk
-              </button>
+              </a>
             </div>
           </section>
 
         </div>
       </div>
+
+      {/* ── HOW IT WORKS MODAL ── */}
+      {showHowItWorks && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" onClick={() => setShowHowItWorks(false)}>
+          <div className="bg-white rounded-3xl max-w-lg w-full p-8 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="font-serif text-xl font-bold text-slate-900">How Insurance Works</h3>
+              <button onClick={() => setShowHowItWorks(false)} className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 hover:bg-slate-200 transition-colors">✕</button>
+            </div>
+            <div className="space-y-5">
+              {[
+                { step: '1', title: 'Visit Our TPA Desk', desc: 'Head to the TPA desk on the ground floor with your insurance card and ID proof.' },
+                { step: '2', title: 'Pre-Authorization', desc: 'Our team completes the pre-authorization with your insurer within minutes.' },
+                { step: '3', title: 'Cashless Treatment', desc: 'Get admitted and treated — we handle the billing directly with your insurance company.' },
+                { step: '4', title: 'Discharge & settlement', desc: 'We file the claim. You only pay for non-covered items, if any.' },
+              ].map((item) => (
+                <div key={item.step} className="flex gap-4">
+                  <div className="w-8 h-8 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm font-bold shrink-0">{item.step}</div>
+                  <div>
+                    <h4 className="font-semibold text-slate-900 text-sm">{item.title}</h4>
+                    <p className="text-slate-500 text-xs mt-1">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <button onClick={() => setShowHowItWorks(false)} className="mt-6 w-full py-3 bg-teal-600 text-white text-sm font-bold rounded-xl hover:bg-teal-700 transition-colors">Got it</button>
+          </div>
+        </div>
+      )}
+
       <FloatingActions />
       <Footer />
     </>

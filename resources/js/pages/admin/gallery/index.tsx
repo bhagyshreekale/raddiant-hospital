@@ -14,6 +14,8 @@ import {
 interface GalleryImage {
     id: number;
     image: string;
+    title?: string;
+    category?: string;
 }
 
 interface Props {
@@ -50,7 +52,9 @@ export default function Index({ images }: Props) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead>Image URL</TableHead>
+                                <TableHead>Image</TableHead>
+                                <TableHead>Title</TableHead>
+                                <TableHead>Category</TableHead>
                                 <TableHead className="text-right">
                                     Actions
                                 </TableHead>
@@ -60,8 +64,18 @@ export default function Index({ images }: Props) {
                             {images.length > 0 ? (
                                 images.map((img) => (
                                     <TableRow key={img.id}>
+                                        <TableCell>
+                                            {img.image ? (
+                                                <img src={img.image} alt={img.title || 'Gallery'} className="h-12 w-16 rounded object-cover" />
+                                            ) : '—'}
+                                        </TableCell>
                                         <TableCell className="font-medium">
-                                            {img.image}
+                                            {img.title || '—'}
+                                        </TableCell>
+                                        <TableCell>
+                                            <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                                                {img.category || 'Uncategorized'}
+                                            </span>
                                         </TableCell>
                                         <TableCell className="space-x-2 text-right">
                                             <Button

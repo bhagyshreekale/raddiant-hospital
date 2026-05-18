@@ -27,6 +27,16 @@ class HandleInertiaRequests extends Middleware
     {
         $user = $request->user();
 
+        $permissions = [];
+        $isAdmin = false;
+
+        if ($user && method_exists($user, 'hasRole')) {
+            $isAdmin = $user->hasRole(['Super Admin', 'Admin']);
+            $permissions = $isAdmin
+                ? ['*']
+                : $user->getPermissionsViaRoles()->pluck('name')->toArray();
+        }
+
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -42,6 +52,8 @@ class HandleInertiaRequests extends Middleware
                         ? $user->getRoleNames()
                         : [],
                 ] : null,
+                'permissions' => $permissions,
+                'is_admin' => $isAdmin,
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];

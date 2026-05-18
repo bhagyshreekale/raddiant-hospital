@@ -12,13 +12,13 @@ class AdminSeeder extends Seeder
     {
         $admin = Admin::firstOrCreate(
             ['username' => 'admin'],
-            ['username' => 'admin', 'password' => Hash::make('admin123'), 'role' => 'admin']
+            ['username' => 'admin', 'password' => Hash::make('admin123')]
         );
         $admin->assignRole('Super Admin');
 
         $receptionist = Admin::firstOrCreate(
             ['username' => 'receptionist'],
-            ['username' => 'receptionist', 'password' => Hash::make('receptionist123'), 'role' => 'receptionist']
+            ['username' => 'receptionist', 'password' => Hash::make('receptionist123')]
         );
         $receptionist->assignRole('Receptionist');
     }

@@ -19,6 +19,7 @@ import {
     Settings,
     BookOpen,
     Cross,
+    KeyRound,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -121,6 +122,18 @@ const adminNavItems: NavItem[] = [
         href: '/admin/admins',
         icon: Users,
     },
+    {
+        title: 'Roles',
+        href: '/admin/roles',
+        icon: ShieldCheck,
+        permission: 'roles.view-any',
+    },
+    {
+        title: 'Permissions',
+        href: '/admin/permissions',
+        icon: KeyRound,
+        permission: 'permissions.view-any',
+    },
 ];
 
 const receptionistNavItems: NavItem[] = [
@@ -156,9 +169,19 @@ const footerNavItems: NavItem[] = [];
 export function AppSidebar() {
     const { auth } = usePage().props;
     const roles = auth?.user?.roles ?? [];
-    const isAdmin = roles.includes('Super Admin') || roles.includes('Admin');
+    const permissions = auth?.permissions ?? [];
+    const isAdmin = auth?.is_admin ?? false;
 
-    const mainNavItems = isAdmin ? adminNavItems : receptionistNavItems;
+    const hasPermission = (permission?: string) => {
+        if (!permission) return true;
+        if (isAdmin) return true;
+        return permissions.includes('*') || permissions.includes(permission);
+    };
+
+    const filterByPermission = (items: NavItem[]) =>
+        items.filter((item) => hasPermission(item.permission));
+
+    const mainNavItems = filterByPermission(isAdmin ? adminNavItems : receptionistNavItems);
 
     return (
         <Sidebar collapsible="icon" variant="inset">

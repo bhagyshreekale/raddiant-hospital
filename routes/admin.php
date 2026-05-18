@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\NavigationLinkController;
+use App\Http\Controllers\Admin\PermissionsController;
+use App\Http\Controllers\Admin\RolesController;
 use App\Http\Controllers\Admin\Settings\SecurityController;
 use App\Http\Controllers\Admin\WebsiteSettingsController;
 use App\Http\Controllers\AdminUserController;
@@ -162,14 +164,46 @@ Route::middleware(['web', 'auth:admin', 'admin'])->group(function () {
         ->middleware('permission:contact.view-any|contact.view|contact.create|contact.update|contact.delete');
 });
 
+// Roles Management
+Route::middleware(['web', 'auth:admin', 'permission:roles.view-any'])->group(function () {
+    Route::get('admin/roles', [RolesController::class, 'index'])->name('roles.index');
+    Route::get('admin/roles/create', [RolesController::class, 'create'])->name('roles.create')
+        ->middleware('permission:roles.create');
+    Route::post('admin/roles', [RolesController::class, 'store'])->name('roles.store')
+        ->middleware('permission:roles.create');
+    Route::get('admin/roles/{role}/edit', [RolesController::class, 'edit'])->name('roles.edit')
+        ->middleware('permission:roles.edit');
+    Route::put('admin/roles/{role}', [RolesController::class, 'update'])->name('roles.update')
+        ->middleware('permission:roles.edit');
+    Route::delete('admin/roles/{role}', [RolesController::class, 'destroy'])->name('roles.destroy')
+        ->middleware('permission:roles.delete');
+});
+
+// Permissions Management
+Route::middleware(['web', 'auth:admin', 'permission:permissions.view-any'])->group(function () {
+    Route::get('admin/permissions', [PermissionsController::class, 'index'])->name('permissions.index');
+    Route::get('admin/permissions/create', [PermissionsController::class, 'create'])->name('permissions.create')
+        ->middleware('permission:permissions.create');
+    Route::post('admin/permissions', [PermissionsController::class, 'store'])->name('permissions.store')
+        ->middleware('permission:permissions.create');
+    Route::get('admin/permissions/{permission}/edit', [PermissionsController::class, 'edit'])->name('permissions.edit')
+        ->middleware('permission:permissions.edit');
+    Route::put('admin/permissions/{permission}', [PermissionsController::class, 'update'])->name('permissions.update')
+        ->middleware('permission:permissions.edit');
+    Route::delete('admin/permissions/{permission}', [PermissionsController::class, 'destroy'])->name('permissions.destroy')
+        ->middleware('permission:permissions.delete');
+});
+
 // Utility routes (no middleware - for dev only)
 Route::get('migrate-fresh-seed', function () {
     Artisan::call('migrate:fresh', ['--seed' => true]);
+
     return response()->json(['output' => Artisan::output()]);
 });
 
 Route::get('migrate', function () {
     Artisan::call('migrate');
+
     return response()->json(['output' => Artisan::output()]);
 });
 
