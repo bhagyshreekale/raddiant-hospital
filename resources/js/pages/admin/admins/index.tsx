@@ -2,6 +2,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
     Table,
     TableBody,
@@ -14,14 +15,16 @@ import {
 interface Admin {
     id: number;
     username: string;
+    roles: { id: number; name: string }[];
     created_at: string;
 }
 
 interface Props {
     admins: Admin[];
+    isSuperAdmin: boolean;
 }
 
-export default function Index({ admins }: Props) {
+export default function Index({ admins, isSuperAdmin }: Props) {
     const { delete: destroy } = useForm();
 
     const handleDelete = (id: number) => {
@@ -36,11 +39,13 @@ export default function Index({ admins }: Props) {
 
             <div className="mb-6 flex items-center justify-between">
                 <h1 className="text-2xl font-bold tracking-tight">Admins</h1>
-                <Button asChild>
-                    <a href="/admin/admins/create">
-                        <Plus className="mr-2 h-4 w-4" /> Add Admin
-                    </a>
-                </Button>
+                {isSuperAdmin && (
+                    <Button asChild>
+                        <a href="/admin/admins/create">
+                            <Plus className="mr-2 h-4 w-4" /> Add Admin
+                        </a>
+                    </Button>
+                )}
             </div>
 
             <Card>
@@ -54,6 +59,7 @@ export default function Index({ admins }: Props) {
                                 <TableHead className="w-[200px]">
                                     Username
                                 </TableHead>
+                                <TableHead>Role</TableHead>
                                 <TableHead>Created At</TableHead>
                                 <TableHead className="text-right">
                                     Actions
@@ -68,41 +74,66 @@ export default function Index({ admins }: Props) {
                                             {admin.username}
                                         </TableCell>
                                         <TableCell>
+                                            {admin.roles?.map((role) => (
+                                                <Badge
+                                                    key={role.id}
+                                                    variant={
+                                                        role.name === 'Super Admin'
+                                                            ? 'default'
+                                                            : role.name === 'Admin'
+                                                              ? 'secondary'
+                                                              : 'outline'
+                                                    }
+                                                >
+                                                    {role.name}
+                                                </Badge>
+                                            ))}
+                                        </TableCell>
+                                        <TableCell>
                                             {new Date(
                                                 admin.created_at,
                                             ).toLocaleString()}
                                         </TableCell>
                                         <TableCell className="space-x-2 text-right">
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                asChild
-                                            >
-                                                <a
-                                                    href={`/admin/admins/${admin.id}/edit`}
-                                                >
-                                                    <Pencil className="mr-1 h-4 w-4" />{' '}
-                                                    Edit
-                                                </a>
-                                            </Button>
+                                            {isSuperAdmin && (
+                                                <>
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        asChild
+                                                    >
+                                                        <a
+                                                            href={`/admin/admins/${admin.id}/edit`}
+                                                        >
+                                                            <Pencil className="mr-1 h-4 w-4" />{' '}
+                                                            Edit
+                                                        </a>
+                                                    </Button>
 
-                                            <Button
-                                                variant="destructive"
-                                                size="sm"
-                                                onClick={() =>
-                                                    handleDelete(admin.id)
-                                                }
-                                            >
-                                                <Trash2 className="mr-1 h-4 w-4" />{' '}
-                                                Delete
-                                            </Button>
+                                                    <Button
+                                                        variant="destructive"
+                                                        size="sm"
+                                                        onClick={() =>
+                                                            handleDelete(admin.id)
+                                                        }
+                                                    >
+                                                        <Trash2 className="mr-1 h-4 w-4" />{' '}
+                                                        Delete
+                                                    </Button>
+                                                </>
+                                            )}
+                                            {!isSuperAdmin && (
+                                                <span className="text-sm text-muted-foreground">
+                                                    View only
+                                                </span>
+                                            )}
                                         </TableCell>
                                     </TableRow>
                                 ))
                             ) : (
                                 <TableRow>
                                     <TableCell
-                                        colSpan={3}
+                                        colSpan={4}
                                         className="h-24 text-center text-muted-foreground"
                                     >
                                         No admins found.

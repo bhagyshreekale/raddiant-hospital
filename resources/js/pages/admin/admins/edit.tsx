@@ -3,20 +3,30 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
 interface Admin {
     id: number;
     username: string;
+    roles: { id: number; name: string }[];
 }
 
 interface Props {
     admin: Admin;
+    roles: string[];
 }
 
-export default function Edit({ admin }: Props) {
+export default function Edit({ admin, roles }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         username: admin.username || '',
         password: '',
+        role: admin.roles?.[0]?.name || '',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -63,6 +73,32 @@ export default function Edit({ admin }: Props) {
                             {errors.password && (
                                 <p className="mt-1 text-sm text-red-500">
                                     {errors.password}
+                                </p>
+                            )}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="role">Role</Label>
+                            <Select
+                                value={data.role}
+                                onValueChange={(value) =>
+                                    setData('role', value)
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a role" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {roles.map((role) => (
+                                        <SelectItem key={role} value={role}>
+                                            {role}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            {errors.role && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.role}
                                 </p>
                             )}
                         </div>

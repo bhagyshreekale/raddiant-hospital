@@ -16,7 +16,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $user = auth()->user();
+        $user = auth()->guard('admin')->user();
         $isAdmin = method_exists($user, 'isAdmin') && $user->isAdmin();
 
         $stats = $this->getStats($isAdmin);

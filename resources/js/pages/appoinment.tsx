@@ -180,7 +180,21 @@ function FloatingSelect({ label, name, value, onChange, error, children }: Float
 }
 
 export default function AppointmentPage() {
-  const [form, setForm] = useState<FormState>({ name: '', phone: '', email: '', gender: '', doctor: '', service: '', date: '', time: '', message: '' });
+  const getQueryParam = (key: string): string => {
+    if (typeof window === 'undefined') return '';
+    const params = new URLSearchParams(window.location.search);
+    return params.get(key) || '';
+  };
+
+  const initialDoctor = getQueryParam('doctor');
+  const initialService = (() => {
+    const spec = getQueryParam('specialty');
+    if (!spec) return '';
+    const match = SERVICES.find(s => s.title.toLowerCase() === spec.toLowerCase());
+    return match ? match.id : '';
+  })();
+
+  const [form, setForm] = useState<FormState>({ name: '', phone: '', email: '', gender: '', doctor: initialDoctor, service: initialService, date: '', time: '', message: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [hoveredSlot, setHoveredSlot] = useState<string | null>(null);

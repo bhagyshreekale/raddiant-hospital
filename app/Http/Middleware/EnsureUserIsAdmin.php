@@ -12,7 +12,7 @@ class EnsureUserIsAdmin
     {
         $admin = auth()->guard('admin')->user();
 
-        if (! $admin || ! $admin->isAdmin()) {
+        if (! $admin || ! $admin->hasRole(['Super Admin', 'Admin'])) {
             abort(403, 'You do not have permission to access this resource.');
         }
 
