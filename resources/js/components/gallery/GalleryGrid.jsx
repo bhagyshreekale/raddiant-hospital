@@ -145,6 +145,14 @@ export default function GalleryGrid({ items, categories }) {
     return () => window.removeEventListener('resize', updateIndicator);
   }, [active, updateIndicator]);
 
+  // Scroll tabs to beginning on mount
+  useEffect(() => {
+    const tabsEl = tabsRef.current;
+    if (tabsEl) {
+      tabsEl.scrollLeft = 0;
+    }
+  }, []);
+
   const openLightbox = useCallback((i) => setLightbox(i), []);
   const closeLightbox = useCallback(() => setLightbox(null), []);
 
@@ -173,7 +181,11 @@ export default function GalleryGrid({ items, categories }) {
               <button
                 key={cat}
                 data-active={active === cat}
-                onClick={() => { setActive(cat); setLightbox(null); }}
+                onClick={(e) => {
+                  setActive(cat);
+                  setLightbox(null);
+                  e.currentTarget.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                }}
                 className={`relative z-10 px-4 md:px-6 py-2 md:py-2.5 text-xs md:text-sm font-bold transition-colors duration-300 ${active === cat ? 'text-[#203a43]' : 'text-gray-500 hover:text-gray-900'}`}
               >
                 {cat}

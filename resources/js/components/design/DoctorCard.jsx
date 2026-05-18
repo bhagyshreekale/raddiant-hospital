@@ -83,7 +83,7 @@ export default function DoctorCard({ doctor }) {
 
         {/* CTA */}
         <a
-          href="/appointment"
+          href={`/appointment?doctor=${encodeURIComponent(doctor.name)}&specialty=${encodeURIComponent(doctor.specialty)}`}
           className="mt-auto group/btn relative overflow-hidden flex items-center justify-center gap-2 bg-cyan-700 hover:bg-cyan-800 active:scale-90 text-white text-[13px] font-semibold px-5 py-2.5 rounded-xl transition-all duration-200"
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
