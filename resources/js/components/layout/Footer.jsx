@@ -140,7 +140,7 @@ export default function Footer() {
               <a href={"mailto:" + data.email} className="text-[0.875rem] text-[#94a3b8] hover:text-white transition-colors">{data.email}</a>
             </div>
             <div className="mt-2">
-              <a href="/appointment" className="inline-block bg-blue-600 text-white px-5 py-2.5 rounded-full text-[0.875rem] font-semibold transition-all hover:bg-blue-700 active:scale-95">
+              <a href="/appointment" className="inline-block bg-blue-600 text-white px-5 py-2.5 rounded-full text-[0.875rem] font-semibold transition-all hover:bg-blue-700 active:scale-95 whitespace-nowrap">
                 Book Appointment
               </a>
             </div>

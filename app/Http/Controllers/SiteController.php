@@ -75,6 +75,31 @@ class SiteController extends Controller
         return $colors[$specialization] ?? ['from' => '#0ea5e9', 'to' => '#38bdf8', 'avFrom' => '#0C447C', 'avTo' => '#378ADD'];
     }
 
+    private function getServiceCategory(string $title): string
+    {
+        $categoryMap = [
+            'Diagnostics' => 'Diagnostics',
+            'Lab' => 'Diagnostics',
+            'Radiology' => 'Diagnostics',
+            'Pathology' => 'Diagnostics',
+            'Imaging' => 'Diagnostics',
+            'Surgery' => 'Surgery',
+            'Surgical' => 'Surgery',
+            'Emergency' => 'Emergency',
+            'Trauma' => 'Emergency',
+            'ICU' => 'Emergency',
+            'Cardiac' => 'Specialty',
+        ];
+
+        foreach ($categoryMap as $key => $category) {
+            if (str_contains(strtolower($title), strtolower($key))) {
+                return $category;
+            }
+        }
+
+        return 'Specialty';
+    }
+
     public function home()
     {
         $services = Service::query()->limit(8)->get()->map(function ($service) {
@@ -96,6 +121,7 @@ class SiteController extends Controller
                 'image' => $imagePath,
                 'desc' => $service->description,
                 'color' => $service->color ?? '#0a4d8c',
+                'category' => $service->category ?? $this->getServiceCategory($service->title),
             ];
         });
 
@@ -174,6 +200,7 @@ class SiteController extends Controller
                 'image' => $imagePath,
                 'desc' => $service->description,
                 'color' => '#0a4d8c',
+                'category' => $service->category ?? $this->getServiceCategory($service->title),
             ];
         });
 
@@ -214,7 +241,34 @@ class SiteController extends Controller
 
     public function about()
     {
-        return Inertia::render('about', ['siteData' => $this->getSiteData()]);
+        $doctors = Doctor::query()->with('specialization')->limit(3)->get()->map(function ($doctor) {
+            $imagePath = $doctor->image;
+
+            if ($imagePath) {
+                if (str_starts_with($imagePath, '/images/')) {
+                } elseif (str_starts_with($imagePath, 'http')) {
+                } else {
+                    $imagePath = '/storage/'.ltrim($imagePath, '/');
+                }
+            } else {
+                $imagePath = 'https://randomuser.me/api/portraits/doctor.jpg';
+            }
+
+            return [
+                'id' => $doctor->id,
+                'name' => $doctor->name,
+                'specialty' => $doctor->specialization?->name ?? 'General',
+                'qual' => $doctor->education ?? '',
+                'experience' => '10+ Years',
+                'img' => $imagePath,
+                'available' => $doctor->availability ?? 'Mon-Sat',
+            ];
+        });
+
+        return Inertia::render('about', [
+            'siteData' => $this->getSiteData(),
+            'homeDoctors' => $doctors,
+        ]);
     }
 
     public function contact()
