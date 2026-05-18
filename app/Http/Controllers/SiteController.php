@@ -233,9 +233,13 @@ class SiteController extends Controller
             ];
         });
 
+        $categories = $galleries->pluck('category')->unique()->values()->toArray();
+        array_unshift($categories, 'All');
+
         return Inertia::render('gallery', [
             'siteData' => $this->getSiteData(),
             'gallery' => $galleries,
+            'categories' => $categories,
         ]);
     }
 
@@ -333,17 +337,72 @@ class SiteController extends Controller
 
     public function appointment()
     {
-        return Inertia::render('appoinment', ['siteData' => $this->getSiteData()]);
+        $doctors = Doctor::query()->with('specialization')->get()->map(function ($doctor) {
+            return [
+                'id' => (string) $doctor->id,
+                'name' => $doctor->name,
+                'specialization' => $doctor->specialization?->name ?? 'General',
+            ];
+        });
+
+        $specializations = Specialization::query()->pluck('name')->toArray();
+
+        return Inertia::render('appoinment', [
+            'siteData' => $this->getSiteData(),
+            'doctors' => $doctors,
+            'specializations' => $specializations,
+        ]);
     }
 
     public function appoinment()
     {
-        return Inertia::render('appoinment', ['siteData' => $this->getSiteData()]);
+        $doctors = Doctor::query()->with('specialization')->get()->map(function ($doctor) {
+            return [
+                'id' => (string) $doctor->id,
+                'name' => $doctor->name,
+                'specialization' => $doctor->specialization?->name ?? 'General',
+            ];
+        });
+
+        $specializations = Specialization::query()->pluck('name')->toArray();
+
+        return Inertia::render('appoinment', [
+            'siteData' => $this->getSiteData(),
+            'doctors' => $doctors,
+            'specializations' => $specializations,
+        ]);
     }
 
     public function doctors()
     {
-        return Inertia::render('doctors', ['siteData' => $this->getSiteData()]);
+        $doctors = Doctor::query()->with('specialization')->get()->map(function ($doctor) {
+            $imagePath = $doctor->image;
+
+            if ($imagePath) {
+                if (str_starts_with($imagePath, '/images/')) {
+                } elseif (str_starts_with($imagePath, 'http')) {
+                } else {
+                    $imagePath = '/storage/'.ltrim($imagePath, '/');
+                }
+            } else {
+                $imagePath = 'https://randomuser.me/api/portraits/doctor.jpg';
+            }
+
+            return [
+                'id' => $doctor->id,
+                'name' => $doctor->name,
+                'specialty' => $doctor->specialization?->name ?? 'General',
+                'qual' => $doctor->education ?? '',
+                'experience' => '10+ Years',
+                'img' => $imagePath,
+                'available' => $doctor->availability ?? 'Mon-Sat',
+            ];
+        });
+
+        return Inertia::render('doctors', [
+            'siteData' => $this->getSiteData(),
+            'doctors' => $doctors,
+        ]);
     }
 
     public function facilities()
