@@ -20,7 +20,7 @@ interface Doctor {
 }
 
 interface DoctorsPageProps {
-  doctors: Doctor[];
+  doctors?: Doctor[];
 }
 
 export default function DoctorsPage({ doctors = [] }: DoctorsPageProps) {
@@ -36,7 +36,7 @@ export default function DoctorsPage({ doctors = [] }: DoctorsPageProps) {
     <Navbar/>
 
       {/* Hero Header Section */}
-<section className="bg-white py-16 lg:py-24">
+<section className="bg-white pt-20 pb-0">
   <div className="container mx-auto px-4">
     <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-start lg:justify-between">
       

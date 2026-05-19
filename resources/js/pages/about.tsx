@@ -6,7 +6,21 @@ import Navbar from '../components/layout/Navbar';
 import CTABanner from '../components/sections/CTABanner';
 import DoctorsSection from '../components/sections/DoctorsSection';
 
-export default function AboutPage() {
+interface Doctor {
+  id: number;
+  name: string;
+  specialty: string;
+  experience: string;
+  qual: string;
+  img: string;
+  available: string;
+}
+
+interface AboutPageProps {
+  homeDoctors?: Doctor[];
+}
+
+export default function AboutPage({ homeDoctors = [] }: AboutPageProps) {
   const stats = [
     ['1,00,000+', 'Patients Served'],
     ['15,000+', 'Surgeries Performed'],
@@ -154,7 +168,7 @@ export default function AboutPage() {
       </section>
 
       <CTABanner />
-      <DoctorsSection />
+      <DoctorsSection doctors={homeDoctors} />
       <FloatingActions />
       <Footer />
     </>

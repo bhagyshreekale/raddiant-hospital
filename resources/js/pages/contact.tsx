@@ -35,7 +35,7 @@ export default function ContactPage({ contactData }: PageProps) {
       <Navbar/>
 
 {/* HERO SECTION */}
-<section className="relative isolate overflow-hidden bg-gradient-to-br from-sky-50 via-white to-indigo-50 py-16 md:py-20 lg:py-24 text-center">
+<section className="relative isolate overflow-hidden bg-gradient-to-br from-sky-50 via-white to-indigo-50 pt-20 pb-16 md:pb-20 lg:pb-24 text-center">
 
   {/* Background Effects */}
   <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">

@@ -91,8 +91,8 @@ export default function CareersPage({ jobs = [] }: CareersPageProps) {
         {/* ════════════════════════════════════
             1. HERO
         ════════════════════════════════════ */}
-  <section className="relative min-h-[70vh] flex items-center bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
- 
+  <section className="relative bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+  
       {/* Decorative geometric background shapes */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] opacity-[0.04] pointer-events-none">
         <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -120,7 +120,7 @@ export default function CareersPage({ jobs = [] }: CareersPageProps) {
       {/* Thin accent bar at top */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-600 via-sky-400 to-emerald-500" />
  
-      <div className="relative z-10 container mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-28 max-w-full">
+      <div className="relative z-10 container mx-auto px-6 md:px-10 lg:px-16 py-20 md:py-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
  
           {/* LEFT: Content */}
@@ -153,7 +153,7 @@ export default function CareersPage({ jobs = [] }: CareersPageProps) {
             </p>
  
             {/* Stat row */}
-            <div className="flex items-center gap-6 mb-10 pb-10 border-b border-slate-200">
+            <div className="flex flex-wrap items-center gap-4 mb-10 pb-10 border-b border-slate-200">
               {stats.map((s, i) => (
                 <div key={i} className="text-center">
                   <p className="text-2xl font-black text-blue-600 leading-none">{s.value}</p>

@@ -39,7 +39,7 @@ export default function BlogPage({ blogs = [] }: BlogPageProps) {
     <>
       <Navbar />
       <main className="min-h-screen bg-slate-50">
-    <section className="relative bg-gradient-to-b from-emerald-50 via-white to-white overflow-hidden pt-16 pb-0 px-4">
+    <section className="relative bg-gradient-to-b from-emerald-50 via-white to-white overflow-hidden pt-20 pb-0 px-4">
  
       {/* Subtle grid pattern */}
       <div

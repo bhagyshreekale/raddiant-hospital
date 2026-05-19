@@ -16,19 +16,18 @@ interface GalleryItem {
 
 interface GalleryPageProps {
   gallery?: GalleryItem[];
+  categories?: string[];
   siteData?: any;
 }
 
-const CATEGORIES = ['All', 'Facilities', 'Technology', 'Operation Theatre', 'Staff', 'Patients'];
-
-export default function GalleryPage({ gallery = [] }: GalleryPageProps) {
+export default function GalleryPage({ gallery = [], categories = ['All'] }: GalleryPageProps) {
   return (
     <>
       <Navbar />
       <main className="min-vh-100 bg-white">
         
         {/* ── Hero Section ────────────────────────────────────────────────── */}
-      <section className="relative bg-slate-50 overflow-hidden pt-16 pb-0 text-center">
+      <section className="relative bg-slate-50 overflow-hidden pt-20 pb-0 text-center">
  
       {/* Top accent */}
       <div className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-blue-600 via-cyan-500 to-emerald-500" />
@@ -80,7 +79,7 @@ export default function GalleryPage({ gallery = [] }: GalleryPageProps) {
         <div className="bg-light/30">
           <GalleryGrid 
             items={gallery} 
-            categories={CATEGORIES} 
+            categories={categories} 
           />
         </div>
 
