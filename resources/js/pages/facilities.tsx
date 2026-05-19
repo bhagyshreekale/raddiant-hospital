@@ -292,7 +292,7 @@ export default function FacilitiesPage() {
 
         {/* ── HERO ── */}
     <section
-          className="relative overflow-hidden px-4 py-5 text-center"
+          className="relative overflow-hidden px-4 pt-20 pb-0 text-center"
           style={{ backgroundColor: '#f0f8ff' }}
         >
           {/* subtle grid overlay */}
