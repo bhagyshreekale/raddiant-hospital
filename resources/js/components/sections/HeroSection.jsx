@@ -164,7 +164,7 @@ export default function HeroSection() {
           display:    'flex',
           alignItems: 'center',
           minHeight:  '70vh',
-          padding: '60px 0',
+          padding: '30px 0',
           overflow:   'hidden',
           backgroundColor: '#f0f8ff',
           fontFamily: "'DM Sans', sans-serif",
