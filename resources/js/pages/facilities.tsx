@@ -237,7 +237,7 @@ export default function FacilitiesPage() {
         id: pkg.id,
         name: pkg.name,
         price: pkg.price,
-        features: Array.isArray(pkg.features) ? pkg.features : (typeof pkg.description === 'string' ? pkg.description.split(',') : [])
+        features: typeof pkg.description === 'string' ? pkg.description.split(',') : []
       }))
     : HEALTH_PACKAGES.map((pkg, i) => ({
         id: i,
