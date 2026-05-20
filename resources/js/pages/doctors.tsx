@@ -20,17 +20,23 @@ interface Doctor {
 }
 
 interface DoctorsPageProps {
-  doctors: Doctor[];
+  doctors?: Doctor[];
 }
 
 export default function DoctorsPage({ doctors = [] }: DoctorsPageProps) {
+  const scrollToGrid = () => {
+    const el = document.getElementById('doctors-grid');
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
- <>
+    <>
+
 
     <Navbar/>
 
       {/* Hero Header Section */}
-<section className="bg-white py-16 lg:py-24">
+<section className="bg-white pt-20 pb-0">
   <div className="container mx-auto px-4">
     <div className="flex flex-col items-center gap-12 lg:flex-row lg:items-start lg:justify-between">
       
@@ -54,12 +60,12 @@ export default function DoctorsPage({ doctors = [] }: DoctorsPageProps) {
         </p>
 
         <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:justify-center lg:justify-start">
-          <button className="rounded-full bg-cyan-500 px-8 py-4 font-bold text-white shadow-lg shadow-blue-600/20 transition-all hover:bg-blue-700">
+          <button onClick={scrollToGrid} className="rounded-full bg-cyan-500 px-8 py-4 font-bold text-white shadow-lg shadow-blue-600/20 transition-all hover:bg-blue-700">
             Find a Doctor
           </button>
-          <button className="rounded-full border border-slate-200 px-8 py-4 font-bold text-slate-700 transition-all hover:bg-slate-50">
+          <a href="/services" className="rounded-full border border-slate-200 px-8 py-4 font-bold text-slate-700 transition-all hover:bg-slate-50 inline-flex items-center">
             Our Specialties
-          </button>
+          </a>
         </div>
       </div>
 
@@ -96,7 +102,7 @@ export default function DoctorsPage({ doctors = [] }: DoctorsPageProps) {
 </section>
 
       {/* Grid Section */}
-      <section className="py-16 md:py-24">
+      <section id="doctors-grid" className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           {/* Doctors Grid */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:gap-8">

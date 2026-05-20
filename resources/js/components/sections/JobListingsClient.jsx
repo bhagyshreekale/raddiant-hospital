@@ -543,12 +543,12 @@ export default function JobListingsClient({ jobs = [] }) {
   return (
     <>
       {/* Department filter tabs */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none">
         {departments.map((dept) => (
           <button
             key={dept}
             onClick={() => setActiveDept(dept)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150 border ${
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-150 border shrink-0 ${
               activeDept === dept
                 ? 'bg-[#0A1F44] text-white border-[#0A1F44] shadow-md shadow-blue-900/20'
                 : 'bg-white text-slate-500 border-slate-200 hover:border-blue-300 hover:text-blue-700'
@@ -557,7 +557,7 @@ export default function JobListingsClient({ jobs = [] }) {
             {dept}
             {dept !== 'All' && (
               <span className={`ml-1.5 text-[10px] font-bold ${activeDept === dept ? 'text-white/60' : 'text-slate-300'}`}>
-                {JOBS.filter((j) => j.department === dept).length}
+                {allJobs.filter((j) => j.department === dept).length}
               </span>
             )}
           </button>
@@ -565,7 +565,7 @@ export default function JobListingsClient({ jobs = [] }) {
       </div>
 
       {/* Job cards grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6">
         {filtered.map((job) => (
           <JobCard
             key={job.id}

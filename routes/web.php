@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\NavigationLinkController;
-use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\BedAvailabilityController;
 use App\Http\Controllers\BlogController;
@@ -22,7 +21,6 @@ use App\Http\Controllers\SpecializationController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Middleware\EnsureUserIsAdmin;
-use App\Models\Doctor;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/api/site-data', [SiteDataController::class, '__invoke']);
@@ -61,20 +59,6 @@ Route::get('/gallery', [SiteController::class, 'gallery'])->name('gallery');
 Route::get('/facilities', [HealthPackageController::class, 'public'])->name('facilities');
 
 Route::get('/doctors', [DoctorController::class, 'publicShow'])->name('doctors');
-Route::inertia('/doctors', 'doctors', [
-    'doctors' => Doctor::with('specialization')->get()->map(function ($doc) {
-        return [
-            'id' => $doc->id,
-            'name' => $doc->name,
-            'specialty' => $doc->specialization?->name ?? 'General',
-            'experience' => '5+ years',
-            'qual' => $doc->education ?? 'MBBS',
-            'img' => $doc->image ? $doc->image : '/images/doctors/default-doctor.png',
-            'available' => $doc->availability ?? 'Mon-Sat',
-        ];
-    }),
-    'canRegister' => false,
-])->name('doctors');
 
 Route::get('/about', [SiteController::class, 'about'])->name('about');
 
@@ -104,7 +88,6 @@ Route::middleware(['web', 'auth:admin', EnsureUserIsAdmin::class])->group(functi
     Route::resource('admin/gallery', GalleryController::class);
     Route::resource('admin/careers', CareerController::class);
     Route::resource('admin/job-applications', JobApplicationController::class);
-    Route::resource('admin/admins', AdminUserController::class);
     Route::resource('admin/blogs', BlogController::class);
     Route::resource('admin/contact', ContactController::class);
 });

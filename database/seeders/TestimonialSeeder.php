@@ -40,7 +40,7 @@ class TestimonialSeeder extends Seeder
         ];
 
         foreach ($testimonials as $testimonial) {
-            Testimonial::create($testimonial);
+            Testimonial::firstOrCreate(['patient_name' => $testimonial['patient_name']], $testimonial);
         }
     }
 }

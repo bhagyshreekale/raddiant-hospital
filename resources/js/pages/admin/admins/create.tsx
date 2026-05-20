@@ -3,11 +3,23 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 
-export default function Create() {
+interface Props {
+    roles: string[];
+}
+
+export default function Create({ roles }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         username: '',
         password: '',
+        role: '',
     });
 
     const submit = (e: React.FormEvent) => {
@@ -52,6 +64,32 @@ export default function Create() {
                             {errors.password && (
                                 <p className="mt-1 text-sm text-red-500">
                                     {errors.password}
+                                </p>
+                            )}
+                        </div>
+
+                        <div>
+                            <Label htmlFor="role">Role</Label>
+                            <Select
+                                value={data.role}
+                                onValueChange={(value) =>
+                                    setData('role', value)
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a role" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {roles.map((role) => (
+                                        <SelectItem key={role} value={role}>
+                                            {role}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                            {errors.role && (
+                                <p className="mt-1 text-sm text-red-500">
+                                    {errors.role}
                                 </p>
                             )}
                         </div>

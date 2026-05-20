@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -12,14 +13,27 @@ class AdminFactory extends Factory
         return [
             'username' => fake()->unique()->userName(),
             'password' => Hash::make('password'),
-            'role' => 'admin',
         ];
+    }
+
+    public function superAdmin(): static
+    {
+        return $this->afterCreating(function (Admin $admin) {
+            $admin->assignRole('Super Admin');
+        });
     }
 
     public function receptionist(): static
     {
-        return $this->state(fn (array $attributes) => [
-            'role' => 'receptionist',
-        ]);
+        return $this->afterCreating(function (Admin $admin) {
+            $admin->assignRole('Receptionist');
+        });
+    }
+
+    public function admin(): static
+    {
+        return $this->afterCreating(function (Admin $admin) {
+            $admin->assignRole('Admin');
+        });
     }
 }

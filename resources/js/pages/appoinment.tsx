@@ -26,20 +26,21 @@ interface FormErrors {
   [key: string]: string | undefined;
 }
 
-interface Service {
-  id: string;
-  title: string;
-}
-
 interface Doctor {
   id: string;
   name: string;
+  specialization: string;
 }
 
 interface OpdTiming {
   day: string;
   time: string;
   icon: string;
+}
+
+interface AppointmentPageProps {
+  doctors?: Doctor[];
+  specializations?: string[];
 }
 
 interface FloatingInputProps {
@@ -61,25 +62,6 @@ interface FloatingSelectProps {
   error?: string | null;
   children: React.ReactNode;
 }
-
-const SERVICES: Service[] = [
-  { id: 'cardiology', title: 'Cardiology' },
-  { id: 'neurology', title: 'Neurology' },
-  { id: 'orthopedics', title: 'Orthopedics' },
-  { id: 'dermatology', title: 'Dermatology' },
-  { id: 'gynecology', title: 'Gynecology' },
-  { id: 'pediatrics', title: 'Pediatrics' },
-  { id: 'ophthalmology', title: 'Ophthalmology' },
-  { id: 'ent', title: 'ENT' },
-];
-
-const DOCTORS: Doctor[] = [
-  { id: 'd1', name: 'Dr. Ananya Sharma' },
-  { id: 'd2', name: 'Dr. Rohan Mehta' },
-  { id: 'd3', name: 'Dr. Priya Nair' },
-  { id: 'd4', name: 'Dr. Vikram Iyer' },
-  { id: 'd5', name: 'Dr. Sunita Rao' },
-];
 
 const TIME_SLOTS = ['9:00 AM', '10:30 AM', '12:00 PM', '2:00 PM', '3:30 PM', '5:00 PM', '6:30 PM'];
 
@@ -179,8 +161,17 @@ function FloatingSelect({ label, name, value, onChange, error, children }: Float
   );
 }
 
-export default function AppointmentPage() {
-  const [form, setForm] = useState<FormState>({ name: '', phone: '', email: '', gender: '', doctor: '', service: '', date: '', time: '', message: '' });
+export default function AppointmentPage({ doctors = [], specializations = [] }: AppointmentPageProps) {
+  const getQueryParam = (key: string): string => {
+    if (typeof window === 'undefined') return '';
+    const params = new URLSearchParams(window.location.search);
+    return params.get(key) || '';
+  };
+
+  const initialDoctor = getQueryParam('doctor');
+  const initialSpecialty = getQueryParam('specialty') || '';
+
+  const [form, setForm] = useState<FormState>({ name: '', phone: '', email: '', gender: '', doctor: initialDoctor, service: initialSpecialty, date: '', time: '', message: '' });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [hoveredSlot, setHoveredSlot] = useState<string | null>(null);
@@ -349,7 +340,7 @@ setErrors(er => ({ ...er, [name]: '' }));
                 </p>
                 <div style={{ background: '#f0fdf9', borderRadius: '16px', padding: '20px', marginBottom: '32px', border: '1px solid #99f6e4' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', textAlign: 'left' }}>
-                    {[['Specialty', SERVICES.find(s => s.id === form.service)?.title], ['Date', form.date], ['Time', form.time || 'TBD'], ['Doctor', DOCTORS.find(d => d.id === form.doctor)?.name || 'Any Available']].map(([k, v]) => v && (
+                    {[['Specialty', form.service], ['Date', form.date], ['Time', form.time || 'TBD'], ['Doctor', form.doctor || 'Any Available']].map(([k, v]) => v && (
                       <div key={k}>
                         <div style={{ fontSize: '10px', fontWeight: 700, color: '#0d9488', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2px' }}>{k}</div>
                         <div style={{ fontSize: '13px', fontWeight: 600, color: '#1e293b' }}>{v}</div>
@@ -405,11 +396,11 @@ setErrors(er => ({ ...er, [name]: '' }));
                     <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px', marginBottom: '18px' }}>
                       <FloatingSelect label="Specialty *" name="service" value={form.service} onChange={handleChange} error={errors.service}>
                         <option value="" />
-                        {SERVICES.map(s => <option key={s.id} value={s.id}>{s.title}</option>)}
+                        {specializations.map(s => <option key={s} value={s}>{s}</option>)}
                       </FloatingSelect>
                       <FloatingSelect label="Preferred Doctor" name="doctor" value={form.doctor} onChange={handleChange} error={null}>
                         <option value="" />
-                        {DOCTORS.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+                        {doctors.map(d => <option key={d.id} value={d.name}>{d.name} ({d.specialization})</option>)}
                       </FloatingSelect>
                     </div>
                     <FloatingInput label="Preferred Date *" name="date" type="date" value={form.date} onChange={handleChange} error={errors.date} min={new Date().toISOString().split('T')[0]} />
