@@ -20,6 +20,7 @@ import {
     BookOpen,
     Cross,
     KeyRound,
+    HardDrive,
 } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
@@ -133,6 +134,12 @@ const adminNavItems: NavItem[] = [
         href: '/admin/permissions',
         icon: KeyRound,
         permission: 'permissions.view-any',
+    },
+    {
+        title: 'Backups',
+        href: '/admin/backups',
+        icon: HardDrive,
+        permission: 'backups.view-any',
     },
 ];
 

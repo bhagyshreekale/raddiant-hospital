@@ -71,6 +71,7 @@ Route::get('/blog', [SiteController::class, 'blog'])->name('blog');
 Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/appointment', [SiteController::class, 'appointment'])->name('appointment');
+Route::post('/appointment', [SiteController::class, 'storeAppointment'])->name('appointment.store');
 
 Route::get('/appoinment', [SiteController::class, 'appoinment'])->name('appoinment');
 

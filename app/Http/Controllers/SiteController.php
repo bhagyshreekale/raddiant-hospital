@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\Blog;
 use App\Models\Career;
 use App\Models\Doctor;
@@ -11,6 +12,7 @@ use App\Models\Service;
 use App\Models\Specialization;
 use App\Models\Testimonial;
 use App\Models\WebsiteSettings;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SiteController extends Controller
@@ -371,6 +373,46 @@ class SiteController extends Controller
             'doctors' => $doctors,
             'specializations' => $specializations,
         ]);
+    }
+
+    public function storeAppointment(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+            'email' => 'nullable|string|email',
+            'gender' => 'nullable|in:Male,Female,Other',
+            'service' => 'nullable|string|max:255',
+            'doctor' => 'nullable|string|max:255',
+            'date' => 'required|date',
+            'time' => 'required|string|max:50',
+            'message' => 'nullable|string',
+        ]);
+
+        $specialization = null;
+        if (! empty($validated['service'])) {
+            $specialization = Specialization::where('name', $validated['service'])->first();
+        }
+
+        $doctor = null;
+        if (! empty($validated['doctor'])) {
+            $doctor = Doctor::where('name', $validated['doctor'])->first();
+        }
+
+        Appointment::create([
+            'full_name' => $validated['name'],
+            'phone' => $validated['phone'],
+            'email' => $validated['email'] ?? null,
+            'gender' => $validated['gender'] ?? null,
+            'visit_type' => 'OPD',
+            'specialization_id' => $specialization?->id,
+            'doctor_id' => $doctor?->id,
+            'preferred_date' => $validated['date'],
+            'time_slot' => $validated['time'],
+            'description' => $validated['message'] ?? null,
+        ]);
+
+        return redirect()->route('appointment')->with('success', 'Your appointment request has been submitted. We will call you to confirm.');
     }
 
     public function doctors()

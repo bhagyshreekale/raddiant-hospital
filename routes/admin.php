@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Admin\NavigationLinkController;
 use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\Admin\RolesController;
@@ -177,6 +178,25 @@ Route::middleware(['web', 'auth:admin', 'permission:roles.view-any'])->group(fun
         ->middleware('permission:roles.edit');
     Route::delete('admin/roles/{role}', [RolesController::class, 'destroy'])->name('roles.destroy')
         ->middleware('permission:roles.delete');
+});
+
+// Backup Management
+Route::middleware(['web', 'auth:admin', 'admin'])->group(function () {
+    Route::get('admin/backups', [BackupController::class, 'index'])->name('backups.index')
+        ->middleware('permission:backups.view-any');
+    Route::post('admin/backups', [BackupController::class, 'store'])->name('backups.store')
+        ->middleware('permission:backups.create');
+    Route::get('admin/backups/download/{filename}', [BackupController::class, 'download'])->name('backups.download')
+        ->where('filename', '.*')
+        ->middleware('permission:backups.download');
+    Route::delete('admin/backups/{filename}', [BackupController::class, 'destroy'])->name('backups.destroy')
+        ->where('filename', '.*')
+        ->middleware('permission:backups.delete');
+    Route::post('admin/backups/restore/{filename}', [BackupController::class, 'restore'])->name('backups.restore')
+        ->where('filename', '.*')
+        ->middleware('permission:backups.restore');
+    Route::post('admin/backups/upload-restore', [BackupController::class, 'uploadRestore'])->name('backups.upload-restore')
+        ->middleware('permission:backups.restore');
 });
 
 // Permissions Management

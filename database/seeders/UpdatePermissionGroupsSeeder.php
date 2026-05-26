@@ -13,7 +13,7 @@ class UpdatePermissionGroupsSeeder extends Seeder
 
         foreach ($permissions as $permission) {
             $parts = explode('.', $permission->name);
-            $group = $parts[0] ?? $permission->name;
+            $group = $parts[0] === 'backups' ? 'backups' : ($parts[0] ?? $permission->name);
             $permission->update(['group' => $group]);
         }
     }

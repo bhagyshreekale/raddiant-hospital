@@ -1,20 +1,9 @@
 'use client';
 import type { ChangeEvent, FormEvent } from 'react';
 import { useState } from 'react';
+import { useForm } from '@inertiajs/react';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
-
-interface FormState {
-  name: string;
-  phone: string;
-  email: string;
-  gender: string;
-  doctor: string;
-  service: string;
-  date: string;
-  time: string;
-  message: string;
-}
 
 interface FormErrors {
   name?: string;
@@ -171,7 +160,17 @@ export default function AppointmentPage({ doctors = [], specializations = [] }: 
   const initialDoctor = getQueryParam('doctor');
   const initialSpecialty = getQueryParam('specialty') || '';
 
-  const [form, setForm] = useState<FormState>({ name: '', phone: '', email: '', gender: '', doctor: initialDoctor, service: initialSpecialty, date: '', time: '', message: '' });
+  const { data, setData, post, processing } = useForm({
+    name: '',
+    phone: '',
+    email: '',
+    gender: '',
+    doctor: initialDoctor,
+    service: initialSpecialty,
+    date: '',
+    time: '',
+    message: '',
+  });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [hoveredSlot, setHoveredSlot] = useState<string | null>(null);
@@ -179,27 +178,27 @@ export default function AppointmentPage({ doctors = [], specializations = [] }: 
   const validate = (): FormErrors => {
     const e: FormErrors = {};
 
-    if (!form.name.trim()) {
+    if (!data.name.trim()) {
 e.name = 'Full name is required';
 }
 
-    if (!/^\+?[0-9]{10,13}$/.test(form.phone.replace(/\s/g, ''))) {
+    if (!/^\+?[0-9]{10,13}$/.test(data.phone.replace(/\s/g, ''))) {
 e.phone = 'Enter a valid phone number';
 }
 
-    if (form.email && !/\S+@\S+\.\S+/.test(form.email)) {
+    if (data.email && !/\S+@\S+\.\S+/.test(data.email)) {
 e.email = 'Enter a valid email';
 }
 
-    if (!form.service) {
+    if (!data.service) {
 e.service = 'Please select a specialty';
 }
 
-    if (!form.date) {
+    if (!data.date) {
 e.date = 'Please select a date';
 }
 
-    if (!form.gender) {
+    if (!data.gender) {
 e.gender = 'Please select gender';
 }
 
@@ -208,7 +207,7 @@ e.gender = 'Please select gender';
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>): void => {
     const { name, value } = e.target;
-    setForm(f => ({ ...f, [name]: value }));
+    setData(name as 'name' | 'phone' | 'email' | 'gender' | 'doctor' | 'service' | 'date' | 'time' | 'message', value);
 
     if (errors[name]) {
 setErrors(er => ({ ...er, [name]: '' }));
@@ -216,7 +215,7 @@ setErrors(er => ({ ...er, [name]: '' }));
   };
 
   const handleTimeSelect = (t: string): void => {
-    setForm(f => ({ ...f, time: t }));
+    setData('time', t);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
@@ -229,7 +228,11 @@ setErrors(er => ({ ...er, [name]: '' }));
  return; 
 }
 
-    setSubmitted(true);
+    post('/appointment', {
+      onSuccess: () => setSubmitted(true),
+      onError: (errs) => setErrors(prev => ({ ...prev, ...errs })),
+      preserveState: true,
+    });
   };
 
   return (
@@ -333,14 +336,14 @@ setErrors(er => ({ ...er, [name]: '' }));
                 </div>
                 <h2 style={{ fontFamily: "'Playfair Display', serif", fontSize: '28px', color: '#0f2027', margin: '0 0 12px' }}>Request Confirmed!</h2>
                 <p style={{ color: '#64748b', marginBottom: '6px' }}>
-                  Thank you, <strong style={{ color: '#0f2027' }}>{form.name}</strong>.
+                  Thank you, <strong style={{ color: '#0f2027' }}>{data.name}</strong>.
                 </p>
                 <p style={{ color: '#64748b', marginBottom: '32px' }}>
-                  We'll call you at <strong style={{ color: '#0d9488' }}>{form.phone}</strong> to confirm your slot.
+                  We'll call you at <strong style={{ color: '#0d9488' }}>{data.phone}</strong> to confirm your slot.
                 </p>
                 <div style={{ background: '#f0fdf9', borderRadius: '16px', padding: '20px', marginBottom: '32px', border: '1px solid #99f6e4' }}>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', textAlign: 'left' }}>
-                    {[['Specialty', form.service], ['Date', form.date], ['Time', form.time || 'TBD'], ['Doctor', form.doctor || 'Any Available']].map(([k, v]) => v && (
+                    {[['Specialty', data.service], ['Date', data.date], ['Time', data.time || 'TBD'], ['Doctor', data.doctor || 'Any Available']].map(([k, v]) => v && (
                       <div key={k}>
                         <div style={{ fontSize: '10px', fontWeight: 700, color: '#0d9488', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2px' }}>{k}</div>
                         <div style={{ fontSize: '13px', fontWeight: 600, color: '#1e293b' }}>{v}</div>
@@ -349,7 +352,7 @@ setErrors(er => ({ ...er, [name]: '' }));
                   </div>
                 </div>
                 <button onClick={() => {
- setSubmitted(false); setForm({ name:'',phone:'',email:'',gender:'',doctor:'',service:'',date:'',time:'',message:'' }); 
+ setSubmitted(false); setData('name', ''); setData('phone', ''); setData('email', ''); setData('gender', ''); setData('doctor', ''); setData('service', ''); setData('date', ''); setData('time', ''); setData('message', ''); 
 }}
                   style={{ background: '#f8fafc', border: '1.5px solid #e2e8f0', color: '#475569', fontWeight: 600, padding: '12px 28px', borderRadius: '12px', cursor: 'pointer', fontSize: '14px', fontFamily: 'DM Sans, sans-serif', transition: 'all 0.15s' }}>
                   Book Another Appointment
@@ -376,10 +379,10 @@ setErrors(er => ({ ...er, [name]: '' }));
                       <div style={{ height: '1px', flex: 1, background: '#f1f5f9' }} />
                     </div>
                     <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px' }}>
-                      <FloatingInput label="Full Name *" name="name" value={form.name} onChange={handleChange} error={errors.name} placeholder="Meera Joshi" />
-                      <FloatingInput label="Phone Number *" name="phone" value={form.phone} onChange={handleChange} error={errors.phone} placeholder="+91 98765 43210" />
-                      <FloatingInput label="Email Address" name="email" type="email" value={form.email} onChange={handleChange} error={errors.email} placeholder="you@example.com" />
-                      <FloatingSelect label="Gender *" name="gender" value={form.gender} onChange={handleChange} error={errors.gender}>
+                      <FloatingInput label="Full Name *" name="name" value={data.name} onChange={handleChange} error={errors.name} placeholder="Meera Joshi" />
+                      <FloatingInput label="Phone Number *" name="phone" value={data.phone} onChange={handleChange} error={errors.phone} placeholder="+91 98765 43210" />
+                      <FloatingInput label="Email Address" name="email" type="email" value={data.email} onChange={handleChange} error={errors.email} placeholder="you@example.com" />
+                      <FloatingSelect label="Gender *" name="gender" value={data.gender} onChange={handleChange} error={errors.gender}>
                         <option value="" />
                         {['Male', 'Female', 'Other'].map(g => <option key={g}>{g}</option>)}
                       </FloatingSelect>
@@ -394,16 +397,16 @@ setErrors(er => ({ ...er, [name]: '' }));
                       <div style={{ height: '1px', flex: 1, background: '#f1f5f9' }} />
                     </div>
                     <div className="grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '18px', marginBottom: '18px' }}>
-                      <FloatingSelect label="Specialty *" name="service" value={form.service} onChange={handleChange} error={errors.service}>
+                      <FloatingSelect label="Specialty *" name="service" value={data.service} onChange={handleChange} error={errors.service}>
                         <option value="" />
                         {specializations.map(s => <option key={s} value={s}>{s}</option>)}
                       </FloatingSelect>
-                      <FloatingSelect label="Preferred Doctor" name="doctor" value={form.doctor} onChange={handleChange} error={null}>
+                      <FloatingSelect label="Preferred Doctor" name="doctor" value={data.doctor} onChange={handleChange} error={null}>
                         <option value="" />
                         {doctors.map(d => <option key={d.id} value={d.name}>{d.name} ({d.specialization})</option>)}
                       </FloatingSelect>
                     </div>
-                    <FloatingInput label="Preferred Date *" name="date" type="date" value={form.date} onChange={handleChange} error={errors.date} min={new Date().toISOString().split('T')[0]} />
+                    <FloatingInput label="Preferred Date *" name="date" type="date" value={data.date} onChange={handleChange} error={errors.date} min={new Date().toISOString().split('T')[0]} />
                   </div>
 
                   {/* Time slots */}
@@ -416,14 +419,14 @@ setErrors(er => ({ ...er, [name]: '' }));
                           onMouseEnter={() => setHoveredSlot(t)}
                           onMouseLeave={() => setHoveredSlot(null)}
                           style={{
-                            padding: '10px 6px', fontSize: '13px', fontWeight: form.time === t ? 700 : 500,
-                            background: form.time === t ? 'linear-gradient(135deg, #0d9488, #0f766e)' : '#f8fafc',
-                            color: form.time === t ? '#fff' : '#475569',
-                            border: `1.5px solid ${form.time === t ? '#0d9488' : '#e2e8f0'}`,
+                            padding: '10px 6px', fontSize: '13px', fontWeight: data.time === t ? 700 : 500,
+                            background: data.time === t ? 'linear-gradient(135deg, #0d9488, #0f766e)' : '#f8fafc',
+                            color: data.time === t ? '#fff' : '#475569',
+                            border: `1.5px solid ${data.time === t ? '#0d9488' : '#e2e8f0'}`,
                             borderRadius: '10px', cursor: 'pointer',
                             transition: 'all 0.15s ease',
                             fontFamily: 'DM Sans, sans-serif',
-                            boxShadow: form.time === t ? '0 4px 12px rgba(13,148,136,0.25)' : 'none',
+                            boxShadow: data.time === t ? '0 4px 12px rgba(13,148,136,0.25)' : 'none',
                           }}>
                           {t}
                         </button>
@@ -434,7 +437,7 @@ setErrors(er => ({ ...er, [name]: '' }));
                   {/* Message */}
                   <div style={{ marginBottom: '32px' }}>
                     <p style={{ fontSize: '11px', fontWeight: 700, color: '#94a3b8', letterSpacing: '0.1em', textTransform: 'uppercase', margin: '0 0 8px 2px' }}>Symptoms / Message</p>
-                    <textarea name="message" value={form.message} onChange={handleChange} rows={4}
+                    <textarea name="message" value={data.message} onChange={handleChange} rows={4}
                       placeholder="Briefly describe your symptoms or reason for visit..."
                       style={{
                         width: '100%', boxSizing: 'border-box',

@@ -113,6 +113,12 @@ class RoleAndPermissionSeeder extends Seeder
             'two-factor.enable',
             'two-factor.disable',
             'two-factor.regenerate-codes',
+            // Backup & Restore (admin only)
+            'backups.view-any',
+            'backups.create',
+            'backups.download',
+            'backups.delete',
+            'backups.restore',
         ];
 
         // Create all permissions
